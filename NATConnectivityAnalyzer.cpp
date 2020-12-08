@@ -4,4 +4,5 @@ NATConnectivityAnalyzer::NATConnectivityAnalyzer(QWidget *parent)
     : QMainWindow(parent)
 {
     ui.setupUi(this);
+
 }
