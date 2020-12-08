@@ -46,6 +46,16 @@
   </PropertyGroup>
   <PropertyGroup Condition="'$(Configuration)|$(Platform)' == 'Release|Win32'">
   </PropertyGroup>
+  <ItemDefinitionGroup Condition="'$(Configuration)|$(Platform)'=='Debug|Win32'">
+    <QtUic>
+      <QtUicDir>$(IntDir)\uic\%(RelativeDir)</QtUicDir>
+    </QtUic>
+  </ItemDefinitionGroup>
+  <ItemDefinitionGroup Condition="'$(Configuration)|$(Platform)'=='Release|Win32'">
+    <QtUic>
+      <QtUicDir>$(IntDir)\uic\%(RelativeDir)</QtUicDir>
+    </QtUic>
+  </ItemDefinitionGroup>
   <PropertyGroup Condition="'$(Configuration)|$(Platform)' == 'Debug|Win32'" Label="QtSettings">
     <QtInstall>static2019_32</QtInstall>
     <QtModules>core;gui;widgets</QtModules>

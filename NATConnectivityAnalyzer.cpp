@@ -5,4 +5,7 @@ NATConnectivityAnalyzer::NATConnectivityAnalyzer(QWidget *parent)
 {
     ui.setupUi(this);
 
+    //Get internal IP
+//    QList<QHostAddress> list = QNetworkInterface::allAddresses();
+    ui.internalIP->setText("blah");
 }
