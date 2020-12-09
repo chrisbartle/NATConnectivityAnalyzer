@@ -22,6 +22,9 @@
       <Extensions>qrc;*</Extensions>
       <ParseFiles>false</ParseFiles>
     </Filter>
+    <Filter Include="Stunner">
+      <UniqueIdentifier>{5bb0989c-7d51-47df-a14a-60d50778a82d}</UniqueIdentifier>
+    </Filter>
   </ItemGroup>
   <ItemGroup>
     <QtRcc Include="NATConnectivityAnalyzer.qrc">
@@ -41,5 +44,142 @@
     <ClCompile Include="main.cpp">
       <Filter>Source Files</Filter>
     </ClCompile>
+    <ClCompile Include="Stunner\stdafx.cpp">
+      <Filter>Stunner</Filter>
+    </ClCompile>
+    <ClCompile Include="Stunner\StunAddressAttribute.cpp">
+      <Filter>Stunner</Filter>
+    </ClCompile>
+    <ClCompile Include="Stunner\StunAttribute.cpp">
+      <Filter>Stunner</Filter>
+    </ClCompile>
+    <ClCompile Include="Stunner\StunBindingErrorResponseMessage.cpp">
+      <Filter>Stunner</Filter>
+    </ClCompile>
+    <ClCompile Include="Stunner\StunBindingMessage.cpp">
+      <Filter>Stunner</Filter>
+    </ClCompile>
+    <ClCompile Include="Stunner\StunBindingRequestMessage.cpp">
+      <Filter>Stunner</Filter>
+    </ClCompile>
+    <ClCompile Include="Stunner\StunBindingResponseMessage.cpp">
+      <Filter>Stunner</Filter>
+    </ClCompile>
+    <ClCompile Include="Stunner\StunChangeRequestAttribute.cpp">
+      <Filter>Stunner</Filter>
+    </ClCompile>
+    <ClCompile Include="Stunner\StunClientHelper.cpp">
+      <Filter>Stunner</Filter>
+    </ClCompile>
+    <ClCompile Include="Stunner\StunClientTransaction.cpp">
+      <Filter>Stunner</Filter>
+    </ClCompile>
+    <ClCompile Include="Stunner\StunErrorCodeAttribute.cpp">
+      <Filter>Stunner</Filter>
+    </ClCompile>
+    <ClCompile Include="Stunner\StunErrorResponseMessage.cpp">
+      <Filter>Stunner</Filter>
+    </ClCompile>
+    <ClCompile Include="Stunner\StunGlobals.cpp">
+      <Filter>Stunner</Filter>
+    </ClCompile>
+    <ClCompile Include="Stunner\StunHeader.cpp">
+      <Filter>Stunner</Filter>
+    </ClCompile>
+    <ClCompile Include="Stunner\StunMessage.cpp">
+      <Filter>Stunner</Filter>
+    </ClCompile>
+    <ClCompile Include="Stunner\StunPasswordAttribute.cpp">
+      <Filter>Stunner</Filter>
+    </ClCompile>
+    <ClCompile Include="Stunner\StunSharedSecretErrorResponseMessage.cpp">
+      <Filter>Stunner</Filter>
+    </ClCompile>
+    <ClCompile Include="Stunner\StunSharedSecretRequestMessage.cpp">
+      <Filter>Stunner</Filter>
+    </ClCompile>
+    <ClCompile Include="Stunner\StunSharedSecretResponseMessage.cpp">
+      <Filter>Stunner</Filter>
+    </ClCompile>
+    <ClCompile Include="Stunner\StunTransaction.cpp">
+      <Filter>Stunner</Filter>
+    </ClCompile>
+    <ClCompile Include="Stunner\StunUnknownAttributes.cpp">
+      <Filter>Stunner</Filter>
+    </ClCompile>
+    <ClCompile Include="Stunner\StunUsernameAttribute.cpp">
+      <Filter>Stunner</Filter>
+    </ClCompile>
+  </ItemGroup>
+  <ItemGroup>
+    <ClInclude Include="Stunner\resource.h">
+      <Filter>Stunner</Filter>
+    </ClInclude>
+    <ClInclude Include="Stunner\stdafx.h">
+      <Filter>Stunner</Filter>
+    </ClInclude>
+    <ClInclude Include="Stunner\StunAddressAttribute.h">
+      <Filter>Stunner</Filter>
+    </ClInclude>
+    <ClInclude Include="Stunner\StunAttribute.h">
+      <Filter>Stunner</Filter>
+    </ClInclude>
+    <ClInclude Include="Stunner\StunBindingErrorResponseMessage.h">
+      <Filter>Stunner</Filter>
+    </ClInclude>
+    <ClInclude Include="Stunner\StunBindingMessage.h">
+      <Filter>Stunner</Filter>
+    </ClInclude>
+    <ClInclude Include="Stunner\StunBindingRequestMessage.h">
+      <Filter>Stunner</Filter>
+    </ClInclude>
+    <ClInclude Include="Stunner\StunBindingResponseMessage.h">
+      <Filter>Stunner</Filter>
+    </ClInclude>
+    <ClInclude Include="Stunner\StunChangeRequestAttribute.h">
+      <Filter>Stunner</Filter>
+    </ClInclude>
+    <ClInclude Include="Stunner\StunClientHelper.h">
+      <Filter>Stunner</Filter>
+    </ClInclude>
+    <ClInclude Include="Stunner\StunClientTransaction.h">
+      <Filter>Stunner</Filter>
+    </ClInclude>
+    <ClInclude Include="Stunner\StunErrorCodeAttribute.h">
+      <Filter>Stunner</Filter>
+    </ClInclude>
+    <ClInclude Include="Stunner\StunErrorResponseMessage.h">
+      <Filter>Stunner</Filter>
+    </ClInclude>
+    <ClInclude Include="Stunner\StunGlobals.h">
+      <Filter>Stunner</Filter>
+    </ClInclude>
+    <ClInclude Include="Stunner\StunHeader.h">
+      <Filter>Stunner</Filter>
+    </ClInclude>
+    <ClInclude Include="Stunner\StunMessage.h">
+      <Filter>Stunner</Filter>
+    </ClInclude>
+    <ClInclude Include="Stunner\StunPasswordAttribute.h">
+      <Filter>Stunner</Filter>
+    </ClInclude>
+    <ClInclude Include="Stunner\StunSharedSecretErrorResponseMessage.h">
+      <Filter>Stunner</Filter>
+    </ClInclude>
+    <ClInclude Include="Stunner\StunSharedSecretRequestMessage.h">
+      <Filter>Stunner</Filter>
+    </ClInclude>
+    <ClInclude Include="Stunner\StunSharedSecretResponseMessage.h">
+      <Filter>Stunner</Filter>
+    </ClInclude>
+    <ClInclude Include="Stunner\StunTransaction.h">
+      <Filter>Stunner</Filter>
+    </ClInclude>
+    <ClInclude Include="Stunner\StunUnknownAttributes.h">
+      <Filter>Stunner</Filter>
+    </ClInclude>
+    <ClInclude Include="Stunner\StunUsernameAttribute.h">
+      <Filter>Stunner</Filter>
+    </ClInclude>
   </ItemGroup>
 </Project>

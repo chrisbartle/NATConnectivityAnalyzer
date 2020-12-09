@@ -96,11 +96,61 @@
     </Link>
   </ItemDefinitionGroup>
   <ItemGroup>
+    <ClCompile Include="Stunner\stdafx.cpp">
+      <PrecompiledHeader Condition="'$(Configuration)|$(Platform)'=='Debug|Win32'">Create</PrecompiledHeader>
+      <PrecompiledHeader Condition="'$(Configuration)|$(Platform)'=='Release|Win32'">Create</PrecompiledHeader>
+    </ClCompile>
+    <ClCompile Include="Stunner\StunAddressAttribute.cpp" />
+    <ClCompile Include="Stunner\StunAttribute.cpp" />
+    <ClCompile Include="Stunner\StunBindingErrorResponseMessage.cpp" />
+    <ClCompile Include="Stunner\StunBindingMessage.cpp" />
+    <ClCompile Include="Stunner\StunBindingRequestMessage.cpp" />
+    <ClCompile Include="Stunner\StunBindingResponseMessage.cpp" />
+    <ClCompile Include="Stunner\StunChangeRequestAttribute.cpp" />
+    <ClCompile Include="Stunner\StunClientHelper.cpp" />
+    <ClCompile Include="Stunner\StunClientTransaction.cpp" />
+    <ClCompile Include="Stunner\StunErrorCodeAttribute.cpp" />
+    <ClCompile Include="Stunner\StunErrorResponseMessage.cpp" />
+    <ClCompile Include="Stunner\StunGlobals.cpp" />
+    <ClCompile Include="Stunner\StunHeader.cpp" />
+    <ClCompile Include="Stunner\StunMessage.cpp" />
+    <ClCompile Include="Stunner\StunPasswordAttribute.cpp" />
+    <ClCompile Include="Stunner\StunSharedSecretErrorResponseMessage.cpp" />
+    <ClCompile Include="Stunner\StunSharedSecretRequestMessage.cpp" />
+    <ClCompile Include="Stunner\StunSharedSecretResponseMessage.cpp" />
+    <ClCompile Include="Stunner\StunTransaction.cpp" />
+    <ClCompile Include="Stunner\StunUnknownAttributes.cpp" />
+    <ClCompile Include="Stunner\StunUsernameAttribute.cpp" />
     <QtRcc Include="NATConnectivityAnalyzer.qrc" />
     <QtUic Include="NATConnectivityAnalyzer.ui" />
     <QtMoc Include="NATConnectivityAnalyzer.h" />
     <ClCompile Include="NATConnectivityAnalyzer.cpp" />
     <ClCompile Include="main.cpp" />
+  </ItemGroup>
+  <ItemGroup>
+    <ClInclude Include="Stunner\resource.h" />
+    <ClInclude Include="Stunner\stdafx.h" />
+    <ClInclude Include="Stunner\StunAddressAttribute.h" />
+    <ClInclude Include="Stunner\StunAttribute.h" />
+    <ClInclude Include="Stunner\StunBindingErrorResponseMessage.h" />
+    <ClInclude Include="Stunner\StunBindingMessage.h" />
+    <ClInclude Include="Stunner\StunBindingRequestMessage.h" />
+    <ClInclude Include="Stunner\StunBindingResponseMessage.h" />
+    <ClInclude Include="Stunner\StunChangeRequestAttribute.h" />
+    <ClInclude Include="Stunner\StunClientHelper.h" />
+    <ClInclude Include="Stunner\StunClientTransaction.h" />
+    <ClInclude Include="Stunner\StunErrorCodeAttribute.h" />
+    <ClInclude Include="Stunner\StunErrorResponseMessage.h" />
+    <ClInclude Include="Stunner\StunGlobals.h" />
+    <ClInclude Include="Stunner\StunHeader.h" />
+    <ClInclude Include="Stunner\StunMessage.h" />
+    <ClInclude Include="Stunner\StunPasswordAttribute.h" />
+    <ClInclude Include="Stunner\StunSharedSecretErrorResponseMessage.h" />
+    <ClInclude Include="Stunner\StunSharedSecretRequestMessage.h" />
+    <ClInclude Include="Stunner\StunSharedSecretResponseMessage.h" />
+    <ClInclude Include="Stunner\StunTransaction.h" />
+    <ClInclude Include="Stunner\StunUnknownAttributes.h" />
+    <ClInclude Include="Stunner\StunUsernameAttribute.h" />
   </ItemGroup>
   <Import Project="$(VCTargetsPath)\Microsoft.Cpp.targets" />
   <ImportGroup Condition="Exists('$(QtMsBuild)\qt.targets')">
