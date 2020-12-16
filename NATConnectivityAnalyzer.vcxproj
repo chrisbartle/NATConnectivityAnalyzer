@@ -159,7 +159,6 @@
     <ResourceCompile Include="NATConnectivityAnalyzer.rc" />
   </ItemGroup>
   <ItemGroup>
-    <Image Include="icon1.ico" />
     <Image Include="NATicon.ico" />
   </ItemGroup>
   <Import Project="$(VCTargetsPath)\Microsoft.Cpp.targets" />

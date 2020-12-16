@@ -59,6 +59,14 @@ void CNATConnectivityAnalyzerLogic::DoFullAnalysis()
 	}
 	emit updatedNATType(natTypeString);
 
+	//Extract the external IP
+	SOCKADDR_IN extIP;
+	if (clientHelper.GetStunMappedAddress(&extIP))
+	{
+		QString extIPString = inet_ntoa(extIP.sin_addr);
+		emit updatedExternalIP(extIPString);
+	}
+
 	emit updatedStatus("Testing Completed");
 
 	//Signal the calling code that the analysis is complete
