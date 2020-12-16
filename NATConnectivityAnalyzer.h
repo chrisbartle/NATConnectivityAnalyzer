@@ -15,10 +15,15 @@ public:
 private:
     Ui::NATConnectivityAnalyzerClass ui;
     CNATConnectivityAnalyzerLogic logic;
-    QThread *processingThread;
+    QThread processingThread;
+
+    void closeEvent(QCloseEvent* bar);
 
 private slots:
     void on_analyzeButton_clicked();
     void startAnalysis();
     void analysisDone();
+
+signals:
+    void StartFullAnalysisOnThread();
 };
