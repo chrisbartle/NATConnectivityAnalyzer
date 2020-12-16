@@ -110,6 +110,9 @@
     <ClCompile Include="Stunner\StunUsernameAttribute.cpp">
       <Filter>Stunner</Filter>
     </ClCompile>
+    <ClCompile Include="NATConnectivityAnalyzerLogic.cpp">
+      <Filter>Source Files</Filter>
+    </ClCompile>
   </ItemGroup>
   <ItemGroup>
     <ClInclude Include="Stunner\resource.h">
@@ -181,5 +184,10 @@
     <ClInclude Include="Stunner\StunUsernameAttribute.h">
       <Filter>Stunner</Filter>
     </ClInclude>
+  </ItemGroup>
+  <ItemGroup>
+    <QtMoc Include="NATConnectivityAnalyzerLogic.h">
+      <Filter>Header Files</Filter>
+    </QtMoc>
   </ItemGroup>
 </Project>

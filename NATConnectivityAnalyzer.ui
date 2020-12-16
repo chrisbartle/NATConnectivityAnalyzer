@@ -7,7 +7,7 @@
     <x>0</x>
     <y>0</y>
     <width>289</width>
-    <height>211</height>
+    <height>234</height>
    </rect>
   </property>
   <property name="windowTitle">
@@ -25,7 +25,25 @@
       </property>
       <layout class="QGridLayout" name="gridLayout">
        <item row="0" column="0">
-        <layout class="QHBoxLayout" name="internalIPLayout">
+        <layout class="QHBoxLayout" name="horizontalLayout">
+         <item>
+          <widget class="QLabel" name="statusLabel">
+           <property name="text">
+            <string>Status</string>
+           </property>
+          </widget>
+         </item>
+         <item>
+          <widget class="QLineEdit" name="status">
+           <property name="readOnly">
+            <bool>true</bool>
+           </property>
+          </widget>
+         </item>
+        </layout>
+       </item>
+       <item row="1" column="0">
+        <layout class="QHBoxLayout" name="horizontalLayout_2">
          <item>
           <widget class="QLabel" name="internalIPLabel">
            <property name="text">
@@ -48,8 +66,8 @@
          </item>
         </layout>
        </item>
-       <item row="1" column="0">
-        <layout class="QHBoxLayout" name="externalIPLayout">
+       <item row="2" column="0">
+        <layout class="QHBoxLayout" name="horizontalLayout_3">
          <item>
           <widget class="QLabel" name="externalIPLabel">
            <property name="text">
@@ -66,8 +84,8 @@
          </item>
         </layout>
        </item>
-       <item row="2" column="0">
-        <layout class="QHBoxLayout" name="natTypeLayout">
+       <item row="3" column="0">
+        <layout class="QHBoxLayout" name="horizontalLayout_4">
          <item>
           <widget class="QLabel" name="natTypeLabel">
            <property name="text">
@@ -84,8 +102,8 @@
          </item>
         </layout>
        </item>
-       <item row="3" column="0">
-        <layout class="QVBoxLayout" name="portForwardingLayout">
+       <item row="4" column="0">
+        <layout class="QHBoxLayout" name="horizontalLayout_5">
          <item>
           <widget class="QLabel" name="portforwardingLabel">
            <property name="text">
@@ -102,7 +120,7 @@
          </item>
         </layout>
        </item>
-       <item row="4" column="0">
+       <item row="5" column="0">
         <widget class="QPushButton" name="analyzeButton">
          <property name="text">
           <string>Analyze</string>

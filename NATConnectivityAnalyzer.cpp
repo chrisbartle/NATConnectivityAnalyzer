@@ -1,61 +1,60 @@
 #include "NATConnectivityAnalyzer.h"
-#include "Stunner/StunClientHelper.h"
+
 
 NATConnectivityAnalyzer::NATConnectivityAnalyzer(QWidget *parent)
     : QMainWindow(parent)
 {
     ui.setupUi(this);
 
-    //Get internal IP
-    QString internalIPString;
-    QList<QHostAddress> list = QNetworkInterface::allAddresses();
-    for (int rut=0; rut<list.count(); rut++)
-        if (!list[rut].isLoopback())
-            if (list[rut].protocol() == QAbstractSocket::IPv4Protocol)
-            {
-                if (!internalIPString.isEmpty())
-                    internalIPString.append(";");
-                internalIPString.append(list[rut].toString());
-            }
-    ui.internalIP->setText(internalIPString);
+    //Initialize variables
+    processingThread = NULL;
 
-    //Get the STUN info
-	QString natTypeString;
-    CStunClientHelper clientHelper("stun.xten.com");
-    NAT_TYPE natType = clientHelper.GetNatType();
-	switch (natType)
-	{
-	case NAT_TYPE::ERROR_DETECTING_NAT:
-		natTypeString = "There was an error detecting NAT.";
-		break;
+    //Create the connections between the logic code and the display elements
+    connect(&logic, SIGNAL(updatedStatus(QString)), ui.status, SLOT(setText(QString)));
+    connect(&logic, SIGNAL(updatedInternalIP(QString)), ui.internalIP, SLOT(setText(QString)));
+    connect(&logic, SIGNAL(updatedExternalIP(QString)), ui.externalIP, SLOT(setText(QString)));
+    connect(&logic, SIGNAL(updatedNATType(QString)), ui.natType, SLOT(setText(QString)));
 
-	case NAT_TYPE::FIREWALL_BLOCKS_UDP:
-		natTypeString = "There is a firewall that blocks UDP.";
-		break;
+   
+}
 
-	case NAT_TYPE::FULL_CONE_NAT:
-		natTypeString = "The NAT type is Full Cone NAT.";
-		break;
+//Called when the user triggers the analysis
+void NATConnectivityAnalyzer::on_analyzeButton_clicked()
+{
+    startAnalysis();
+}
 
-	case NAT_TYPE::OPEN_INTERNET:
-		natTypeString = "There is no NAT and directly on Open Internet.";
-		break;
+//Call this to start the analysis
+void NATConnectivityAnalyzer::startAnalysis()
+{
+    //If the thread already exists, don't do anything
+    if (processingThread)
+        return;
 
-	case NAT_TYPE::RESTRICTED_CONE_NAT:
-		natTypeString = "The NAT type is Restricted Cone NAT.";
-		break;
+    //Create a new processing thread and link the logic to it
+    processingThread = new QThread(this);
+    logic.moveToThread(processingThread);
 
-	case NAT_TYPE::RESTRICTED_PORT_CONE_NAT:
-		natTypeString = "The NAT type is Restricted Port Cone NAT.";
-		break;
+    //Set DoFullAnalysis to be called when thread starts
+    connect(processingThread, SIGNAL(started()), &logic, SLOT(DoFullAnalysis()));
+    //Wire up the connections so that analysisDone is called when processing is complete
+    connect(&logic, SIGNAL(fullAnalysisCompleted()), processingThread, SLOT(quit()));
+    connect(processingThread, SIGNAL(finished()), this, SLOT(analysisDone()));
 
-	case NAT_TYPE::SYMMETRIC_NAT:
-		natTypeString = "The NAT type is Symmetric NAT.";
-		break;
+    //Disable the Analyze button so that use doesn't press it multiple times
+    ui.analyzeButton->setEnabled(false);
 
-	case NAT_TYPE::SYMMETRIC_UDP_FIREWALL:
-		natTypeString = "There is a symmetric UDP firewall.";
-		break;
-	}
-	ui.natType->setText(natTypeString);
+    //Start the analysis in its own thread
+    processingThread->start();
+}
+
+//Called when the analysis is completed
+void NATConnectivityAnalyzer::analysisDone()
+{
+    //Clean up the thread
+    delete processingThread;
+    processingThread = NULL;
+
+    //Re-enable the button
+    ui.analyzeButton->setEnabled(true);
 }

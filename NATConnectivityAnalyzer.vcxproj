@@ -96,6 +96,7 @@
     </Link>
   </ItemDefinitionGroup>
   <ItemGroup>
+    <ClCompile Include="NATConnectivityAnalyzerLogic.cpp" />
     <ClCompile Include="Stunner\stdafx.cpp">
       <PrecompiledHeader Condition="'$(Configuration)|$(Platform)'=='Debug|Win32'">Create</PrecompiledHeader>
       <PrecompiledHeader Condition="'$(Configuration)|$(Platform)'=='Release|Win32'">Create</PrecompiledHeader>
@@ -128,6 +129,7 @@
     <ClCompile Include="main.cpp" />
   </ItemGroup>
   <ItemGroup>
+    <QtMoc Include="NATConnectivityAnalyzerLogic.h" />
     <ClInclude Include="Stunner\resource.h" />
     <ClInclude Include="Stunner\stdafx.h" />
     <ClInclude Include="Stunner\StunAddressAttribute.h" />

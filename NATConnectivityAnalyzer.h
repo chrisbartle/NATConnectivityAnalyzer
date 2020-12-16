@@ -1,8 +1,9 @@
 #pragma once
 
 #include <QtWidgets/QMainWindow>
+#include <qthread.h>
 #include "ui_NATConnectivityAnalyzer.h"
-#include <QtNetwork/qnetworkinterface.h>
+#include "NATConnectivityAnalyzerLogic.h"
 
 class NATConnectivityAnalyzer : public QMainWindow
 {
@@ -13,4 +14,11 @@ public:
 
 private:
     Ui::NATConnectivityAnalyzerClass ui;
+    CNATConnectivityAnalyzerLogic logic;
+    QThread *processingThread;
+
+private slots:
+    void on_analyzeButton_clicked();
+    void startAnalysis();
+    void analysisDone();
 };
