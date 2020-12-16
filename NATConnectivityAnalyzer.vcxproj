@@ -130,6 +130,7 @@
   </ItemGroup>
   <ItemGroup>
     <QtMoc Include="NATConnectivityAnalyzerLogic.h" />
+    <ClInclude Include="resource.h" />
     <ClInclude Include="Stunner\resource.h" />
     <ClInclude Include="Stunner\stdafx.h" />
     <ClInclude Include="Stunner\StunAddressAttribute.h" />
@@ -153,6 +154,13 @@
     <ClInclude Include="Stunner\StunTransaction.h" />
     <ClInclude Include="Stunner\StunUnknownAttributes.h" />
     <ClInclude Include="Stunner\StunUsernameAttribute.h" />
+  </ItemGroup>
+  <ItemGroup>
+    <ResourceCompile Include="NATConnectivityAnalyzer.rc" />
+  </ItemGroup>
+  <ItemGroup>
+    <Image Include="icon1.ico" />
+    <Image Include="NATicon.ico" />
   </ItemGroup>
   <Import Project="$(VCTargetsPath)\Microsoft.Cpp.targets" />
   <ImportGroup Condition="Exists('$(QtMsBuild)\qt.targets')">
