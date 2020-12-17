@@ -226,6 +226,7 @@ NAT_TYPE CStunClientHelper::GetNatType()
 	bool bRet = false;
 	
 	SOCKADDR_IN sendFromAddr;
+/*** This code is breaking on machines with more than one IP. We should use INADDR_ANY instead
 	char szHostName [MAX_PATH];
 	if (gethostname (szHostName, MAX_PATH) == SOCKET_ERROR)
 	{
@@ -243,7 +244,8 @@ NAT_TYPE CStunClientHelper::GetNatType()
 
 	memcpy_s (&sendFromAddr.sin_addr, sizeof (sendFromAddr.sin_addr), 
 		pHostent->h_addr_list [0], sizeof (sendFromAddr.sin_addr));
-
+**/
+	sendFromAddr.sin_addr.s_addr = htonl(INADDR_ANY);
 	sendFromAddr.sin_family = AF_INET;
 	sendFromAddr.sin_port = GetRandomPort ();
 
