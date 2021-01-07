@@ -57,13 +57,13 @@
     </QtUic>
   </ItemDefinitionGroup>
   <PropertyGroup Condition="'$(Configuration)|$(Platform)' == 'Debug|Win32'" Label="QtSettings">
-    <QtInstall>static2019_32</QtInstall>
-    <QtModules>core;gui;widgets;network</QtModules>
+    <QtInstall>5.15.2_MSVC_32</QtInstall>
+    <QtModules>core;network;gui;qml;quick;quickcontrols2</QtModules>
     <QtBuildConfig>debug</QtBuildConfig>
   </PropertyGroup>
   <PropertyGroup Condition="'$(Configuration)|$(Platform)' == 'Release|Win32'" Label="QtSettings">
-    <QtInstall>static2019_32</QtInstall>
-    <QtModules>core;gui;widgets;network</QtModules>
+    <QtInstall>5.15.2_MSVC_32</QtInstall>
+    <QtModules>core;network;gui;qml;quick;quickcontrols2</QtModules>
     <QtBuildConfig>release</QtBuildConfig>
   </PropertyGroup>
   <ImportGroup Condition="Exists('$(QtMsBuild)\qt.props')">
@@ -122,10 +122,6 @@
     <ClCompile Include="Stunner\StunTransaction.cpp" />
     <ClCompile Include="Stunner\StunUnknownAttributes.cpp" />
     <ClCompile Include="Stunner\StunUsernameAttribute.cpp" />
-    <QtRcc Include="NATConnectivityAnalyzer.qrc" />
-    <QtUic Include="NATConnectivityAnalyzer.ui" />
-    <QtMoc Include="NATConnectivityAnalyzer.h" />
-    <ClCompile Include="NATConnectivityAnalyzer.cpp" />
     <ClCompile Include="main.cpp" />
   </ItemGroup>
   <ItemGroup>
@@ -160,6 +156,14 @@
   </ItemGroup>
   <ItemGroup>
     <Image Include="NATicon.ico" />
+  </ItemGroup>
+  <ItemGroup>
+    <None Include="Intro.ui.qml" />
+    <None Include="main.qml" />
+    <None Include="qtquickcontrols2.conf" />
+  </ItemGroup>
+  <ItemGroup>
+    <QtRcc Include="qml.qrc" />
   </ItemGroup>
   <Import Project="$(VCTargetsPath)\Microsoft.Cpp.targets" />
   <ImportGroup Condition="Exists('$(QtMsBuild)\qt.targets')">

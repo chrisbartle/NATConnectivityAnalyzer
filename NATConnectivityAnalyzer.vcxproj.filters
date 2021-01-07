@@ -27,20 +27,6 @@
     </Filter>
   </ItemGroup>
   <ItemGroup>
-    <QtRcc Include="NATConnectivityAnalyzer.qrc">
-      <Filter>Resource Files</Filter>
-    </QtRcc>
-    <QtUic Include="NATConnectivityAnalyzer.ui">
-      <Filter>Resource Files</Filter>
-    </QtUic>
-    <QtMoc Include="NATConnectivityAnalyzer.h">
-      <Filter>Header Files</Filter>
-    </QtMoc>
-    <ClCompile Include="NATConnectivityAnalyzer.cpp">
-      <Filter>Source Files</Filter>
-    </ClCompile>
-  </ItemGroup>
-  <ItemGroup>
     <ClCompile Include="main.cpp">
       <Filter>Source Files</Filter>
     </ClCompile>
@@ -202,5 +188,21 @@
     <Image Include="NATicon.ico">
       <Filter>Resource Files</Filter>
     </Image>
+  </ItemGroup>
+  <ItemGroup>
+    <None Include="main.qml">
+      <Filter>Resource Files</Filter>
+    </None>
+    <None Include="Intro.ui.qml">
+      <Filter>Resource Files</Filter>
+    </None>
+    <None Include="qtquickcontrols2.conf">
+      <Filter>Resource Files</Filter>
+    </None>
+  </ItemGroup>
+  <ItemGroup>
+    <QtRcc Include="qml.qrc">
+      <Filter>Resource Files</Filter>
+    </QtRcc>
   </ItemGroup>
 </Project>
