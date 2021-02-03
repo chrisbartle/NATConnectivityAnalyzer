@@ -1,5 +1,7 @@
 #include <QGuiApplication>
 #include <QQmlApplicationEngine>
+#include <QQmlContext.h>
+#include "NATConnectivityAnalyzerLogic.h"
 
 int main(int argc, char *argv[])
 {
@@ -17,6 +19,15 @@ int main(int argc, char *argv[])
             QCoreApplication::exit(-1);
     }, Qt::QueuedConnection);
     engine.load(url);
+
+    //Set everything up with the business logic
+    CNATConnectivityAnalyzerLogic businessLogic;
+    engine.rootContext()->setContextProperty("businessLogic", &businessLogic);
+    engine.rootObjects();
+    //Wire everything together
+ //   QObject::connect(&businessLogic, SIGNAL(updatedInternalIP(QString)), ui.internalIP, SLOT(setText(QString)));
+ //   QObject::connect(&businessLogic, SIGNAL(updatedExternalIP(QString)), ui.externalIP, SLOT(setText(QString)));
+ //   QObject::connect(&businessLogic, SIGNAL(updatedNATType(QString)), ui.natType, SLOT(setText(QString)));
 
     return app.exec();
 }
