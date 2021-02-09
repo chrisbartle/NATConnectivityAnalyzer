@@ -70,3 +70,5 @@ HEADERS += \
     Stunner/StunUsernameAttribute.h \
     Stunner/resource.h \
     Stunner/stdafx.h
+
+win32: LIBS += -lWS2_32
