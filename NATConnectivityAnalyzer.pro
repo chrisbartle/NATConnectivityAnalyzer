@@ -8,6 +8,7 @@ CONFIG += c++11
 
 SOURCES += \
         NATConnectivityAnalyzerLogic.cpp \
+        NATConnectivityAnalyzerLogicRelay.cpp \
         Stunner/StunAddressAttribute.cpp \
         Stunner/StunAttribute.cpp \
         Stunner/StunBindingErrorResponseMessage.cpp \
@@ -47,6 +48,7 @@ else: unix:!android: target.path = /opt/$${TARGET}/bin
 
 HEADERS += \
     NATConnectivityAnalyzerLogic.h \
+    NATConnectivityAnalyzerLogicRelay.h \
     Stunner/StunAddressAttribute.h \
     Stunner/StunAttribute.h \
     Stunner/StunBindingErrorResponseMessage.h \
