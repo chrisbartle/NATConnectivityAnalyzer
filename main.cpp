@@ -34,6 +34,8 @@ int main(int argc, char *argv[])
     CNATConnectivityAnalyzerLogicRelay businessLogicRelay;
     //Now wire the slots and signals together between the processing object and the relay
     QObject::connect(&businessLogicRelay, SIGNAL(startFullAnalysis()), &businessLogic, SLOT(DoFullAnalysis()));
+    QObject::connect(&businessLogic, SIGNAL(fullAnalysisCompleted()), &businessLogicRelay, SIGNAL(fullAnalysisCompleted()));
+    QObject::connect(&businessLogic, SIGNAL(updatedStatus(QString)), &businessLogicRelay, SIGNAL(updatedStatus(QString)));
     QObject::connect(&businessLogic, SIGNAL(updatedInternalIP(QString)), &businessLogicRelay, SIGNAL(updatedInternalIP(QString)));
     QObject::connect(&businessLogic, SIGNAL(updatedExternalIP(QString)), &businessLogicRelay, SIGNAL(updatedExternalIP(QString)));
     QObject::connect(&businessLogic, SIGNAL(updatedNATType(QString)), &businessLogicRelay, SIGNAL(updatedNATType(QString)));
