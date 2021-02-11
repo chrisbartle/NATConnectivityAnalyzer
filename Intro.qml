@@ -21,7 +21,9 @@ Page {
             id: creditsButton
             Layout.alignment: Qt.AlignHCenter
             text: "Credits"
-            onClicked: text = "blah"
+            onClicked: {
+                mainStackView.push("Credits.qml")
+            }
         }
     }
 }

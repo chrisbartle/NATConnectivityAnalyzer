@@ -50,6 +50,7 @@ int main(int argc, char *argv[])
 
     //Cleanup
     processingThread.quit();
+    processingThread.wait();
 
     return ret;
 }
