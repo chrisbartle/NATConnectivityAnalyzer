@@ -211,6 +211,9 @@
     
   </ItemGroup>
   <ItemGroup>
+    <None Include="Credits.qml">
+      <Filter>Resource Files</Filter>
+    </None>
     <None Include="Intro.qml">
       <Filter>Resource Files</Filter>
     </None>
