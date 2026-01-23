@@ -17,7 +17,7 @@ Page {
             }
             Label {
                 Layout.alignment: Qt.AlignHCenter
-                text: '<html><style type="text/css"></style><a href="http://www.chrisbartle.com">www.chrisbartle.com</a></html>'
+                text: '<html><style type="text/css"></style><a href="https://www.chrisbartle.com">www.chrisbartle.com</a></html>'
                 onLinkActivated: {
                     Qt.openUrlExternally(link)
                 }

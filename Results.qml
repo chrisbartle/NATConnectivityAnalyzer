@@ -28,64 +28,73 @@ Page {
         }
     }
 
-    ColumnLayout {
-        spacing: 20
-        anchors.horizontalCenter: parent.horizontalCenter
-        anchors.verticalCenter: parent.verticalCenter
+    ScrollView
+    {
+        anchors.top: parent.top
+        anchors.left: parent.left
+        width: parent.width
+        height: parent.height
+        //ScrollBar.vertical.policy: ScrollBar.AlwaysOn
 
-        RowLayout {
-            id: statusRow
-            spacing: 5
-            visible: false
-            BusyIndicator {
-                running: true
-            }
-            Label {
-                id: statusDisplay
-            }
-        }
+        ColumnLayout {
+            spacing: 20
+            anchors.horizontalCenter: parent.horizontalCenter
+            anchors.verticalCenter: parent.verticalCenter
 
-        GroupBox {
-            title: "Internal IP"
-            id: internalIPGroupBox
-            visible: false
-            TextInput {
-                id: internalIPDisplay
-                readOnly: true
-                selectByMouse: true
+            RowLayout {
+                id: statusRow
+                spacing: 5
+                visible: false
+                BusyIndicator {
+                    running: true
+                }
+                Label {
+                    id: statusDisplay
+                }
             }
-        }
 
-        GroupBox {
-            title: "External IP"
-            id: externalIPGroupBox
-            visible: false
-            TextInput {
-                id: externalIPDisplay
-                readOnly: true
-                selectByMouse: true
+            GroupBox {
+                title: "Internal IP"
+                id: internalIPGroupBox
+                visible: false
+                TextInput {
+                    id: internalIPDisplay
+                    readOnly: true
+                    selectByMouse: true
+                }
             }
-        }
 
-        GroupBox {
-            title: "NAT Type"
-            id: natTypeGroupBox
-            visible: false
-            TextInput {
-                id: natTypeDisplay
-                readOnly: true
-                selectByMouse: true
+            GroupBox {
+                title: "External IP"
+                id: externalIPGroupBox
+                visible: false
+                TextInput {
+                    id: externalIPDisplay
+                    readOnly: true
+                    selectByMouse: true
+                }
             }
-        }
 
-        Button {
-            id: runButton
-            text: "Rerun Analysis"
-            visible: false
-            enabled: false
-            onClicked: {
-                enabled = false
-                businessLogic.DoFullAnalysis();
+            GroupBox {
+                title: "NAT Type"
+                id: natTypeGroupBox
+                visible: false
+                TextInput {
+                    id: natTypeDisplay
+                    readOnly: true
+                    selectByMouse: true
+                }
+            }
+
+            Button {
+                id: runButton
+                text: "Rerun Analysis"
+                visible: false
+                enabled: false
+                onClicked: {
+                    enabled = false
+                    businessLogic.DoFullAnalysis();
+                }
             }
         }
     }
