@@ -28,8 +28,10 @@ Page {
 
             ColumnLayout {
                 spacing: 20
-                anchors.fill: parent
-                anchors.margins: 20
+//                anchors.fill: parent
+//                anchors.margins: 20
+                Layout.leftMargin: 20
+                Layout.rightMargin: 20
 
                 ComboBox {
                     model: ["stun.l.google.com:19302", "stun.ooma.com:3478", "stun.stunprotocol.org:3478", "stunserver.org:3478", "stun.xten.com"]
