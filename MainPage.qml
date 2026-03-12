@@ -46,6 +46,17 @@ Page {
                     }
                 }
 
+                GroupBox {
+                    title: "External IP"
+                    id: externalIPGroupBox
+                    visible: Controller.internalIP.length > 0
+                    TextInput {
+                        text: Controller.externalIP
+                        readOnly: true
+                        selectByMouse: true
+                    }
+                }
+
                 RowLayout {
                     id: statusRow
                     visible: Controller.isProcessingNow

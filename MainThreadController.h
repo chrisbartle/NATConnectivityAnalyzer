@@ -4,15 +4,18 @@
 #include <QObject>
 #include <Qthread>
 #include "WorkerThreadController.h"
+#include "Stunner/StunClientHelper.h"
 
 class MainThreadController : public QObject
 {
     Q_OBJECT
+    Q_ENUM(NAT_TYPE)
     Q_PROPERTY(QString currentStunServer READ getCurrentStunServer WRITE setCurrentStunServer NOTIFY currentStunServerChanged)
     Q_PROPERTY(bool isProcessingNow READ getIsProcessingNow WRITE setIsProcessingNow NOTIFY isProcessingNowStatusChanged)
     Q_PROPERTY(QString currentProcessingStatus READ getCurrentProcessingStatus WRITE setCurrentProcessingStatus NOTIFY currentProcessingStatusChanged)
     Q_PROPERTY(QString internalIP READ getInternalIP WRITE setInternalIP NOTIFY internalIPChanged)
     Q_PROPERTY(QString externalIP READ getExternalIP WRITE setExternalIP NOTIFY externalIPChanged)
+    Q_PROPERTY(NAT_TYPE natType READ getNatType WRITE setNatType NOTIFY natTypeChanged)
 public:
     MainThreadController();
     ~MainThreadController();
@@ -32,6 +35,9 @@ public:
     QString getInternalIP() const;
     void setInternalIP(const QString &newInternalIP);
 
+    NAT_TYPE getNatType() const;
+    void setNatType(const NAT_TYPE &newNatType);
+
 signals:
     void currentStunServerChanged(const QString inStunServer);
     void isProcessingNowStatusChanged(bool inIsProcessing);
@@ -40,6 +46,8 @@ signals:
     void internalIPChanged(const QString inIP);
 
     void doFullAnalysis();
+
+    void natTypeChanged();
 
 private:
     QThread *m_workerThread = NULL;
@@ -50,6 +58,7 @@ private:
     QString m_currentProcessingStatus;
     QString m_externalIP;
     QString m_internalIP;
+    NAT_TYPE m_natType;
 };
 
 #endif // MAINTHREADCONTROLLER_H
