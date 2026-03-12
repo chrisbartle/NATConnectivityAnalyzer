@@ -19,6 +19,7 @@ qt_add_qml_module(NATConnectivityAnalyzer
         QML_FILES MainPage.qml
         QML_FILES Credits.qml
         SOURCES MainThreadController.h MainThreadController.cpp
+        SOURCES WorkerThreadController.h WorkerThreadController.cpp
 )
 
 # Qt for iOS sets MACOSX_BUNDLE_GUI_IDENTIFIER automatically since Qt 6.1.

@@ -9,32 +9,16 @@ Page {
     ColumnLayout
     {
         anchors.fill: parent
-//        anchors.top: parent.top
-//        anchors.left: parent.left
-//        width: parent.width
-//        height: parent.height
-//        Layout.fillWidth: true
-//        Layout.fillHeight: true
-
-//        ScrollView
-//        {
-//            anchors.top: parent.top
-//            anchors.left: parent.left
-//            width: parent.width
-//            height: parent.height
-///            Layout.fillWidth: true
-//            Layout.fillHeight: true
-            //ScrollBar.vertical.policy: ScrollBar.AlwaysOn
 
             ColumnLayout {
+                id: mainColumn
                 spacing: 20
-//                anchors.fill: parent
-//                anchors.margins: 20
+
                 Layout.leftMargin: 20
                 Layout.rightMargin: 20
 
                 ComboBox {
-                    model: ["stun.l.google.com:19302", "stun.ooma.com:3478", "stun.stunprotocol.org:3478", "stunserver.org:3478", "stun.xten.com"]
+                    model: ["stun.l.google.com:19302", "stun.ooma.com", "stun.stunprotocol.org", "stunserver.org", "stun.xten.com"]
                     editable: true
                     font.pixelSize: 25
                     Layout.alignment: Qt.AlignHCenter
@@ -46,11 +30,33 @@ Page {
                 Button {
                     text: "Start"
                     font.pixelSize: 25
+                    enabled: !Controller.isProcessingNow
                     Layout.fillWidth: true
                     onClicked: Controller.doFullAnalysis();
                 }
+
+                GroupBox {
+                    title: "Internal IP"
+                    id: internalIPGroupBox
+                    visible: Controller.internalIP.length > 0
+                    TextInput {
+                        text: Controller.internalIP
+                        readOnly: true
+                        selectByMouse: true
+                    }
+                }
+
+                RowLayout {
+                    id: statusRow
+                    visible: Controller.isProcessingNow
+                    BusyIndicator {
+                        running: Controller.isProcessingNow
+                    }
+                    Label {
+                        text: Controller.currentProcessingStatus
+                    }
+                }
             }
-//        }
 
         Button {
             text: 'Credits'

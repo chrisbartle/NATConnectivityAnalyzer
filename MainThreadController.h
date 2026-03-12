@@ -3,31 +3,53 @@
 
 #include <QObject>
 #include <Qthread>
+#include "WorkerThreadController.h"
 
 class MainThreadController : public QObject
 {
     Q_OBJECT
     Q_PROPERTY(QString currentStunServer READ getCurrentStunServer WRITE setCurrentStunServer NOTIFY currentStunServerChanged)
+    Q_PROPERTY(bool isProcessingNow READ getIsProcessingNow WRITE setIsProcessingNow NOTIFY isProcessingNowStatusChanged)
+    Q_PROPERTY(QString currentProcessingStatus READ getCurrentProcessingStatus WRITE setCurrentProcessingStatus NOTIFY currentProcessingStatusChanged)
+    Q_PROPERTY(QString internalIP READ getInternalIP WRITE setInternalIP NOTIFY internalIPChanged)
+    Q_PROPERTY(QString externalIP READ getExternalIP WRITE setExternalIP NOTIFY externalIPChanged)
 public:
     MainThreadController();
+    ~MainThreadController();
 
-    //currentStunServer
-    QString getCurrentStunServer() const {return m_currentStunServer;};
-    void setCurrentStunServer(const QString inStunServer)
-    {
-        if (m_currentStunServer != inStunServer)
-        {
-            m_currentStunServer = inStunServer;
-            emit currentStunServerChanged(inStunServer);
-        }
-    };
+    bool getIsProcessingNow() const;
+    void setIsProcessingNow(bool newIsProcessingNow);
+
+    QString getCurrentStunServer() const;
+    void setCurrentStunServer(const QString &newCurrentStunServer);
+
+    QString getCurrentProcessingStatus() const;
+    void setCurrentProcessingStatus(const QString &newCurrentProcessingStatus);
+
+    QString getExternalIP() const;
+    void setExternalIP(const QString &newExternalIP);
+
+    QString getInternalIP() const;
+    void setInternalIP(const QString &newInternalIP);
 
 signals:
     void currentStunServerChanged(const QString inStunServer);
+    void isProcessingNowStatusChanged(bool inIsProcessing);
+    void currentProcessingStatusChanged(const QString inStatus);
+    void externalIPChanged(const QString inIP);
+    void internalIPChanged(const QString inIP);
+
     void doFullAnalysis();
 
 private:
+    QThread *m_workerThread = NULL;
+    WorkerThreadController *m_workerController = NULL;
+
     QString m_currentStunServer;
+    bool m_isProcessingNow = false;
+    QString m_currentProcessingStatus;
+    QString m_externalIP;
+    QString m_internalIP;
 };
 
 #endif // MAINTHREADCONTROLLER_H
