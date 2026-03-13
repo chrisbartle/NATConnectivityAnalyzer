@@ -31,11 +31,12 @@ Page {
         }
 
         Button {
-            Layout.alignment: Qt.AlignHCenter
             text: "Back"
-            onClicked: {
-                mainStackView.pop()
-            }
+            onClicked: mainStackView.pop()
+            font.pixelSize: 25
+            height: 30
+            Layout.alignment: Qt.AlignHCenter | Qt.AlignBottom
+            Layout.fillWidth: true
         }
     }
 }

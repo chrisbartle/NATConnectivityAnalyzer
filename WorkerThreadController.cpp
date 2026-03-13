@@ -21,7 +21,7 @@ void WorkerThreadController::DoNATAnalysis()
             if (list[rut].protocol() == QAbstractSocket::IPv4Protocol)
             {
                 if (!internalIPString.isEmpty())
-                    internalIPString.append(";");
+                    internalIPString.append("\r\n");
                 internalIPString.append(list[rut].toString());
             }
     setInternalIP(internalIPString);

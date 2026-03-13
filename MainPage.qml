@@ -79,10 +79,23 @@ Page {
                     id: natTypeGroupBox
                     Layout.fillWidth: true
                     visible: Controller.natType.length > 0
-                    TextInput {
-                        text: describeNatType(Controller.natType)
-                        readOnly: true
-                        selectByMouse: true
+                    RowLayout {
+                        //Layout.fillWidth: true
+                        TextInput {
+                            text: describeNatType(Controller.natType)
+                            readOnly: true
+                            selectByMouse: true
+                            Layout.fillWidth: true
+                        }
+                        Button {
+                            Layout.alignment: Qt.AlignRight
+                            font.pixelSize: 20
+                            implicitWidth: 20
+                            text: "?"
+                            //icon.name: "help-about"
+                            //display: AbstractButton.IconOnly
+                            onClicked: mainStackView.push("NatTypeExplanation.qml")
+                        }
                     }
                 }
 
