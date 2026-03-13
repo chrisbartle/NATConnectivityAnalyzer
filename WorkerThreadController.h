@@ -2,6 +2,7 @@
 #define WORKERTHREADCONTROLLER_H
 
 #include <QObject>
+#include "Stunner/StunClientHelper.h"
 
 class WorkerThreadController : public QObject
 {
@@ -19,6 +20,7 @@ signals:
     void setCurrentProcessingStatus(const QString &newCurrentProcessingStatus);
     void setExternalIP(const QString inIP);
     void setInternalIP(const QString inIP);
+    void setNatType(const QString &newNatType);
 
 private:
     QString m_stunServer;

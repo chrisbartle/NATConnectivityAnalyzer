@@ -15,6 +15,7 @@ MainThreadController::MainThreadController() {
     connect(m_workerController, &WorkerThreadController::setCurrentProcessingStatus, this, &MainThreadController::setCurrentProcessingStatus);
     connect(m_workerController, &WorkerThreadController::setExternalIP, this, &MainThreadController::setExternalIP);
     connect(m_workerController, &WorkerThreadController::setInternalIP, this, &MainThreadController::setInternalIP);
+    connect(m_workerController, &WorkerThreadController::setNatType, this, &MainThreadController::setNatType);
     m_workerThread->start();
 }
 
@@ -94,12 +95,12 @@ void MainThreadController::setInternalIP(const QString &newInternalIP)
     emit internalIPChanged(newInternalIP);
 }
 
-NAT_TYPE MainThreadController::getNatType() const
+QString MainThreadController::getNatType() const
 {
     return m_natType;
 }
 
-void MainThreadController::setNatType(const NAT_TYPE &newNatType)
+void MainThreadController::setNatType(const QString &newNatType)
 {
     if (m_natType == newNatType)
         return;

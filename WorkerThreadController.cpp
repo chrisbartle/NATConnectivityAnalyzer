@@ -1,6 +1,5 @@
 #include "WorkerThreadController.h"
 #include <QtNetwork/qnetworkinterface.h>
-#include "Stunner/StunClientHelper.h"
 
 WorkerThreadController::WorkerThreadController(QObject *parent)
     : QObject{parent}
@@ -9,6 +8,9 @@ WorkerThreadController::WorkerThreadController(QObject *parent)
 void WorkerThreadController::DoNATAnalysis()
 {
     setIsProcessingNow(true);
+    setInternalIP("");
+    setNatType("");
+    setExternalIP("");
 
     //Get internal IP
     setCurrentProcessingStatus("Getting Internal IP");
@@ -32,38 +34,38 @@ void WorkerThreadController::DoNATAnalysis()
     switch (natType)
     {
     case NAT_TYPE::ERROR_DETECTING_NAT:
-        natTypeString = "There was an error detecting NAT.";
+        natTypeString = "ERROR_DETECTING_NAT";
         break;
 
     case NAT_TYPE::FIREWALL_BLOCKS_UDP:
-        natTypeString = "There is a firewall that blocks UDP.";
+        natTypeString = "FIREWALL_BLOCKS_UDP";
         break;
 
     case NAT_TYPE::FULL_CONE_NAT:
-        natTypeString = "The NAT type is Full Cone NAT.";
+        natTypeString = "FULL_CONE_NAT";
         break;
 
     case NAT_TYPE::OPEN_INTERNET:
-        natTypeString = "There is no NAT and directly on Open Internet.";
+        natTypeString = "OPEN_INTERNET";
         break;
 
     case NAT_TYPE::RESTRICTED_CONE_NAT:
-        natTypeString = "The NAT type is Restricted Cone NAT.";
+        natTypeString = "RESTRICTED_CONE_NAT";
         break;
 
     case NAT_TYPE::RESTRICTED_PORT_CONE_NAT:
-        natTypeString = "The NAT type is Restricted Port Cone NAT.";
+        natTypeString = "RESTRICTED_PORT_CONE_NAT";
         break;
 
     case NAT_TYPE::SYMMETRIC_NAT:
-        natTypeString = "The NAT type is Symmetric NAT.";
+        natTypeString = "SYMMETRIC_NAT";
         break;
 
     case NAT_TYPE::SYMMETRIC_UDP_FIREWALL:
-        natTypeString = "There is a symmetric UDP firewall.";
+        natTypeString = "SYMMETRIC_UDP_FIREWALL";
         break;
     }
-    //emit updatedNATType(natTypeString);
+    setNatType(natTypeString);
 
     //Extract the external IP
     SOCKADDR_IN extIP;

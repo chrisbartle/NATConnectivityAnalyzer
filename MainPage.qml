@@ -5,6 +5,21 @@ import QtQuick.Layouts
 import App.Controller 1.0
 
 Page {
+    function describeNatType(inNatType)
+    {
+        switch (inNatType)
+        {
+            case "ERROR_DETECTING_NAT": return "There was an error detecting NAT.";
+            case "FIREWALL_BLOCKS_UDP": return "There is a firewall that blocks UDP.";
+            case "FULL_CONE_NAT": return "The NAT type is Full Cone NAT.";
+            case "OPEN_INTERNET": return "There is no NAT and directly on Open Internet.";
+            case "RESTRICTED_CONE_NAT": return "The NAT type is Restricted Cone NAT.";
+            case "RESTRICTED_PORT_CONE_NAT": return "The NAT type is Restricted Port Cone NAT.";
+            case "SYMMETRIC_NAT": return "The NAT type is Symmetric NAT.";
+            case "SYMMETRIC_UDP_FIREWALL": return "There is a symmetric UDP firewall.";
+        }
+        return ""
+    }
 
     ColumnLayout
     {
@@ -38,6 +53,7 @@ Page {
                 GroupBox {
                     title: "Internal IP"
                     id: internalIPGroupBox
+                    Layout.fillWidth: true
                     visible: Controller.internalIP.length > 0
                     TextInput {
                         text: Controller.internalIP
@@ -49,9 +65,22 @@ Page {
                 GroupBox {
                     title: "External IP"
                     id: externalIPGroupBox
-                    visible: Controller.internalIP.length > 0
+                    Layout.fillWidth: true
+                    visible: Controller.externalIP.length > 0
                     TextInput {
                         text: Controller.externalIP
+                        readOnly: true
+                        selectByMouse: true
+                    }
+                }
+
+                GroupBox {
+                    title: "NAT Type"
+                    id: natTypeGroupBox
+                    Layout.fillWidth: true
+                    visible: Controller.natType.length > 0
+                    TextInput {
+                        text: describeNatType(Controller.natType)
                         readOnly: true
                         selectByMouse: true
                     }
