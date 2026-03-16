@@ -18,7 +18,7 @@ BEGIN
             VALUE "CompanyName", "Chris Bartle"
             VALUE "FileDescription", "NAT Connectivity Analyzer"
             VALUE "FileVersion", "1.0.0.0"
-            VALUE "LegalCopyright", "Copyright (C) Chris Bartle."
+            VALUE "LegalCopyright", "Copyright (C) Chris Bartle"
             VALUE "InternalName", "NATConnectivityAnalyzer"
             VALUE "OriginalFilename", "NATConnectivityAnalyzer.exe"
             VALUE "ProductName", "NAT Connectivity Analyzer"
