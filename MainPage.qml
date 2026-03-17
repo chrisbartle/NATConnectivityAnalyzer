@@ -5,18 +5,18 @@ import QtQuick.Layouts
 import App.Controller 1.0
 
 Page {
-    function describeNatType(inNatType)
+    function describeNatType()
     {
-        switch (inNatType)
+        switch (Controller.natType)
         {
-            case "ERROR_DETECTING_NAT": return "There was an error detecting NAT.";
-            case "FIREWALL_BLOCKS_UDP": return "There is a firewall that blocks UDP.";
-            case "FULL_CONE_NAT": return "The NAT type is Full Cone NAT.";
-            case "OPEN_INTERNET": return "There is no NAT and directly on Open Internet.";
-            case "RESTRICTED_CONE_NAT": return "The NAT type is Restricted Cone NAT.";
-            case "RESTRICTED_PORT_CONE_NAT": return "The NAT type is Restricted Port Cone NAT.";
-            case "SYMMETRIC_NAT": return "The NAT type is Symmetric NAT.";
-            case "SYMMETRIC_UDP_FIREWALL": return "There is a symmetric UDP firewall.";
+            case "ERROR_DETECTING_NAT": return "Error Detecting NAT";
+            case "FIREWALL_BLOCKS_UDP": return "Firewall is Blocking UDP";
+            case "FULL_CONE_NAT": return "Full Cone NAT";
+            case "OPEN_INTERNET": return "Open Internet";
+            case "RESTRICTED_CONE_NAT": return "Restricted Cone NAT";
+            case "RESTRICTED_PORT_CONE_NAT": return "Restricted Port Cone NAT";
+            case "SYMMETRIC_NAT": return "Symmetric NAT";
+            case "SYMMETRIC_UDP_FIREWALL": return "Symmetric UDP Firewall";
         }
         return ""
     }
@@ -82,7 +82,7 @@ Page {
                     RowLayout {
                         //Layout.fillWidth: true
                         TextInput {
-                            text: describeNatType(Controller.natType)
+                            text: describeNatType()
                             readOnly: true
                             selectByMouse: true
                             Layout.fillWidth: true
