@@ -58,15 +58,16 @@ this computer has initiated communication with.</P>
         anchors.horizontalCenter: parent.horizontalCenter
         anchors.verticalCenter: parent.verticalCenter
         anchors.fill: parent
-        Text {
+        TextEdit {
             Layout.fillWidth: true
             Layout.fillHeight: true
             Layout.leftMargin: 10
             Layout.rightMargin: 10
             wrapMode: Text.WordWrap
-            textFormat: Text.StyledText
+            textFormat: Text.RichText
             font.pixelSize: 15
             text: fullDescriptionNatType()
+            readOnly: true
         }
         Button {
             text: "Back"
