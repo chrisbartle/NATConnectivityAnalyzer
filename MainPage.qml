@@ -55,7 +55,7 @@ Page {
                     id: internalIPGroupBox
                     Layout.fillWidth: true
                     visible: Controller.internalIP.length > 0
-                    TextInput {
+                    TextEdit {
                         text: Controller.internalIP
                         readOnly: true
                         selectByMouse: true
