@@ -22,7 +22,7 @@ NAT device, usually a consumer modem.</P>
 <P><B>Peer to Peer:</B> Excellent, peer-to-peer products may be able to connect even without a matchmaking service.</P>");
             case "OPEN_INTERNET": return qsTr("<P><B>Open Internet</B></P>
 <P>No NAT was detected, it appears that this computer is connecting openly to the Internet - old school!</P>
-<P><B>Security:</B> Dangerous, no firewall was detected so it appears that this computer is vulnerable to
+<P><B>Security:</B> None, there appears to be no firewall or NAT protection and this computer may be vulnerable to
 scanning and attack from 3rd parties.</P>
 <P><B>Peer to Peer:</B> Excellent, peer-to-peer products can easily connect without a matchmaking service.</P>");
             case "RESTRICTED_CONE_NAT": return qsTr("<P><B>Restricted Cone NAT (NAT 2)</B></P>
