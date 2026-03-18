@@ -55,19 +55,31 @@ this computer has initiated communication with.</P>
 
     ColumnLayout {
         spacing: 20
-        anchors.horizontalCenter: parent.horizontalCenter
-        anchors.verticalCenter: parent.verticalCenter
         anchors.fill: parent
-        TextEdit {
+
+        Flickable {
+            id: scrollContainer
             Layout.fillWidth: true
             Layout.fillHeight: true
-            Layout.leftMargin: 10
-            Layout.rightMargin: 10
-            wrapMode: Text.WordWrap
-            textFormat: Text.RichText
-            font.pixelSize: 15
-            text: fullDescriptionNatType()
-            readOnly: true
+            contentWidth: width
+            contentHeight: textDisplayer.height
+            clip: true // Prevents text from drawing outside this area
+            // This allows the user to drag/flick to scroll
+            boundsBehavior: Flickable.StopAtBounds
+            TextEdit {
+                id: textDisplayer
+                width: scrollContainer.width
+                leftPadding: 10
+                rightPadding: 10
+                wrapMode: Text.WordWrap
+                textFormat: Text.RichText
+                font.pixelSize: 15
+                text: fullDescriptionNatType()
+                readOnly: true
+            }
+            ScrollBar.vertical: ScrollBar {
+                policy: ScrollBar.AsNeeded
+            }
         }
         Button {
             text: "Back"
