@@ -25,12 +25,24 @@ Page {
     {
         anchors.fill: parent
 
+        Flickable {
+            id: scrollContainer
+            Layout.fillWidth: true
+            Layout.fillHeight: true
+            contentWidth: width
+            contentHeight: mainColumn.height
+            clip: true // Prevents text from drawing outside this area
+            // This allows the user to drag/flick to scroll
+            boundsBehavior: Flickable.StopAtBounds
+
             ColumnLayout {
                 id: mainColumn
                 spacing: 20
-
-                Layout.leftMargin: 20
-                Layout.rightMargin: 20
+                width: scrollContainer.width
+                anchors.top: parent.top
+                anchors.left: parent.left
+                anchors.right: parent.right
+                anchors.margins: 20
 
                 ComboBox {
                     model: ["stun.l.google.com:19302", "stun.ooma.com", "stun.stunprotocol.org", "stunserver.org", "stun.xten.com"]
@@ -110,6 +122,10 @@ Page {
                     }
                 }
             }
+            ScrollBar.vertical: ScrollBar {
+                policy: ScrollBar.AsNeeded
+            }
+        }
 
         Button {
             text: 'Credits'
