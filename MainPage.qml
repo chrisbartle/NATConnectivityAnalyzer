@@ -50,8 +50,7 @@ Page {
                     font.pixelSize: 25
                     Layout.alignment: Qt.AlignHCenter
                     Layout.fillWidth: true
-                    onCurrentTextChanged: Controller.currentStunServer = currentText
-                    //currentText: Controller.currentStunServer
+                    onEditTextChanged: Controller.currentStunServer = editText
                 }
 
                 Button {

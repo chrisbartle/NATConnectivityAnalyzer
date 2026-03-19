@@ -11,6 +11,8 @@ CStunClientHelper::CStunClientHelper(SOCKADDR_IN serverAddr): m_pClientTransacti
 CStunClientHelper::CStunClientHelper (const char *pszServer): m_pClientTransaction (NULL), m_pBindingRequest (NULL),
 	m_bInitialize (false)
 {
+    USHORT stunPort = 3478;
+
 	m_bInitialize = StunGlobals::Initialize ();
 
 	if (m_bInitialize == false)
@@ -18,19 +20,32 @@ CStunClientHelper::CStunClientHelper (const char *pszServer): m_pClientTransacti
 		return;
 	}
 
-	hostent *pHostent = gethostbyname (pszServer);
+    //3/19/2026 Adding the ability for the hostname to include the port by seperating it with a :
+    char *hostnameWorkingString = _strdup(pszServer);
+    char *justHostname = hostnameWorkingString;
+    if (strchr(hostnameWorkingString, ':') != NULL)
+    {
+        //strtok modifies hostnameWorkingString, that's why we made a copy
+        justHostname = strtok(hostnameWorkingString, ":");
+        char* portstring = strtok(NULL, ":");
+        stunPort = atoi(portstring);
+    }
+
+    hostent *pHostent = gethostbyname (justHostname);
 	if (pHostent == NULL)
 	{
 		clog << endl << "gethostbyname returned an error: WSAGetLastError = " << WSAGetLastError ()
 			<< ", line number = " << __LINE__  << ", in " << __FILE__ << endl;
 		m_bInitialize = false;
+        free(hostnameWorkingString);
 		return;
 	}
 
 	memcpy_s (&m_serverAddr.sin_addr, sizeof (m_serverAddr.sin_addr), 
 		pHostent->h_addr_list [0], sizeof (m_serverAddr.sin_addr));
 	m_serverAddr.sin_family = AF_INET;
-	m_serverAddr.sin_port = htons (3478);
+    m_serverAddr.sin_port = htons (stunPort);
+    free(hostnameWorkingString);
 }
 
 CStunClientHelper::~CStunClientHelper(void)
