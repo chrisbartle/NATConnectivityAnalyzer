@@ -45,12 +45,17 @@ Page {
                 anchors.margins: 20
 
                 ComboBox {
-                    model: ["stun.l.google.com:19302", "stun.ooma.com", "stun.stunprotocol.org", "stunserver.org", "stun.xten.com"]
+                    model: ["stun.12connect.com", "stun.easyvoip.com", "stun.freecall.com", "stun.nextcloud.com:443", "stun.xten.com"]
                     editable: true
-                    font.pixelSize: 25
+                    font.pixelSize: 20
                     Layout.alignment: Qt.AlignHCenter
                     Layout.fillWidth: true
                     onEditTextChanged: Controller.currentStunServer = editText
+                    Component.onCompleted: {
+                        if (model.length > 0) {
+                            currentIndex = Math.floor(Math.random() * model.length)
+                        }
+                    }
                 }
 
                 Button {
