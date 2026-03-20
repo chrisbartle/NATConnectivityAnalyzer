@@ -66,51 +66,72 @@ Page {
                     onClicked: Controller.doFullAnalysis();
                 }
 
-                GroupBox {
-                    title: "Internal IP"
-                    id: internalIPGroupBox
+                //Internal IP Display
+                ColumnLayout {
                     Layout.fillWidth: true
                     visible: Controller.internalIP.length > 0
-                    TextEdit {
-                        text: Controller.internalIP
-                        readOnly: true
-                        selectByMouse: true
+                    spacing: 5
+                    Label {
+                        text: "Internal IP"
+                        font.bold: true
                     }
-                }
+                    Frame {
+                        Layout.fillWidth: true
 
-                GroupBox {
-                    title: "External IP"
-                    id: externalIPGroupBox
-                    Layout.fillWidth: true
-                    visible: Controller.externalIP.length > 0
-                    TextInput {
-                        text: Controller.externalIP
-                        readOnly: true
-                        selectByMouse: true
-                    }
-                }
-
-                GroupBox {
-                    title: "NAT Type"
-                    id: natTypeGroupBox
-                    Layout.fillWidth: true
-                    visible: Controller.natType.length > 0
-                    RowLayout {
-                        //Layout.fillWidth: true
-                        TextInput {
-                            text: describeNatType()
+                        TextEdit {
+                            text: Controller.internalIP
                             readOnly: true
                             selectByMouse: true
-                            Layout.fillWidth: true
+                            wrapMode: TextEdit.WrapAnywhere
                         }
-                        Button {
-                            Layout.alignment: Qt.AlignRight
-                            font.pixelSize: 20
-                            implicitWidth: 20
-                            text: "?"
-                            //icon.name: "help-about"
-                            //display: AbstractButton.IconOnly
-                            onClicked: mainStackView.push("NatTypeExplanation.qml")
+                    }
+                }
+
+                //External IP Display
+                ColumnLayout {
+                    Layout.fillWidth: true
+                    visible: Controller.externalIP.length > 0
+                    spacing: 5
+                    Label {
+                        text: "External IP"
+                        font.bold: true
+                    }
+                    Frame {
+                        Layout.fillWidth: true
+
+                        TextInput{
+                            text: Controller.externalIP
+                            readOnly: true
+                            selectByMouse: true
+                            wrapMode: TextEdit.WrapAnywhere
+                        }
+                    }
+                }
+
+                //Nat Type Display
+                ColumnLayout {
+                    Layout.fillWidth: true
+                    visible: Controller.natType.length > 0
+                    spacing: 5
+                    Label {
+                        text: "External IP"
+                        font.bold: true
+                    }
+                    Frame {
+                        Layout.fillWidth: true
+                        RowLayout {
+                            TextInput {
+                                text: describeNatType()
+                                readOnly: true
+                                selectByMouse: true
+                            }
+                            Button {
+                                Layout.alignment: Qt.AlignRight
+                                font.pixelSize: 20
+                                implicitWidth: 20
+                                text: "?"
+                                onClicked: mainStackView.push("NatTypeExplanation.qml")
+                            }
                         }
                     }
                 }
