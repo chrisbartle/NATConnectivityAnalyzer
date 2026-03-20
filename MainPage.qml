@@ -69,7 +69,10 @@ Page {
                 //Internal IP Display
                 ColumnLayout {
                     Layout.fillWidth: true
-                    visible: Controller.internalIP.length > 0
+                    property bool showThis: Controller.internalIP.length > 0
+                    opacity: showThis ? 1 : 0
+                    visible: opacity > 0
+                    Layout.preferredHeight: showThis ? implicitHeight : 0
                     spacing: 5
                     Label {
                         text: "Internal IP"
@@ -77,7 +80,6 @@ Page {
                     }
                     Frame {
                         Layout.fillWidth: true
-
                         TextEdit {
                             text: Controller.internalIP
                             readOnly: true
@@ -85,12 +87,21 @@ Page {
                             wrapMode: TextEdit.WrapAnywhere
                         }
                     }
+                    Behavior on opacity {
+                        NumberAnimation { duration: 250 }
+                    }
+                    Behavior on Layout.preferredHeight {
+                        NumberAnimation { duration: 250 }
+                    }
                 }
 
                 //External IP Display
                 ColumnLayout {
                     Layout.fillWidth: true
-                    visible: Controller.externalIP.length > 0
+                    property bool showThis: Controller.externalIP.length > 0
+                    opacity: showThis ? 1 : 0
+                    visible: opacity > 0
+                    Layout.preferredHeight: showThis ? implicitHeight : 0
                     spacing: 5
                     Label {
                         text: "External IP"
@@ -98,7 +109,6 @@ Page {
                     }
                     Frame {
                         Layout.fillWidth: true
-
                         TextInput{
                             text: Controller.externalIP
                             readOnly: true
@@ -106,12 +116,21 @@ Page {
                             wrapMode: TextEdit.WrapAnywhere
                         }
                     }
+                    Behavior on opacity {
+                        NumberAnimation { duration: 250 }
+                    }
+                    Behavior on Layout.preferredHeight {
+                        NumberAnimation { duration: 250 }
+                    }
                 }
 
                 //Nat Type Display
                 ColumnLayout {
                     Layout.fillWidth: true
-                    visible: Controller.natType.length > 0
+                    property bool showThis: Controller.natType.length > 0
+                    opacity: showThis ? 1 : 0
+                    visible: opacity > 0
+                    Layout.preferredHeight: showThis ? implicitHeight : 0
                     spacing: 5
                     Label {
                         text: "External IP"
@@ -133,6 +152,12 @@ Page {
                                 onClicked: mainStackView.push("NatTypeExplanation.qml")
                             }
                         }
+                    }
+                    Behavior on opacity {
+                        NumberAnimation { duration: 250 }
+                    }
+                    Behavior on Layout.preferredHeight {
+                        NumberAnimation { duration: 250 }
                     }
                 }
 
