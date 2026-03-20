@@ -113,7 +113,6 @@ Page {
                             text: Controller.externalIP
                             readOnly: true
                             selectByMouse: true
-                            wrapMode: TextEdit.WrapAnywhere
                         }
                     }
                     Behavior on opacity {
@@ -133,7 +132,7 @@ Page {
                     Layout.preferredHeight: showThis ? implicitHeight : 0
                     spacing: 5
                     Label {
-                        text: "External IP"
+                        text: "NAT Type"
                         font.bold: true
                     }
                     Frame {
