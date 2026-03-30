@@ -15,7 +15,7 @@ qt_add_executable(NATConnectivityAnalyzer
 qt_add_qml_module(NATConnectivityAnalyzer
     URI NATConnectivityAnalyzer
     QML_FILES
-        main.qml
+        Main.qml
         QML_FILES MainPage.qml
         QML_FILES Credits.qml
         SOURCES MainThreadController.h MainThreadController.cpp
