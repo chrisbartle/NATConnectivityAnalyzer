@@ -15,7 +15,7 @@ qt_add_executable(NATConnectivityAnalyzer
 qt_add_qml_module(NATConnectivityAnalyzer
     URI NATConnectivityAnalyzer
     QML_FILES
-        Main.qml
+        main.qml
         QML_FILES MainPage.qml
         QML_FILES Credits.qml
         SOURCES MainThreadController.h MainThreadController.cpp
@@ -37,8 +37,11 @@ set_target_properties(NATConnectivityAnalyzer PROPERTIES
     WIN32_EXECUTABLE TRUE
 )
 
-target_link_libraries(NATConnectivityAnalyzer
-    PRIVATE Qt6::Quick
+target_link_libraries(NATConnectivityAnalyzer PRIVATE
+    Qt6::Core
+    Qt6::Gui
+    Qt6::Qml
+    Qt6::Quick
 )
 
 if(WIN32)
