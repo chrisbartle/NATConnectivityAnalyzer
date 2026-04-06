@@ -1,4 +1,5 @@
 #include "MainThreadController.h"
+#include "cmake_vals.h"
 
 MainThreadController::MainThreadController() {
     //Set up the worker thread
@@ -106,4 +107,9 @@ void MainThreadController::setNatType(const QString &newNatType)
         return;
     m_natType = newNatType;
     emit natTypeChanged();
+}
+
+QString MainThreadController::getApplicationVersion() const
+{
+    return APP_VERSION_STRING;
 }

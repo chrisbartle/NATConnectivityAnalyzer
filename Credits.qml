@@ -2,12 +2,20 @@ import QtQuick
 import QtQuick.Controls
 import QtQuick.Layouts
 
+import App.Controller 1.0
+
 Page {
     ColumnLayout {
         spacing: 20
         anchors.horizontalCenter: parent.horizontalCenter
         anchors.verticalCenter: parent.verticalCenter
         anchors.fill: parent
+
+        Label {
+            Layout.alignment: Qt.AlignHCenter
+            text: "Version " + Controller.applicationVersion
+            wrapMode: Text.Wrap
+        }
 
         ColumnLayout {
             Layout.alignment: Qt.AlignHCenter
