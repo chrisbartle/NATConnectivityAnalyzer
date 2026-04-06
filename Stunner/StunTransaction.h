@@ -12,8 +12,8 @@ protected:
 	CStunMessage *m_pMessageToSend;
 	CStunMessage *m_pMessageReceived;
 
-	SOCKET m_SendSock;
-	SOCKADDR_IN m_SendToAddr;
+    SOCKET m_SendSock;
+    sockaddr_in m_SendToAddr;
 	int m_nPortToSendMessageFrom;
 
 	//Checks if the message is correcrly formed, looks for message integrity and 
@@ -21,8 +21,8 @@ protected:
 	bool ValidateMessage();
 
 public:
-	CStunTransaction(SOCKADDR_IN sendToAddr, CStunMessage *pMessageToSend);
-	CStunTransaction(SOCKADDR_IN sendToAddr, SOCKADDR_IN sendFromAddr, CStunMessage *pMessageToSend);
+    CStunTransaction(sockaddr_in sendToAddr, CStunMessage *pMessageToSend);
+    CStunTransaction(sockaddr_in sendToAddr, sockaddr_in sendFromAddr, CStunMessage *pMessageToSend);
 	virtual ~CStunTransaction(void) = 0;
-	bool BindTo (SOCKADDR_IN sendFromAddr);
+    bool BindTo (sockaddr_in sendFromAddr);
 };

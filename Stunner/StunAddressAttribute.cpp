@@ -1,5 +1,7 @@
-#include "StdAfx.h"
+#include "stdafx.h"
 #include "StunAddressAttribute.h"
+#include "StunHeader.h"
+#include "StunOS.h"
 
 CStunAddressAttribute::CStunAddressAttribute(unsigned short nAttributeType, unsigned char byAddressFamily,
 							   unsigned short nPort, const char *pszIPAddress): 
@@ -11,9 +13,9 @@ CStunAddressAttribute::CStunAddressAttribute(unsigned short nAttributeType, unsi
 	Initialize ();	
 }
 
-CStunAddressAttribute::CStunAddressAttribute (unsigned short nAttributeType, SOCKADDR_IN addr):
+CStunAddressAttribute::CStunAddressAttribute (unsigned short nAttributeType, sockaddr_in addr):
 	CStunAttribute (nAttributeType), m_nPort (addr.sin_port), m_byAddressFamily (addr.sin_family), 
-	m_nIPAddress (addr.sin_addr.S_un.S_addr)
+    m_nIPAddress (addr.sin_addr.s_addr)
 {
 	Initialize ();
 }
@@ -37,7 +39,7 @@ CStunAddressAttribute::CStunAddressAttribute(char *pBuffer):CStunAttribute(pBuff
 	ptrToBuffer += sizeof(m_nIPAddress);
 
 	in_addr addr;
-	addr.S_un.S_addr = (int)m_nIPAddress;
+    addr.s_addr = (int)m_nIPAddress;
 }
 
 unsigned short CStunAddressAttribute::GetPort(void)
@@ -123,7 +125,7 @@ string CStunAddressAttribute::ToString ()
 		std::showbase << std::hex << (int)m_byAddressFamily << ", Port: " << std::dec << m_nPort << ", IP Address: ";
 
 	in_addr addr;
-	addr.S_un.S_addr = (int)m_nIPAddress;
+    addr.s_addr = (int)m_nIPAddress;
 	stream << inet_ntoa (addr);	
 
 	return 	stream.str();

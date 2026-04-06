@@ -1,4 +1,4 @@
-#include "StdAfx.h"
+#include "stdafx.h"
 #include "StunBindingErrorResponseMessage.h"
 
 CStunBindingErrorResponseMessage::CStunBindingErrorResponseMessage(unsigned short nErrorCode):

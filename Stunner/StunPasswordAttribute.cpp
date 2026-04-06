@@ -1,4 +1,4 @@
-#include "StdAfx.h"
+#include "stdafx.h"
 #include "StunPasswordAttribute.h"
 
 CStunPasswordAttribute::CStunPasswordAttribute(const char *pszPassword):

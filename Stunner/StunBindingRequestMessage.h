@@ -1,5 +1,5 @@
 #pragma once
-#include "stunbindingmessage.h"
+#include "StunBindingMessage.h"
 
 class CStunBindingRequestMessage :
 	public CStunBindingMessage
@@ -13,7 +13,7 @@ public:
 	void AddChangeRequestAttribute(unsigned int nChangeFlag);
 	void AddUsernameAttribute(const char* pszUsername);
 
-	bool GetResponseAddress(SOCKADDR_IN *addr);
+    bool GetResponseAddress(sockaddr_in *addr);
 	bool GetUsername (const char** pszUsername);
 	bool GetChangeRequest (unsigned int nChangeRequest);
 };

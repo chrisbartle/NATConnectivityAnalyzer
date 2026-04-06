@@ -1,6 +1,6 @@
 #pragma once
-#include "stunattribute.h"
-#include <winsock2.h>
+#include "StunAttribute.h"
+//#include <winsock2.h>
 
 #define CHANGE_PORT 2
 #define CHANGE_IP	4

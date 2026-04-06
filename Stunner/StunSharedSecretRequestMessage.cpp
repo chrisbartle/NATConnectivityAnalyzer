@@ -1,4 +1,4 @@
-#include "StdAfx.h"
+#include "stdafx.h"
 #include "StunSharedSecretRequestMessage.h"
 
 CStunSharedSecretRequestMessage::CStunSharedSecretRequestMessage(void):CStunMessage (SHARED_SECRET_REQUEST)

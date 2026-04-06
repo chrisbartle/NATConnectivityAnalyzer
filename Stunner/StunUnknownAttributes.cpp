@@ -1,4 +1,4 @@
-#include "StdAfx.h"
+#include "stdafx.h"
 #include "StunUnknownAttributes.h"
 
 CStunUnknownAttributes::CStunUnknownAttributes(void):CStunAttribute(UNKNOWN_ATTRIBUTES), m_nAttributesCount(0)

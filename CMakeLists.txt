@@ -24,6 +24,7 @@ qt_add_qml_module(NATConnectivityAnalyzer
         QML_FILES NatTypeExplanation.qml
         SOURCES windows/NATCA.rc
 RESOURCES windows/NATCA.ico
+SOURCES Stunner/StunOS.h
 )
 
 # Qt for iOS sets MACOSX_BUNDLE_GUI_IDENTIFIER automatically since Qt 6.1.

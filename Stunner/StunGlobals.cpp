@@ -1,4 +1,4 @@
-#include "StdAfx.h"
+#include "stdafx.h"
 #include "StunGlobals.h"
 
 bool StunGlobals::UnInitialize ()
@@ -9,11 +9,14 @@ bool StunGlobals::UnInitialize ()
 		m_LogFile.close ();
 	}
 #endif
+
+#ifdef _WIN32
 	if (WSACleanup () == SOCKET_ERROR)
 	{
 		clog << endl << "WSACleanup returned an error: WSAGetLastError () = " << WSAGetLastError () << endl;
 		return false;
 	}
+#endif
 
 	return true;
 }
@@ -76,7 +79,8 @@ bool StunGlobals::Initialize()
 	}
 	clog.rdbuf (m_LogFile.rdbuf ());
 #endif
-	
+
+#ifdef _WIN32
 	int nRet = 0;
 	WSADATA wsaData;
 
@@ -87,6 +91,7 @@ bool StunGlobals::Initialize()
 		clog << endl << "WSAStartup returned an error: " << "WSAGetLastError () = " << WSAGetLastError () << endl;
 		return false;
 	}
+#endif
 
 	return true;
 }

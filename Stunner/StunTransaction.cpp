@@ -1,9 +1,10 @@
-#include "StdAfx.h"
+#include "stdafx.h"
 #include "StunTransaction.h"
 #include "StunClientTransaction.h"
 #include "StunGlobals.h"
+#include "StunOS.h"
 
-CStunTransaction::CStunTransaction(SOCKADDR_IN sendToAddr, CStunMessage *pMessageToSend):
+CStunTransaction::CStunTransaction(sockaddr_in sendToAddr, CStunMessage *pMessageToSend):
 	m_SendToAddr (sendToAddr), m_pMessageToSend (pMessageToSend)
 {
 	Initialize ();
@@ -15,7 +16,11 @@ CStunTransaction::~CStunTransaction(void)
 	{
 		delete m_pMessageReceived;
 	}
+#ifdef _WIN32
 	closesocket (m_SendSock);
+#else
+    close(m_SendSock);
+#endif
 }
 
 bool CStunTransaction::SendStunMessage (int nResult)
@@ -46,7 +51,7 @@ bool CStunTransaction::SendStunMessage (int nResult)
 			clog << m_pMessageToSend->ToString ();
 
 			if (sendto (m_SendSock, m_pMessageToSend->GetBuffer (), m_pMessageToSend->GetTotalLength (),
-				0, (SOCKADDR*)&m_SendToAddr, sizeof (m_SendToAddr)) == SOCKET_ERROR)
+                0, (sockaddr*)&m_SendToAddr, sizeof (m_SendToAddr)) == SOCKET_ERROR)
 			{
 				nResult = WSAGetLastError ();
 				clog << endl << "An error occured in sendto operation: " << "WSAGetLastError () = " << 
@@ -92,12 +97,12 @@ bool CStunTransaction::ValidateMessage()
 
 bool CStunTransaction::ReceiveStunMessage(CStunMessage **pMessageReceived, int nResult)
 {
-	int nSizeFromAddr = sizeof (m_SendToAddr);
+    unsigned int nSizeFromAddr = sizeof (m_SendToAddr);
 	
 	char pBuffer [2400];
 	int nBufferSize = 2400;
 
-	if (nResult = recvfrom (m_SendSock, pBuffer, nBufferSize, 0, (SOCKADDR *)&m_SendToAddr, 
+    if (nResult = recvfrom (m_SendSock, pBuffer, nBufferSize, 0, (sockaddr *)&m_SendToAddr,
 		&nSizeFromAddr) == SOCKET_ERROR)
 	{
 		nResult = WSAGetLastError ();
@@ -122,9 +127,9 @@ bool CStunTransaction::Initialize()
 	return true;
 }
 
-bool CStunTransaction::BindTo (SOCKADDR_IN sendFromAddr)
+bool CStunTransaction::BindTo (sockaddr_in sendFromAddr)
 {
-	if (bind (m_SendSock, (SOCKADDR *)&sendFromAddr, sizeof (SOCKADDR)) == 
+    if (bind (m_SendSock, (sockaddr *)&sendFromAddr, sizeof (sockaddr)) ==
 		SOCKET_ERROR)
 	{
 		clog << endl << "An error occured in bind operation: " << "WSAGetLastError () = " << 

@@ -1,4 +1,4 @@
-#include "StdAfx.h"
+#include "stdafx.h"
 #include "StunMessage.h"
 
 CStunMessage::CStunMessage(STUN_MESSAGE_TYPE MessageType):m_StunHeader (MessageType), m_bValidMessage (true)

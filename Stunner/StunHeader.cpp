@@ -1,4 +1,4 @@
-#include "StdAfx.h"
+#include "stdafx.h"
 #include "StunHeader.h"
 #include <iomanip>
 
@@ -35,7 +35,7 @@ void CStunHeader::CreateTransactionId ()
 	++nCounter;
 
 	SYSTEMTIME CurrentTime;
-	::GetSystemTime (&CurrentTime);
+    StunGetSystemTime (&CurrentTime);
 
 	srand (CurrentTime.wMilliseconds);
 	for (int i = 0; i < 16; ++i)

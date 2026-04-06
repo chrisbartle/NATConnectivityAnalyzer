@@ -68,7 +68,7 @@ void WorkerThreadController::DoNATAnalysis()
     setNatType(natTypeString);
 
     //Extract the external IP
-    SOCKADDR_IN extIP;
+    sockaddr_in extIP;
     if (clientHelper.GetStunMappedAddress(&extIP))
     {
         QString extIPString = inet_ntoa(extIP.sin_addr);

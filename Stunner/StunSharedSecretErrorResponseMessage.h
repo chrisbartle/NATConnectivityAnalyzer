@@ -1,5 +1,5 @@
 #pragma once
-#include "stunerrorresponsemessage.h"
+#include "StunErrorResponseMessage.h"
 
 class CStunSharedSecretErrorResponseMessage :
 	public CStunErrorResponseMessage

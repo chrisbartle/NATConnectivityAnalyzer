@@ -1,5 +1,5 @@
 #pragma once
-#include "stunattribute.h"
+#include "StunAttribute.h"
 
 class CStunUsernameAttribute :
 	public CStunAttribute

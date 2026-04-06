@@ -1,5 +1,5 @@
 #pragma once
-#include "stunbindingmessage.h"
+#include "StunBindingMessage.h"
 
 class CStunBindingResponseMessage :
 	public CStunBindingMessage
@@ -14,8 +14,8 @@ public:
 
 	void AddReflectedFromAddressAttribute(unsigned short nPort, const char *pszAddress);
 
-	bool GetMappedAddress(SOCKADDR_IN *pAddr);
-	bool GetSourceAddress(SOCKADDR_IN *pAddr);
-	bool GetChangedAddress(SOCKADDR_IN *pAddr);
-	bool GetReflectedFromAddress(SOCKADDR_IN *pAddr);
+    bool GetMappedAddress(sockaddr_in *pAddr);
+    bool GetSourceAddress(sockaddr_in *pAddr);
+    bool GetChangedAddress(sockaddr_in *pAddr);
+    bool GetReflectedFromAddress(sockaddr_in *pAddr);
 };

@@ -1,4 +1,4 @@
-#include "StdAfx.h"
+#include "stdafx.h"
 #include "StunErrorCodeAttribute.h"
 
 CStunErrorCodeAttribute::CStunErrorCodeAttribute(unsigned short nErrorCode, const char *pszReasonPhrase):

@@ -1,4 +1,4 @@
-#include "StdAfx.h"
+#include "stdafx.h"
 #include "StunUsernameAttribute.h"
 
 CStunUsernameAttribute::CStunUsernameAttribute(const char *pszUsername):
@@ -12,7 +12,7 @@ CStunUsernameAttribute::CStunUsernameAttribute(const char *pszUsername):
 CStunUsernameAttribute::CStunUsernameAttribute(char *pBuffer, int nDummy):
 	CStunAttribute(pBuffer)
 {
-	char *ptrToBuffer = pBuffer + 4;
+//	char *ptrToBuffer = pBuffer + 4;
 
 	m_pszUsername = new char [m_nAttributeLength];
 	memcpy_s (m_pszUsername, m_nAttributeLength, pBuffer, m_nAttributeLength);

@@ -1,7 +1,7 @@
-#include "StdAfx.h"
+#include "stdafx.h"
 #include "StunClientTransaction.h"
 
-CStunClientTransaction::CStunClientTransaction (SOCKADDR_IN serverAddr, CStunBindingRequestMessage *pRequestMessage):
+CStunClientTransaction::CStunClientTransaction (sockaddr_in serverAddr, CStunBindingRequestMessage *pRequestMessage):
 	CStunTransaction (serverAddr, pRequestMessage)
 {
 }
@@ -173,7 +173,7 @@ CStunErrorResponseMessage *CStunClientTransaction::GetErrorResponse()
 bool CStunClientTransaction::WaitAndValidate(int nResult)
 {
 	SYSTEMTIME CurrentTime, StartingTime;
-	::GetSystemTime (&StartingTime);
+    StunGetSystemTime (&StartingTime);
 	
 	int nElapsedSeconds = 0;
 	bool bRet = true, bFlag = false;
@@ -184,7 +184,7 @@ bool CStunClientTransaction::WaitAndValidate(int nResult)
 	CStunMessage *pPendingResponse = NULL;
 	do
 	{
-		::GetSystemTime (&CurrentTime);
+        StunGetSystemTime (&CurrentTime);
 		nElapsedSeconds = CurrentTime.wSecond - StartingTime.wSecond;
 
 		if (nElapsedSeconds < 0)

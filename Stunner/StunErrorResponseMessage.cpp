@@ -1,4 +1,4 @@
-#include "StdAfx.h"
+#include "stdafx.h"
 #include "StunErrorResponseMessage.h"
 
 CStunErrorResponseMessage::CStunErrorResponseMessage(STUN_MESSAGE_TYPE nMessageType, unsigned short nErrorCode):

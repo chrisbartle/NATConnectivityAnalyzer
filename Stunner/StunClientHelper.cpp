@@ -1,7 +1,9 @@
-#include "StdAfx.h"
+#include <random>
+#include <chrono>
+#include "stdafx.h"
 #include "StunClientHelper.h"
 
-CStunClientHelper::CStunClientHelper(SOCKADDR_IN serverAddr): m_pClientTransaction (NULL), m_pBindingRequest (NULL),
+CStunClientHelper::CStunClientHelper(sockaddr_in serverAddr): m_pClientTransaction (NULL), m_pBindingRequest (NULL),
 	m_bInitialize (false)
 {
 	m_bInitialize = StunGlobals::Initialize ();
@@ -34,8 +36,10 @@ CStunClientHelper::CStunClientHelper (const char *pszServer): m_pClientTransacti
     hostent *pHostent = gethostbyname (justHostname);
 	if (pHostent == NULL)
 	{
+#ifdef _WIN32
 		clog << endl << "gethostbyname returned an error: WSAGetLastError = " << WSAGetLastError ()
 			<< ", line number = " << __LINE__  << ", in " << __FILE__ << endl;
+#endif
 		m_bInitialize = false;
         free(hostnameWorkingString);
 		return;
@@ -63,7 +67,7 @@ CStunClientHelper::~CStunClientHelper(void)
 	StunGlobals::UnInitialize ();
 }
 
-bool CStunClientHelper::TestOne(SOCKADDR_IN serverAddr, SOCKADDR_IN sendFromAddr, CStunMessage **pResponseMessage)
+bool CStunClientHelper::TestOne(sockaddr_in serverAddr, sockaddr_in sendFromAddr, CStunMessage **pResponseMessage)
 {
 	if (m_bInitialize == false)
 	{
@@ -116,7 +120,7 @@ bool CStunClientHelper::TestOne(SOCKADDR_IN serverAddr, SOCKADDR_IN sendFromAddr
 	return true;
 }
 
-bool CStunClientHelper::TestTwo(SOCKADDR_IN serverAddr, SOCKADDR_IN sendFromAddr, CStunMessage **pResponseMessage)
+bool CStunClientHelper::TestTwo(sockaddr_in serverAddr, sockaddr_in sendFromAddr, CStunMessage **pResponseMessage)
 {
 	if (m_bInitialize == false)
 	{
@@ -172,7 +176,7 @@ bool CStunClientHelper::TestTwo(SOCKADDR_IN serverAddr, SOCKADDR_IN sendFromAddr
 	return true;
 }
 
-bool CStunClientHelper::TestThree(SOCKADDR_IN serverAddr, SOCKADDR_IN sendFromAddr, CStunMessage **pResponseMessage)
+bool CStunClientHelper::TestThree(sockaddr_in serverAddr, sockaddr_in sendFromAddr, CStunMessage **pResponseMessage)
 {
 	if (m_bInitialize == false)
 	{
@@ -240,7 +244,7 @@ NAT_TYPE CStunClientHelper::GetNatType()
 
 	bool bRet = false;
 	
-	SOCKADDR_IN sendFromAddr;
+    sockaddr_in sendFromAddr;
 /*** This code is breaking on machines with more than one IP. We should use INADDR_ANY instead
 	char szHostName [MAX_PATH];
 	if (gethostname (szHostName, MAX_PATH) == SOCKET_ERROR)
@@ -283,7 +287,7 @@ NAT_TYPE CStunClientHelper::GetNatType()
 		return NAT_TYPE::ERROR_DETECTING_NAT;
 	}
 
-	SOCKADDR_IN mappedAddress = {0}, sourceAddress = {0}, changedAddress = {0}, mappedAddress1 = {0};
+    sockaddr_in mappedAddress = {0}, sourceAddress = {0}, changedAddress = {0}, mappedAddress1 = {0};
 	((CStunBindingResponseMessage *)pResponseMessage)->GetMappedAddress (&mappedAddress);
 	((CStunBindingResponseMessage *)pResponseMessage)->GetSourceAddress (&sourceAddress);
 	((CStunBindingResponseMessage *)pResponseMessage)->GetChangedAddress (&changedAddress);
@@ -291,7 +295,7 @@ NAT_TYPE CStunClientHelper::GetNatType()
 	//Now match the mapped address with the source address
 	if (mappedAddress.sin_port == sourceAddress.sin_port &&
 		mappedAddress.sin_family == sourceAddress.sin_family &&
-		mappedAddress.sin_addr.S_un.S_addr == sourceAddress.sin_addr.S_un.S_addr)
+        mappedAddress.sin_addr.s_addr == sourceAddress.sin_addr.s_addr)
 	{
 		//We are not natted, now we try to determine whether we are behind
 		//a symmetric UDP firewall or on open Internet
@@ -342,7 +346,7 @@ NAT_TYPE CStunClientHelper::GetNatType()
 
 			if (mappedAddress.sin_port != mappedAddress1.sin_port ||
 				mappedAddress.sin_family != mappedAddress1.sin_family ||
-				mappedAddress.sin_addr.S_un.S_addr != mappedAddress1.sin_addr.S_un.S_addr)
+                mappedAddress.sin_addr.s_addr != mappedAddress1.sin_addr.s_addr)
 			{
 				return NAT_TYPE::SYMMETRIC_NAT;
 			}
@@ -364,7 +368,7 @@ NAT_TYPE CStunClientHelper::GetNatType()
 	}
 }
 
-bool CStunClientHelper::GetStunMappedAddress (SOCKADDR_IN *pAddr)
+bool CStunClientHelper::GetStunMappedAddress (sockaddr_in *pAddr)
 {
 	clog << endl << "Getting STUN mapped IP" << endl;
 	if (m_bInitialize == false)
@@ -431,9 +435,20 @@ bool CStunClientHelper::GetStunMappedAddress (SOCKADDR_IN *pAddr)
 
 unsigned int CStunClientHelper::GetRandomPort ()
 {
-	SYSTEMTIME time;
-	::GetSystemTime (&time);
+    SYSTEMTIME time;
+    StunGetSystemTime (&time);
 
 	srand (time.wMilliseconds);
 	return rand () + 10000;
+
+    // Use a random_device to seed the generator for better entropy
+/*    static std::mt19937 generator(static_cast<unsigned int>(
+        std::chrono::system_clock::now().time_since_epoch().count()
+        ));
+
+    // Define the range (rand() + 10000 typically goes up to ~42767 on Windows)
+    // Here we define a standard range for ephemeral ports
+    std::uniform_int_distribution<unsigned int> distribution(10000, 65535);
+
+    return distribution(generator);*/
 }
