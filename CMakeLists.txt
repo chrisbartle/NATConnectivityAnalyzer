@@ -8,14 +8,14 @@ find_package(Qt6 REQUIRED COMPONENTS Core Gui Qml Quick)
 
 qt_standard_project_setup(REQUIRES 6.8)
 
-qt_add_executable(NATConnectivityAnalyzer
+qt_add_executable(natconnectivityanalyzer
     main.cpp
 )
 
-qt_add_qml_module(NATConnectivityAnalyzer
+qt_add_qml_module(natconnectivityanalyzer
     URI NATConnectivityAnalyzer
     QML_FILES
-        main.qml
+    Main.qml
         QML_FILES MainPage.qml
         QML_FILES Credits.qml
         SOURCES MainThreadController.h MainThreadController.cpp
@@ -30,7 +30,7 @@ SOURCES Stunner/StunOS.h
 # Qt for iOS sets MACOSX_BUNDLE_GUI_IDENTIFIER automatically since Qt 6.1.
 # If you are developing for iOS or macOS you should consider setting an
 # explicit, fixed bundle identifier manually though.
-set_target_properties(NATConnectivityAnalyzer PROPERTIES
+set_target_properties(natconnectivityanalyzer PROPERTIES
 #    MACOSX_BUNDLE_GUI_IDENTIFIER com.example.appNATConnectivityAnalyzer
     MACOSX_BUNDLE_BUNDLE_VERSION ${PROJECT_VERSION}
     MACOSX_BUNDLE_SHORT_VERSION_STRING ${PROJECT_VERSION_MAJOR}.${PROJECT_VERSION_MINOR}
@@ -38,7 +38,7 @@ set_target_properties(NATConnectivityAnalyzer PROPERTIES
     WIN32_EXECUTABLE TRUE
 )
 
-target_link_libraries(NATConnectivityAnalyzer PRIVATE
+target_link_libraries(natconnectivityanalyzer PRIVATE
     Qt6::Core
     Qt6::Gui
     Qt6::Qml
@@ -46,12 +46,12 @@ target_link_libraries(NATConnectivityAnalyzer PRIVATE
 )
 
 if(WIN32)
-    target_sources(NATConnectivityAnalyzer PRIVATE windows/NATCA.rc)
+    target_sources(natconnectivityanalyzer PRIVATE windows/NATCA.rc)
 endif()
 
 
 include(GNUInstallDirs)
-install(TARGETS NATConnectivityAnalyzer
+install(TARGETS natconnectivityanalyzer
     BUNDLE DESTINATION .
     LIBRARY DESTINATION ${CMAKE_INSTALL_LIBDIR}
     RUNTIME DESTINATION ${CMAKE_INSTALL_BINDIR}

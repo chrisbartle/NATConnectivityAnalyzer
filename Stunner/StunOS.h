@@ -58,11 +58,11 @@ struct SYSTEMTIME {
 };
 
 //Nothing to return for this diagnostic function outside of Windows
-int WSAGetLastError() {return 0;}
+inline int WSAGetLastError() {return 0;}
 #endif
 
 //Time function that will work in both Linux and Windows
-void StunGetSystemTime(SYSTEMTIME* st) {
+inline void StunGetSystemTime(SYSTEMTIME* st) {
 #ifdef _WIN32
     // Use the native Windows API
     GetSystemTime(st);
