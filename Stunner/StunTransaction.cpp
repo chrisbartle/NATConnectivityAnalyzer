@@ -36,7 +36,7 @@ bool CStunTransaction::SendStunMessage (int nResult)
 		FD_ZERO (&fdWrite);
 		FD_SET (m_SendSock, &fdWrite);
 
-		if ((nResult = select (0, NULL, &fdWrite, NULL, &timeInterval)) 
+        if ((nResult = select (m_SendSock+1, NULL, &fdWrite, NULL, &timeInterval))
 			== SOCKET_ERROR)
 		{
 			nResult = WSAGetLastError ();

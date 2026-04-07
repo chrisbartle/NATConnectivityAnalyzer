@@ -33,7 +33,7 @@ bool CStunClientTransaction::ReceiveResponse(int nResult)
 		FD_SET (m_SendSock, &fdRead);
 
 		timeInterval.tv_usec = nRetransmissionIntervals[nRetransmitCount] * 1000;
-		if ((nResult = select (0, &fdRead, NULL, NULL, &timeInterval)) 
+        if ((nResult = select (m_SendSock+1, &fdRead, NULL, NULL, &timeInterval))
 			== SOCKET_ERROR)
 		{
 			nResult = WSAGetLastError ();
@@ -203,7 +203,7 @@ bool CStunClientTransaction::WaitAndValidate(int nResult)
 
 		timeInterval.tv_sec = 10 - nElapsedSeconds;
 
-		if ((nResult = select (0, &fdRead, NULL, NULL, &timeInterval))
+        if ((nResult = select (m_SendSock+1, &fdRead, NULL, NULL, &timeInterval))
 			== SOCKET_ERROR)
 		{
 			clog << endl << "An error occured in select operation: " << "WSAGetLastError () = " << 
