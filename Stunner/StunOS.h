@@ -4,6 +4,7 @@
 #ifdef _WIN32
 #include <windows.h>
 #include <winsock2.h>
+//#include <psapi.h>
 #else
 #include <time.h>
 #include <sys/time.h>
@@ -44,6 +45,7 @@ typedef int SOCKET;
 typedef ushort USHORT;
 #define _strdup strdup
 #define SOCKET_ERROR -1
+#define SOCKADDR sockaddr
 
 //SYSTEMTIME not available in Linux
 struct SYSTEMTIME {

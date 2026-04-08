@@ -51,7 +51,7 @@ bool CStunTransaction::SendStunMessage (int nResult)
 			clog << m_pMessageToSend->ToString ();
 
 			if (sendto (m_SendSock, m_pMessageToSend->GetBuffer (), m_pMessageToSend->GetTotalLength (),
-                0, (sockaddr*)&m_SendToAddr, sizeof (m_SendToAddr)) == SOCKET_ERROR)
+                0, (SOCKADDR*)&m_SendToAddr, sizeof (m_SendToAddr)) == SOCKET_ERROR)
 			{
 				nResult = WSAGetLastError ();
 				clog << endl << "An error occured in sendto operation: " << "WSAGetLastError () = " << 
@@ -97,12 +97,16 @@ bool CStunTransaction::ValidateMessage()
 
 bool CStunTransaction::ReceiveStunMessage(CStunMessage **pMessageReceived, int nResult)
 {
+#ifdef _WIN32
+    int nSizeFromAddr = sizeof (m_SendToAddr);
+#else
     unsigned int nSizeFromAddr = sizeof (m_SendToAddr);
-	
+#endif
+
 	char pBuffer [2400];
 	int nBufferSize = 2400;
 
-    if (nResult = recvfrom (m_SendSock, pBuffer, nBufferSize, 0, (sockaddr *)&m_SendToAddr,
+    if (nResult = recvfrom (m_SendSock, pBuffer, nBufferSize, 0, (SOCKADDR *)&m_SendToAddr,
 		&nSizeFromAddr) == SOCKET_ERROR)
 	{
 		nResult = WSAGetLastError ();
@@ -129,7 +133,7 @@ bool CStunTransaction::Initialize()
 
 bool CStunTransaction::BindTo (sockaddr_in sendFromAddr)
 {
-    if (bind (m_SendSock, (sockaddr *)&sendFromAddr, sizeof (sockaddr)) ==
+    if (bind (m_SendSock, (SOCKADDR *)&sendFromAddr, sizeof (SOCKADDR)) ==
 		SOCKET_ERROR)
 	{
 		clog << endl << "An error occured in bind operation: " << "WSAGetLastError () = " << 
