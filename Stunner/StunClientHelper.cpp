@@ -36,10 +36,8 @@ CStunClientHelper::CStunClientHelper (const char *pszServer): m_pClientTransacti
     hostent *pHostent = gethostbyname (justHostname);
 	if (pHostent == NULL)
 	{
-#ifdef _WIN32
 		clog << endl << "gethostbyname returned an error: WSAGetLastError = " << WSAGetLastError ()
 			<< ", line number = " << __LINE__  << ", in " << __FILE__ << endl;
-#endif
 		m_bInitialize = false;
         free(hostnameWorkingString);
 		return;
