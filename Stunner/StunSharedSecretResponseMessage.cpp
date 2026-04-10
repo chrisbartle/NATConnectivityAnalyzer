@@ -1,4 +1,4 @@
-#include "StdAfx.h"
+#include "stdafx.h"
 #include "StunSharedSecretResponseMessage.h"
 
 CStunSharedSecretResponseMessage::CStunSharedSecretResponseMessage(const char* pszUsername,

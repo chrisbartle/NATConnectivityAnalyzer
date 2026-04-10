@@ -1,4 +1,4 @@
-#include "StdAfx.h"
+#include "stdafx.h"
 #include "StunChangeRequestAttribute.h"
 
 CStunChangeRequestAttribute::CStunChangeRequestAttribute(unsigned int nChangeFlag):

@@ -1,4 +1,4 @@
-#include "StdAfx.h"
+#include "stdafx.h"
 #include "StunAttribute.h"
 
 CStunAttribute::CStunAttribute(STUN_ATTRIBUTE_TYPE AttributeType):m_nAttributeType(AttributeType), 

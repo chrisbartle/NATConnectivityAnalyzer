@@ -1,7 +1,7 @@
-#include "StdAfx.h"
+#include "stdafx.h"
 #include "StunClientTransaction.h"
 
-CStunClientTransaction::CStunClientTransaction (SOCKADDR_IN serverAddr, CStunBindingRequestMessage *pRequestMessage):
+CStunClientTransaction::CStunClientTransaction (sockaddr_in serverAddr, CStunBindingRequestMessage *pRequestMessage):
 	CStunTransaction (serverAddr, pRequestMessage)
 {
 }
@@ -33,7 +33,7 @@ bool CStunClientTransaction::ReceiveResponse(int nResult)
 		FD_SET (m_SendSock, &fdRead);
 
 		timeInterval.tv_usec = nRetransmissionIntervals[nRetransmitCount] * 1000;
-		if ((nResult = select (0, &fdRead, NULL, NULL, &timeInterval)) 
+        if ((nResult = select (m_SendSock+1, &fdRead, NULL, NULL, &timeInterval))
 			== SOCKET_ERROR)
 		{
 			nResult = WSAGetLastError ();
@@ -173,7 +173,7 @@ CStunErrorResponseMessage *CStunClientTransaction::GetErrorResponse()
 bool CStunClientTransaction::WaitAndValidate(int nResult)
 {
 	SYSTEMTIME CurrentTime, StartingTime;
-	::GetSystemTime (&StartingTime);
+    StunGetSystemTime (&StartingTime);
 	
 	int nElapsedSeconds = 0;
 	bool bRet = true, bFlag = false;
@@ -184,7 +184,7 @@ bool CStunClientTransaction::WaitAndValidate(int nResult)
 	CStunMessage *pPendingResponse = NULL;
 	do
 	{
-		::GetSystemTime (&CurrentTime);
+        StunGetSystemTime (&CurrentTime);
 		nElapsedSeconds = CurrentTime.wSecond - StartingTime.wSecond;
 
 		if (nElapsedSeconds < 0)
@@ -203,7 +203,7 @@ bool CStunClientTransaction::WaitAndValidate(int nResult)
 
 		timeInterval.tv_sec = 10 - nElapsedSeconds;
 
-		if ((nResult = select (0, &fdRead, NULL, NULL, &timeInterval))
+        if ((nResult = select (m_SendSock+1, &fdRead, NULL, NULL, &timeInterval))
 			== SOCKET_ERROR)
 		{
 			clog << endl << "An error occured in select operation: " << "WSAGetLastError () = " << 

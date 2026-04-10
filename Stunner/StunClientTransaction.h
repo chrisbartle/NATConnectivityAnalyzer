@@ -1,5 +1,5 @@
 #pragma once
-#include "stuntransaction.h"
+#include "StunTransaction.h"
 #include "StunBindingRequestMessage.h"
 #include "StunBindingResponseMessage.h"
 #include "StunErrorResponseMessage.h"
@@ -8,7 +8,7 @@ class CStunClientTransaction :
 	public CStunTransaction
 {
 public:
-	CStunClientTransaction (SOCKADDR_IN serverAddr, CStunBindingRequestMessage *pRequestMessage);
+    CStunClientTransaction (sockaddr_in serverAddr, CStunBindingRequestMessage *pRequestMessage);
 	~CStunClientTransaction(void);
 
 	bool SendRequest (int nResult);

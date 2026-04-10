@@ -1,5 +1,5 @@
 #pragma once
-#include "stunmessage.h"
+#include "StunMessage.h"
 
 class CStunSharedSecretResponseMessage :
 	public CStunMessage

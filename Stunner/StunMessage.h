@@ -7,6 +7,7 @@
 #include "StunUnknownAttributes.h"
 #include "StunUsernameAttribute.h"
 #include "StunPasswordAttribute.h"
+#include "StunOS.h"
 
 #define MAX_ATTRIBUTES 12
 

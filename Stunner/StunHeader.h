@@ -1,9 +1,9 @@
 #pragma once
-#include "StdAfx.h"
-#include <windows.h>
+#include "stdafx.h"
+//#include <windows.h>
 #include <cstdlib>
-#include <psapi.h>
-#include <winsock2.h>
+//#include <psapi.h>
+#include "StunOS.h"
 
 typedef unsigned short STUN_MESSAGE_TYPE;
 

@@ -1,4 +1,4 @@
-#include "StdAfx.h"
+#include "stdafx.h"
 #include "StunBindingRequestMessage.h"
 #include <cassert>
 
@@ -35,12 +35,12 @@ void CStunBindingRequestMessage::AddUsernameAttribute (const char* pszUsername)
 	AddAttribute (new CStunUsernameAttribute (pszUsername));
 }
 
-bool CStunBindingRequestMessage::GetResponseAddress(SOCKADDR_IN *addr)
+bool CStunBindingRequestMessage::GetResponseAddress(sockaddr_in *addr)
 {
 	if (HasAttribute (RESPONSE_ADDRESS) == true)
 	{
 		CStunAddressAttribute *pAddressAttribute = (CStunAddressAttribute *)GetAttribute (RESPONSE_ADDRESS);
-		addr->sin_addr.S_un.S_addr = (int)pAddressAttribute->GetIPAddress ();
+        addr->sin_addr.s_addr = (int)pAddressAttribute->GetIPAddress ();
 		addr->sin_port = htons (pAddressAttribute->GetPort ());
 		addr->sin_family = AF_INET;
 		return true;

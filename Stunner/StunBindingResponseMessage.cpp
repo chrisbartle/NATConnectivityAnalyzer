@@ -1,4 +1,4 @@
-#include "StdAfx.h"
+#include "stdafx.h"
 #include "StunBindingResponseMessage.h"
 #include <cassert>
 
@@ -33,37 +33,37 @@ void CStunBindingResponseMessage::AddReflectedFromAddressAttribute(unsigned shor
 											 pszAddress));
 }
 
-bool CStunBindingResponseMessage::GetMappedAddress(SOCKADDR_IN *pAddr)
+bool CStunBindingResponseMessage::GetMappedAddress(sockaddr_in *pAddr)
 {
 	CStunAddressAttribute *pAddressAttribute = (CStunAddressAttribute *)GetAttribute (MAPPED_ADDRESS);
-	pAddr->sin_addr.S_un.S_addr = (int)pAddressAttribute->GetIPAddress ();
+    pAddr->sin_addr.s_addr = (int)pAddressAttribute->GetIPAddress ();
 	pAddr->sin_port = htons (pAddressAttribute->GetPort ());
 	pAddr->sin_family = AF_INET;
 	return true;
 }
 
-bool CStunBindingResponseMessage::GetSourceAddress(SOCKADDR_IN *pAddr)
+bool CStunBindingResponseMessage::GetSourceAddress(sockaddr_in *pAddr)
 {
 	CStunAddressAttribute *pAddressAttribute = (CStunAddressAttribute *)GetAttribute (SOURCE_ADDRESS);
-	pAddr->sin_addr.S_un.S_addr = (int)pAddressAttribute->GetIPAddress ();
+    pAddr->sin_addr.s_addr = (int)pAddressAttribute->GetIPAddress ();
 	pAddr->sin_port = htons (pAddressAttribute->GetPort ());
 	pAddr->sin_family = AF_INET;
 	return true;
 }
 
-bool CStunBindingResponseMessage::GetChangedAddress(SOCKADDR_IN *pAddr)
+bool CStunBindingResponseMessage::GetChangedAddress(sockaddr_in *pAddr)
 {
 	CStunAddressAttribute *pAddressAttribute = (CStunAddressAttribute *)GetAttribute (CHANGED_ADDRESS);
-	pAddr->sin_addr.S_un.S_addr = pAddressAttribute->GetIPAddress ();
+    pAddr->sin_addr.s_addr = pAddressAttribute->GetIPAddress ();
 	pAddr->sin_port = htons (pAddressAttribute->GetPort ());
 	pAddr->sin_family = AF_INET;
 	return true;
 }
 
-bool CStunBindingResponseMessage::GetReflectedFromAddress(SOCKADDR_IN *pAddr)
+bool CStunBindingResponseMessage::GetReflectedFromAddress(sockaddr_in *pAddr)
 {
 	CStunAddressAttribute *pAddressAttribute = (CStunAddressAttribute *)GetAttribute (REFLECTED_FROM);
-	pAddr->sin_addr.S_un.S_addr = (int)pAddressAttribute->GetIPAddress ();
+    pAddr->sin_addr.s_addr = (int)pAddressAttribute->GetIPAddress ();
 	pAddr->sin_port = htons (pAddressAttribute->GetPort ());
 	pAddr->sin_family = AF_INET;
 	return true;

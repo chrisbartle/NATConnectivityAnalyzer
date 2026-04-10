@@ -4,6 +4,7 @@
 #include "StunBindingRequestMessage.h"
 #include "StunClientTransaction.h"
 #include "StunGlobals.h"
+#include "StunOS.h"
 
 enum NAT_TYPE
 {
@@ -20,21 +21,21 @@ enum NAT_TYPE
 class CStunClientHelper
 {
 public:
-	CStunClientHelper(SOCKADDR_IN serverAddr);
+    CStunClientHelper(sockaddr_in serverAddr);
 	CStunClientHelper(const char *pszServer);
 
 	~CStunClientHelper(void);
 
-	bool TestOne (SOCKADDR_IN serverAddr, SOCKADDR_IN sendFromAddr, CStunMessage **pMessage);
-	bool TestTwo (SOCKADDR_IN serverAddr, SOCKADDR_IN sendFromAddr, CStunMessage **pMessage);
-	bool TestThree (SOCKADDR_IN serverAddr, SOCKADDR_IN sendFromAddr, CStunMessage **pMessage);
+    bool TestOne (sockaddr_in serverAddr, sockaddr_in sendFromAddr, CStunMessage **pMessage);
+    bool TestTwo (sockaddr_in serverAddr, sockaddr_in sendFromAddr, CStunMessage **pMessage);
+    bool TestThree (sockaddr_in serverAddr, sockaddr_in sendFromAddr, CStunMessage **pMessage);
 
 	NAT_TYPE GetNatType ();
 
-	bool GetStunMappedAddress (SOCKADDR_IN *pAddr);
+    bool GetStunMappedAddress (sockaddr_in *pAddr);
 	
 private:
-	SOCKADDR_IN m_serverAddr;
+    sockaddr_in m_serverAddr;
 	CStunBindingRequestMessage *m_pBindingRequest;
 	CStunClientTransaction *m_pClientTransaction;
 	bool m_bInitialize;

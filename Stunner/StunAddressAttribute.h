@@ -1,6 +1,6 @@
 #pragma once
-#include "stunattribute.h"
-#include <winsock2.h>
+#include "StunAttribute.h"
+#include "StunOS.h"
 
 class CStunAddressAttribute :
 	public CStunAttribute
@@ -13,7 +13,7 @@ private:
 public:
 	CStunAddressAttribute(unsigned short nAttributeType, unsigned char byAddressFamily,
 		unsigned short nPort, const char *pszIPAddress);
-	CStunAddressAttribute(unsigned short nAttributeType, SOCKADDR_IN addr);
+    CStunAddressAttribute(unsigned short nAttributeType, sockaddr_in addr);
 
 	CStunAddressAttribute (char *pBuffer);
 	~CStunAddressAttribute(void);

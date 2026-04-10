@@ -2,7 +2,7 @@
 #define MAINTHREADCONTROLLER_H
 
 #include <QObject>
-#include <Qthread>
+#include <QThread>
 #include "WorkerThreadController.h"
 
 class MainThreadController : public QObject
