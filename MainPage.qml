@@ -172,15 +172,31 @@ Page {
                         text: "NAT Test Log"
                         font.bold: true
                     }
-                    Frame {
-                        Layout.fillWidth: true
-                        TextEdit {
-                            text: Controller.natTestLog
-                            readOnly: true
-                            selectByMouse: true
-                            wrapMode: TextEdit.WordWrap
+//                    Frame {
+                        Flickable {
+                            id: natLogScrollContainer
+                            Layout.fillWidth: true
+                            Layout.preferredHeight: 200
+                            contentWidth: width
+                            contentHeight: natLogtextDisplayer.height
+                            clip: true // Prevents text from drawing outside this area
+                            // This allows the user to drag/flick to scroll
+                            boundsBehavior: Flickable.StopAtBounds
+                            TextEdit {
+                                id: natLogtextDisplayer
+                                width: natLogScrollContainer.width
+                                leftPadding: 10
+                                rightPadding: 10
+                                wrapMode: Text.WordWrap
+                                font.pixelSize: 10
+                                text: Controller.natTestLog
+                                readOnly: true
+                            }
+                            ScrollBar.vertical: ScrollBar {
+                                policy: ScrollBar.AsNeeded
+                            }
                         }
-                    }
+//                    }
                     Behavior on opacity {
                         NumberAnimation { duration: 250 }
                     }
