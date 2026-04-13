@@ -20,6 +20,8 @@ Page {
         }
         return ""
     }
+    //Enable/disable after the program runs once
+    property bool isRunOnce: false;
 
     ColumnLayout
     {
@@ -67,7 +69,7 @@ Page {
                         font.pixelSize: 25
                         enabled: !Controller.isProcessingNow
                         Layout.fillWidth: true
-                        onClicked: Controller.doFullAnalysis();
+                        onClicked: {Controller.doFullAnalysis(); isRunOnce = true;}
                     }
 
                     //Internal IP Display
@@ -167,7 +169,7 @@ Page {
                     //Nat Test Log
                     ColumnLayout {
                         Layout.fillWidth: true
-                        property bool showThis: Controller.natTestLog.length > 0
+                        property bool showThis: ((Controller.natTestLog.length > 0) && (showDiagnostics.checked))
                         opacity: showThis ? 1 : 0
                         visible: opacity > 0
                         Layout.preferredHeight: showThis ? implicitHeight : 0
@@ -213,6 +215,14 @@ Page {
                         Label {
                             text: Controller.currentProcessingStatus
                         }
+                    }
+
+                    //Show Diagnostics checkbox. Only seen by the user after one run.
+                    CheckBox {
+                        id: showDiagnostics
+                        text: "Show Diagnostics"
+                        Layout.fillWidth: true
+                        visible: isRunOnce && !Controller.isProcessingNow
                     }
 
                     // BOTTOM PADDING
