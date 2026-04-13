@@ -11,6 +11,7 @@ void WorkerThreadController::DoNATAnalysis()
     setInternalIP("");
     setNatType("");
     setExternalIP("");
+    setNatTestLog("");
 
     //Get internal IP
     setCurrentProcessingStatus("Getting Internal IP");
@@ -28,6 +29,9 @@ void WorkerThreadController::DoNATAnalysis()
 
     //Get the STUN info
     setCurrentProcessingStatus("Running STUN test");
+    //Stunner outputs debug info into the clog stream. Redirect it into a buffer
+    std::stringstream stunLogStream;
+    std::streambuf* old_clog = std::clog.rdbuf(stunLogStream.rdbuf());
     QString natTypeString;
     CStunClientHelper clientHelper(m_stunServer.toStdString().c_str());
     NAT_TYPE natType = clientHelper.GetNatType();
@@ -66,6 +70,10 @@ void WorkerThreadController::DoNATAnalysis()
         break;
     }
     setNatType(natTypeString);
+    //Get the log output and restore the original stream
+    QString stunLog = QString::fromStdString(stunLogStream.str());
+    setNatTestLog(stunLog);
+    std::clog.rdbuf(old_clog);
 
     //Extract the external IP
     sockaddr_in extIP;

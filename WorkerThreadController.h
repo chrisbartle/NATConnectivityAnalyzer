@@ -21,6 +21,7 @@ signals:
     void setExternalIP(const QString inIP);
     void setInternalIP(const QString inIP);
     void setNatType(const QString &newNatType);
+    void setNatTestLog(const QString &newNatTestLog);
 
 private:
     QString m_stunServer;

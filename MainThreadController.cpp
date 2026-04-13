@@ -17,6 +17,7 @@ MainThreadController::MainThreadController() {
     connect(m_workerController, &WorkerThreadController::setExternalIP, this, &MainThreadController::setExternalIP);
     connect(m_workerController, &WorkerThreadController::setInternalIP, this, &MainThreadController::setInternalIP);
     connect(m_workerController, &WorkerThreadController::setNatType, this, &MainThreadController::setNatType);
+    connect(m_workerController, &WorkerThreadController::setNatTestLog, this, &MainThreadController::setNatTestLog);
     m_workerThread->start();
 }
 
@@ -112,4 +113,17 @@ void MainThreadController::setNatType(const QString &newNatType)
 QString MainThreadController::getApplicationVersion() const
 {
     return APP_VERSION_STRING;
+}
+
+QString MainThreadController::getNatTestLog() const
+{
+    return m_natTestLog;
+}
+
+void MainThreadController::setNatTestLog(const QString &newNatTestLog)
+{
+    if (m_natTestLog == newNatTestLog)
+        return;
+    m_natTestLog = newNatTestLog;
+    emit natTestLogChanged();
 }

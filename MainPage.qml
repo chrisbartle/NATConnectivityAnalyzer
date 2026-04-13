@@ -160,6 +160,35 @@ Page {
                     }
                 }
 
+                //Nat Test Log
+                ColumnLayout {
+                    Layout.fillWidth: true
+                    property bool showThis: Controller.natTestLog.length > 0
+                    opacity: showThis ? 1 : 0
+                    visible: opacity > 0
+                    Layout.preferredHeight: showThis ? implicitHeight : 0
+                    spacing: 5
+                    Label {
+                        text: "NAT Test Log"
+                        font.bold: true
+                    }
+                    Frame {
+                        Layout.fillWidth: true
+                        TextEdit {
+                            text: Controller.natTestLog
+                            readOnly: true
+                            selectByMouse: true
+                            wrapMode: TextEdit.WordWrap
+                        }
+                    }
+                    Behavior on opacity {
+                        NumberAnimation { duration: 250 }
+                    }
+                    Behavior on Layout.preferredHeight {
+                        NumberAnimation { duration: 250 }
+                    }
+                }
+
                 RowLayout {
                     id: statusRow
                     visible: Controller.isProcessingNow
