@@ -30,190 +30,193 @@ Page {
             Layout.fillWidth: true
             Layout.fillHeight: true
             contentWidth: width
-            contentHeight: mainColumn.height
+            contentHeight: mainColumn.implicitHeight
             clip: true // Prevents text from drawing outside this area
             // This allows the user to drag/flick to scroll
             boundsBehavior: Flickable.StopAtBounds
 
-            ColumnLayout {
-                id: mainColumn
-                spacing: 20
+            Item {
+                id: mainColumnWrapper
                 width: scrollContainer.width
-                anchors.top: parent.top
-                anchors.left: parent.left
-                anchors.right: parent.right
-                anchors.margins: 20
 
-                ComboBox {
-                    model: ["stun.12connect.com", "stun.schlund.de", "stun.easyvoip.com", "stun.ekiga.net", "stun.freecall.com", "stun.nextcloud.com:443", "stun.voipbuster.com", "stun.voipstunt.com", "stun.xten.com"]
-                    editable: true
-                    font.pixelSize: 20
-                    Layout.alignment: Qt.AlignHCenter
-                    Layout.fillWidth: true
-                    onEditTextChanged: Controller.currentStunServer = editText
-                    Component.onCompleted: {
-                        if (model.length > 0) {
-                            currentIndex = Math.floor(Math.random() * model.length)
+                ColumnLayout {
+                    id: mainColumn
+                    spacing: 20
+                    width: parent.width - 40   // 20px margin on each side
+                    anchors.horizontalCenter: parent.horizontalCenter
+
+                    // TOP PADDING
+                    Item { Layout.preferredHeight: 10 }
+
+                    ComboBox {
+                        model: ["stun.12connect.com", "stun.schlund.de", "stun.easyvoip.com", "stun.ekiga.net", "stun.freecall.com", "stun.nextcloud.com:443", "stun.voipbuster.com", "stun.voipstunt.com", "stun.xten.com"]
+                        editable: true
+                        font.pixelSize: 20
+                        Layout.alignment: Qt.AlignHCenter
+                        Layout.fillWidth: true
+                        onEditTextChanged: Controller.currentStunServer = editText
+                        Component.onCompleted: {
+                            if (model.length > 0) {
+                                currentIndex = Math.floor(Math.random() * model.length)
+                            }
                         }
                     }
-                }
 
-                Button {
-                    text: "Start"
-                    font.pixelSize: 25
-                    enabled: !Controller.isProcessingNow
-                    Layout.fillWidth: true
-                    onClicked: Controller.doFullAnalysis();
-                }
-
-                //Internal IP Display
-                ColumnLayout {
-                    Layout.fillWidth: true
-                    property bool showThis: Controller.internalIP.length > 0
-                    opacity: showThis ? 1 : 0
-                    visible: opacity > 0
-                    Layout.preferredHeight: showThis ? implicitHeight : 0
-                    spacing: 5
-                    Label {
-                        text: "Internal IP"
-                        font.bold: true
-                    }
-                    Frame {
+                    Button {
+                        text: "Start"
+                        font.pixelSize: 25
+                        enabled: !Controller.isProcessingNow
                         Layout.fillWidth: true
-                        TextEdit {
-                            text: Controller.internalIP
-                            readOnly: true
-                            selectByMouse: true
-                            wrapMode: TextEdit.WrapAnywhere
+                        onClicked: Controller.doFullAnalysis();
+                    }
+
+                    //Internal IP Display
+                    ColumnLayout {
+                        Layout.fillWidth: true
+                        property bool showThis: Controller.internalIP.length > 0
+                        opacity: showThis ? 1 : 0
+                        visible: opacity > 0
+                        Layout.preferredHeight: showThis ? implicitHeight : 0
+                        spacing: 5
+                        Label {
+                            text: "Internal IP"
+                            font.bold: true
+                        }
+                        Frame {
+                            Layout.fillWidth: true
+                            TextEdit {
+                                text: Controller.internalIP
+                                readOnly: true
+                                selectByMouse: true
+                                wrapMode: TextEdit.WrapAnywhere
+                            }
+                        }
+                        Behavior on opacity {
+                            NumberAnimation { duration: 250 }
+                        }
+                        Behavior on Layout.preferredHeight {
+                            NumberAnimation { duration: 250 }
                         }
                     }
-                    Behavior on opacity {
-                        NumberAnimation { duration: 250 }
-                    }
-                    Behavior on Layout.preferredHeight {
-                        NumberAnimation { duration: 250 }
-                    }
-                }
 
-                //External IP Display
-                ColumnLayout {
-                    Layout.fillWidth: true
-                    property bool showThis: Controller.externalIP.length > 0
-                    opacity: showThis ? 1 : 0
-                    visible: opacity > 0
-                    Layout.preferredHeight: showThis ? implicitHeight : 0
-                    spacing: 5
-                    Label {
-                        text: "External IP"
-                        font.bold: true
-                    }
-                    Frame {
+                    //External IP Display
+                    ColumnLayout {
                         Layout.fillWidth: true
-                        TextInput{
-                            text: Controller.externalIP
-                            readOnly: true
-                            selectByMouse: true
+                        property bool showThis: Controller.externalIP.length > 0
+                        opacity: showThis ? 1 : 0
+                        visible: opacity > 0
+                        Layout.preferredHeight: showThis ? implicitHeight : 0
+                        spacing: 5
+                        Label {
+                            text: "External IP"
+                            font.bold: true
                         }
-                    }
-                    Behavior on opacity {
-                        NumberAnimation { duration: 250 }
-                    }
-                    Behavior on Layout.preferredHeight {
-                        NumberAnimation { duration: 250 }
-                    }
-                }
-
-                //Nat Type Display
-                ColumnLayout {
-                    Layout.fillWidth: true
-                    property bool showThis: Controller.natType.length > 0
-                    opacity: showThis ? 1 : 0
-                    visible: opacity > 0
-                    Layout.preferredHeight: showThis ? implicitHeight : 0
-                    spacing: 5
-                    Label {
-                        text: "NAT Type"
-                        font.bold: true
-                    }
-                    Frame {
-                        Layout.fillWidth: true
-                        RowLayout {
-                            TextInput {
-                                text: describeNatType()
+                        Frame {
+                            Layout.fillWidth: true
+                            TextInput{
+                                text: Controller.externalIP
                                 readOnly: true
                                 selectByMouse: true
                             }
-                            Button {
-                                Layout.alignment: Qt.AlignRight
-                                font.pixelSize: 20
-                                implicitWidth: 20
-                                text: "?"
-                                onClicked: mainStackView.push("NatTypeExplanation.qml")
-                            }
+                        }
+                        Behavior on opacity {
+                            NumberAnimation { duration: 250 }
+                        }
+                        Behavior on Layout.preferredHeight {
+                            NumberAnimation { duration: 250 }
                         }
                     }
-                    Behavior on opacity {
-                        NumberAnimation { duration: 250 }
-                    }
-                    Behavior on Layout.preferredHeight {
-                        NumberAnimation { duration: 250 }
-                    }
-                }
 
-                //Nat Test Log
-                ColumnLayout {
-                    Layout.fillWidth: true
-                    property bool showThis: Controller.natTestLog.length > 0
-                    opacity: showThis ? 1 : 0
-                    visible: opacity > 0
-                    Layout.preferredHeight: showThis ? implicitHeight : 0
-                    spacing: 5
-                    Label {
-                        text: "NAT Test Log"
-                        font.bold: true
+                    //Nat Type Display
+                    ColumnLayout {
+                        Layout.fillWidth: true
+                        property bool showThis: Controller.natType.length > 0
+                        opacity: showThis ? 1 : 0
+                        visible: opacity > 0
+                        Layout.preferredHeight: showThis ? implicitHeight : 0
+                        spacing: 5
+                        Label {
+                            text: "NAT Type"
+                            font.bold: true
+                        }
+                        Frame {
+                            Layout.fillWidth: true
+                            RowLayout {
+                                TextInput {
+                                    text: describeNatType()
+                                    readOnly: true
+                                    selectByMouse: true
+                                }
+                                Button {
+                                    Layout.alignment: Qt.AlignRight
+                                    font.pixelSize: 20
+                                    implicitWidth: 20
+                                    text: "?"
+                                    onClicked: mainStackView.push("NatTypeExplanation.qml")
+                                }
+                            }
+                        }
+                        Behavior on opacity {
+                            NumberAnimation { duration: 250 }
+                        }
+                        Behavior on Layout.preferredHeight {
+                            NumberAnimation { duration: 250 }
+                        }
                     }
-//                    Frame {
-                        Flickable {
-                            id: natLogScrollContainer
+
+                    //Nat Test Log
+                    ColumnLayout {
+                        Layout.fillWidth: true
+                        property bool showThis: Controller.natTestLog.length > 0
+                        opacity: showThis ? 1 : 0
+                        visible: opacity > 0
+                        Layout.preferredHeight: showThis ? implicitHeight : 0
+                        spacing: 5
+                        Label {
+                            text: "NAT Test Log"
+                            font.bold: true
+                        }
+                        Frame {
                             Layout.fillWidth: true
                             Layout.preferredHeight: 200
-                            contentWidth: width
-                            contentHeight: natLogtextDisplayer.height
-                            clip: true // Prevents text from drawing outside this area
-                            // This allows the user to drag/flick to scroll
-                            boundsBehavior: Flickable.StopAtBounds
-                            TextEdit {
-                                id: natLogtextDisplayer
-                                width: natLogScrollContainer.width
-                                leftPadding: 10
-                                rightPadding: 10
-                                wrapMode: Text.WordWrap
-                                font.pixelSize: 10
-                                text: Controller.natTestLog
-                                readOnly: true
-                            }
-                            ScrollBar.vertical: ScrollBar {
-                                policy: ScrollBar.AsNeeded
+                            ScrollView {
+                                anchors.fill: parent
+
+                                TextArea {
+                                    id: natLogtextDisplayer
+                                    text: Controller.natTestLog
+                                    readOnly: true
+                                    wrapMode: TextArea.Wrap
+                                    font.pixelSize: 10
+                                    font.family: "monospace"
+
+                                    // optional padding
+                                    leftPadding: 10
+                                    rightPadding: 10
+                                }
                             }
                         }
-//                    }
-                    Behavior on opacity {
-                        NumberAnimation { duration: 250 }
+                        Behavior on opacity {
+                            NumberAnimation { duration: 250 }
+                        }
+                        Behavior on Layout.preferredHeight {
+                            NumberAnimation { duration: 250 }
+                        }
                     }
-                    Behavior on Layout.preferredHeight {
-                        NumberAnimation { duration: 250 }
-                    }
-                }
 
-                RowLayout {
-                    id: statusRow
-                    visible: Controller.isProcessingNow
-                    BusyIndicator {
-                        running: Controller.isProcessingNow
+                    RowLayout {
+                        id: statusRow
+                        visible: Controller.isProcessingNow
+                        BusyIndicator {
+                            running: Controller.isProcessingNow
+                        }
+                        Label {
+                            text: Controller.currentProcessingStatus
+                        }
                     }
-                    Label {
-                        text: Controller.currentProcessingStatus
-                    }
+
+                    // BOTTOM PADDING
+                    Item { Layout.preferredHeight: 10 }
                 }
             }
             ScrollBar.vertical: ScrollBar {
