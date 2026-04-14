@@ -143,8 +143,11 @@ Page {
                         }
                         Frame {
                             Layout.fillWidth: true
+                            padding: 5
                             RowLayout {
+                                anchors.fill: parent
                                 TextInput {
+                                    Layout.fillWidth: true
                                     text: describeNatType()
                                     readOnly: true
                                     selectByMouse: true
