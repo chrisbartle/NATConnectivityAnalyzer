@@ -56,6 +56,7 @@ Page {
                         font.pixelSize: 20
                         Layout.alignment: Qt.AlignHCenter
                         Layout.fillWidth: true
+                        Layout.preferredHeight: 30
                         onEditTextChanged: Controller.currentStunServer = editText
                         Component.onCompleted: {
                             if (model.length > 0) {
