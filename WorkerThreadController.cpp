@@ -1,5 +1,7 @@
 #include "WorkerThreadController.h"
 #include <QtNetwork/qnetworkinterface.h>
+#include <pcpnatpmp.h>
+
 
 WorkerThreadController::WorkerThreadController(QObject *parent)
     : QObject{parent}
@@ -82,6 +84,20 @@ void WorkerThreadController::DoNATAnalysis()
         QString extIPString = inet_ntoa(extIP.sin_addr);
         setExternalIP(extIPString);
     }
+
+    //Now we'll try punching a hole in the NAT device
+    //CStunClientHelper has code to run WSAStartup and WSACleanup. As long as it's in scope then internet connectivity should work fine.
+
+    //Let's start with pcpnatpmp as it supports both PCP and PMP.
+    pcp_ctx_t *ctx = pcp_init(ENABLE_AUTODISCOVERY, NULL);
+    sockaddr_in sendFromAddr;
+    sendFromAddr.sin_addr.s_addr = htonl(INADDR_ANY);
+    sendFromAddr.sin_family = AF_INET;
+    sendFromAddr.sin_port = clientHelper.GetRandomPort ();
+    pcp_flow_t *flow  = pcp_new_flow(ctx, (struct sockaddr*)&sendFromAddr,
+                                    NULL,
+                                    NULL,
+                                    IPPROTO_UDP, 3600, ctx);
 
     setCurrentProcessingStatus("Testing Completed");
 

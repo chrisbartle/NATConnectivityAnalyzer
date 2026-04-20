@@ -8,6 +8,9 @@ find_package(Qt6 REQUIRED COMPONENTS Core Gui Qml Quick)
 
 qt_standard_project_setup(REQUIRES 6.8)
 
+# Include libpcpnatpmp for NAT hole punching using PMP and PCPs
+add_subdirectory (libpcpnatpmp)
+
 qt_add_executable(natconnectivityanalyzer
     main.cpp
 )
@@ -59,12 +62,12 @@ target_link_libraries(natconnectivityanalyzer PRIVATE
     Qt6::Gui
     Qt6::Qml
     Qt6::Quick
+    pcpnatpmp
 )
 
 if(WIN32)
     target_sources(natconnectivityanalyzer PRIVATE ${CMAKE_CURRENT_BINARY_DIR}/generated/NATCA.rc)
 endif()
-
 
 include(GNUInstallDirs)
 install(TARGETS natconnectivityanalyzer
@@ -72,3 +75,4 @@ install(TARGETS natconnectivityanalyzer
     LIBRARY DESTINATION ${CMAKE_INSTALL_LIBDIR}
     RUNTIME DESTINATION ${CMAKE_INSTALL_BINDIR}
 )
+
