@@ -1,3 +1,5 @@
+project (pcpnatpmp C)
+
 set (LIBPCP_SRC_FILES
     src/net/gateway.c
     src/net/findsaddr-udp.c
