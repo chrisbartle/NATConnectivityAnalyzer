@@ -69,6 +69,15 @@ if(WIN32)
     target_sources(natconnectivityanalyzer PRIVATE ${CMAKE_CURRENT_BINARY_DIR}/generated/NATCA.rc)
 endif()
 
+# pcpnatpmp needs to be compiled with the same libraries as the main application. One was using -MD, the other -MT
+if(MSVC)
+    get_target_property(app_runtime natconnectivityanalyzer MSVC_RUNTIME_LIBRARY)
+
+    set_target_properties(pcpnatpmp PROPERTIES
+        MSVC_RUNTIME_LIBRARY "${app_runtime}"
+    )
+endif()
+
 include(GNUInstallDirs)
 install(TARGETS natconnectivityanalyzer
     BUNDLE DESTINATION .
