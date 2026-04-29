@@ -10,6 +10,7 @@ class WorkerThreadController : public QObject
 public:
     explicit WorkerThreadController(QObject *parent = nullptr);
 
+    void UpdateStatus(QString inStatus);
     void ChangeStunServer(const QString inStunServer) { m_stunServer = inStunServer; }
 
 public slots:
