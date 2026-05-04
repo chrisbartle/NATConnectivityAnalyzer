@@ -32,6 +32,7 @@ public:
 
 	NAT_TYPE GetNatType ();
 
+    sockaddr_in *GetServerAddress() { return &m_serverAddr; }
     bool GetStunMappedAddress (sockaddr_in *pAddr);
 
     unsigned int GetRandomPort ();

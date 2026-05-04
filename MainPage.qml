@@ -20,6 +20,19 @@ Page {
         }
         return ""
     }
+    function describePortForwardType()
+    {
+        switch (Controller.portForwardType)
+        {
+            case "NONE": return "Automatic Port Forwarding is not Supported";
+            case "DOUBLE_NAT": return "Double NAT Detected";
+            case "BIDIRECTIONAL": return "Bi-Directional";
+            case "MONODIRECTIONAL": return "One-Directional";
+            case "BLOCKED": return "3rd Party Traffic is Blocked";
+            case "FAILED": return "Test Failed";
+        }
+        return ""
+    }
     //Enable/disable after the program runs once
     property bool isRunOnce: false;
 
@@ -159,6 +172,46 @@ Page {
                                     implicitWidth: 20
                                     text: "?"
                                     onClicked: mainStackView.push("NatTypeExplanation.qml")
+                                }
+                            }
+                        }
+                        Behavior on opacity {
+                            NumberAnimation { duration: 250 }
+                        }
+                        Behavior on Layout.preferredHeight {
+                            NumberAnimation { duration: 250 }
+                        }
+                    }
+
+                    //Port Forward Type Display
+                    ColumnLayout {
+                        Layout.fillWidth: true
+                        property bool showThis: Controller.portForwardType.length > 0
+                        opacity: showThis ? 1 : 0
+                        visible: opacity > 0
+                        Layout.preferredHeight: showThis ? implicitHeight : 0
+                        spacing: 5
+                        Label {
+                            text: "Port Forward Type"
+                            font.bold: true
+                        }
+                        Frame {
+                            Layout.fillWidth: true
+                            padding: 5
+                            RowLayout {
+                                anchors.fill: parent
+                                TextInput {
+                                    Layout.fillWidth: true
+                                    text: describePortForwardType()
+                                    readOnly: true
+                                    selectByMouse: true
+                                }
+                                Button {
+                                    Layout.alignment: Qt.AlignRight
+                                    font.pixelSize: 20
+                                    implicitWidth: 20
+                                    text: "?"
+                                    onClicked: mainStackView.push("PortForwardExplanation.qml")
                                 }
                             }
                         }

@@ -22,6 +22,7 @@ signals:
     void setExternalIP(const QString inIP);
     void setInternalIP(const QString inIP);
     void setNatType(const QString &newNatType);
+    void setPortForwardType(const QString &newPortForwardType);
     void setNatTestLog(const QString &newNatTestLog);
 
 private:

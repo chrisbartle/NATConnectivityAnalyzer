@@ -17,6 +17,7 @@ MainThreadController::MainThreadController() {
     connect(m_workerController, &WorkerThreadController::setExternalIP, this, &MainThreadController::setExternalIP);
     connect(m_workerController, &WorkerThreadController::setInternalIP, this, &MainThreadController::setInternalIP);
     connect(m_workerController, &WorkerThreadController::setNatType, this, &MainThreadController::setNatType);
+    connect(m_workerController, &WorkerThreadController::setPortForwardType, this, &MainThreadController::setPortForwardType);
     connect(m_workerController, &WorkerThreadController::setNatTestLog, this, &MainThreadController::setNatTestLog);
     m_workerThread->start();
 }
