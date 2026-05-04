@@ -127,3 +127,16 @@ void MainThreadController::setNatTestLog(const QString &newNatTestLog)
     m_natTestLog = newNatTestLog;
     emit natTestLogChanged();
 }
+
+QString MainThreadController::getPortForwardType() const
+{
+    return m_portForwardType;
+}
+
+void MainThreadController::setPortForwardType(const QString &newPortForwardType)
+{
+    if (m_portForwardType == newPortForwardType)
+        return;
+    m_portForwardType = newPortForwardType;
+    emit portForwardTypeChanged();
+}

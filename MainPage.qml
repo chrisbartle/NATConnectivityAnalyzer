@@ -213,11 +213,14 @@ Page {
                     RowLayout {
                         id: statusRow
                         visible: Controller.isProcessingNow
+                        Layout.fillWidth: true
                         BusyIndicator {
                             running: Controller.isProcessingNow
                         }
                         Label {
+                            Layout.fillWidth: true
                             text: Controller.currentProcessingStatus
+                            wrapMode: TextArea.Wrap
                         }
                     }
 

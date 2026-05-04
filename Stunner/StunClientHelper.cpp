@@ -17,6 +17,11 @@ CStunClientHelper::CStunClientHelper (const char *pszServer): m_pClientTransacti
 
 	m_bInitialize = StunGlobals::Initialize ();
 
+    //Moved from GetRandomPort so that it can be called multiple times in a row
+    SYSTEMTIME time;
+    StunGetSystemTime (&time);
+    srand (time.wMilliseconds);
+
 	if (m_bInitialize == false)
 	{
 		return;
@@ -433,10 +438,6 @@ bool CStunClientHelper::GetStunMappedAddress (sockaddr_in *pAddr)
 
 unsigned int CStunClientHelper::GetRandomPort ()
 {
-    SYSTEMTIME time;
-    StunGetSystemTime (&time);
-
-	srand (time.wMilliseconds);
 	return rand () + 10000;
 
     // Use a random_device to seed the generator for better entropy

@@ -15,6 +15,7 @@ class MainThreadController : public QObject
     Q_PROPERTY(QString internalIP READ getInternalIP WRITE setInternalIP NOTIFY internalIPChanged)
     Q_PROPERTY(QString externalIP READ getExternalIP WRITE setExternalIP NOTIFY externalIPChanged)
     Q_PROPERTY(QString natType READ getNatType WRITE setNatType NOTIFY natTypeChanged)
+    Q_PROPERTY(QString portForwardType READ getPortForwardType WRITE setPortForwardType NOTIFY portForwardTypeChanged)
     Q_PROPERTY(QString natTestLog READ getNatTestLog WRITE setNatTestLog NOTIFY natTestLogChanged)
 public:
     MainThreadController();
@@ -43,6 +44,9 @@ public:
     QString getNatTestLog() const;
     void setNatTestLog(const QString &newNatTestLog);
 
+    QString getPortForwardType() const;
+    void setPortForwardType(const QString &newPortForwardType);
+
 signals:
     void currentStunServerChanged(const QString inStunServer);
     void isProcessingNowStatusChanged(bool inIsProcessing);
@@ -56,6 +60,8 @@ signals:
 
     void natTestLogChanged();
 
+    void portForwardTypeChanged();
+
 private:
     QThread *m_workerThread = NULL;
     WorkerThreadController *m_workerController = NULL;
@@ -67,6 +73,7 @@ private:
     QString m_internalIP;
     QString m_natType;
     QString m_natTestLog;
+    QString m_portForwardType;
 };
 
 #endif // MAINTHREADCONTROLLER_H
