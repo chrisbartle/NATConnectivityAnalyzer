@@ -128,8 +128,8 @@ void WorkerThreadController::DoNATAnalysis()
     clog << "Picked host port " << std::dec << mappedHostPort << std::endl;
     clog << "Picked external port " << std::dec << mappedExternalPort << std::endl;
     //Setup logging
-//    pcp_set_loggerfn(libpcpnatpmplogger);
-//    pcp_log_level = PCP_LOGLVL_DEBUG;
+    pcp_set_loggerfn(libpcpnatpmplogger);
+    pcp_log_level = PCP_LOGLVL_DEBUG;
     //Initialize the library
     pcp_ctx_t *ctx = pcp_init(ENABLE_AUTODISCOVERY, NULL);
     sockaddr_in hostAddr;
@@ -224,7 +224,7 @@ void WorkerThreadController::DoNATAnalysis()
     setPortForwardType(portForwardingType);
 
     //todo Clean up PCP/PMP open ports
-    pcp_terminate(ctx, 0);
+//    pcp_terminate(ctx, 0);
 
     //Get the log output and restore the original stream
     QString stunLog = QString::fromStdString(stunLogStream.str());

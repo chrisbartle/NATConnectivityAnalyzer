@@ -269,7 +269,7 @@ NAT_TYPE CStunClientHelper::GetNatType()
 **/
 	sendFromAddr.sin_addr.s_addr = htonl(INADDR_ANY);
 	sendFromAddr.sin_family = AF_INET;
-	sendFromAddr.sin_port = GetRandomPort ();
+    sendFromAddr.sin_port = htons(GetRandomPort ());
 
 	CStunMessage *pResponseMessage = NULL;
 
@@ -438,7 +438,7 @@ bool CStunClientHelper::GetStunMappedAddress (sockaddr_in *pAddr)
 
 unsigned int CStunClientHelper::GetRandomPort ()
 {
-	return rand () + 10000;
+    return rand ()%30000 + 10000;
 
     // Use a random_device to seed the generator for better entropy
 /*    static std::mt19937 generator(static_cast<unsigned int>(
