@@ -298,7 +298,7 @@ static PCP_SOCKET pcp_socket_create_impl(int domain, int type, int protocol) {
                     "Unable to set IP_PKTINFO option for socket.");
         }
 #endif // IP_PKTINFO
-#ifdef IPV6_RECVPKTINFO
+#if defined(IPV6_RECVPKTINFO) && defined(PCP_USE_IPV6_SOCKET)
         if (setsockopt(s, IPPROTO_IPV6, IPV6_RECVPKTINFO, (char *)&optval,
                        sizeof(optval)) < 0) {
             PCP_LOG(PCP_LOGLVL_ERR, "%s",
