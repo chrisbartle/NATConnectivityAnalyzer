@@ -17,6 +17,7 @@ MainThreadController::MainThreadController() {
     connect(m_workerController, &WorkerThreadController::setExternalIP, this, &MainThreadController::setExternalIP);
     connect(m_workerController, &WorkerThreadController::setInternalIP, this, &MainThreadController::setInternalIP);
     connect(m_workerController, &WorkerThreadController::setNatType, this, &MainThreadController::setNatType);
+    connect(m_workerController, &WorkerThreadController::setPortForwardType, this, &MainThreadController::setPortForwardType);
     connect(m_workerController, &WorkerThreadController::setNatTestLog, this, &MainThreadController::setNatTestLog);
     m_workerThread->start();
 }
@@ -126,4 +127,17 @@ void MainThreadController::setNatTestLog(const QString &newNatTestLog)
         return;
     m_natTestLog = newNatTestLog;
     emit natTestLogChanged();
+}
+
+QString MainThreadController::getPortForwardType() const
+{
+    return m_portForwardType;
+}
+
+void MainThreadController::setPortForwardType(const QString &newPortForwardType)
+{
+    if (m_portForwardType == newPortForwardType)
+        return;
+    m_portForwardType = newPortForwardType;
+    emit portForwardTypeChanged();
 }

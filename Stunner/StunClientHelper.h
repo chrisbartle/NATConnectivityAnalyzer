@@ -32,13 +32,13 @@ public:
 
 	NAT_TYPE GetNatType ();
 
+    sockaddr_in *GetServerAddress() { return &m_serverAddr; }
     bool GetStunMappedAddress (sockaddr_in *pAddr);
-	
+
+    unsigned int GetRandomPort ();
 private:
     sockaddr_in m_serverAddr;
 	CStunBindingRequestMessage *m_pBindingRequest;
 	CStunClientTransaction *m_pClientTransaction;
 	bool m_bInitialize;
-
-	unsigned int GetRandomPort ();
 };

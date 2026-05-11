@@ -17,6 +17,11 @@ CStunClientHelper::CStunClientHelper (const char *pszServer): m_pClientTransacti
 
 	m_bInitialize = StunGlobals::Initialize ();
 
+    //Moved from GetRandomPort so that it can be called multiple times in a row
+    SYSTEMTIME time;
+    StunGetSystemTime (&time);
+    srand (time.wMilliseconds);
+
 	if (m_bInitialize == false)
 	{
 		return;
@@ -264,7 +269,7 @@ NAT_TYPE CStunClientHelper::GetNatType()
 **/
 	sendFromAddr.sin_addr.s_addr = htonl(INADDR_ANY);
 	sendFromAddr.sin_family = AF_INET;
-	sendFromAddr.sin_port = GetRandomPort ();
+    sendFromAddr.sin_port = htons(GetRandomPort ());
 
 	CStunMessage *pResponseMessage = NULL;
 
@@ -433,11 +438,7 @@ bool CStunClientHelper::GetStunMappedAddress (sockaddr_in *pAddr)
 
 unsigned int CStunClientHelper::GetRandomPort ()
 {
-    SYSTEMTIME time;
-    StunGetSystemTime (&time);
-
-	srand (time.wMilliseconds);
-	return rand () + 10000;
+    return rand ()%30000 + 10000;
 
     // Use a random_device to seed the generator for better entropy
 /*    static std::mt19937 generator(static_cast<unsigned int>(
