@@ -224,7 +224,15 @@ void WorkerThreadController::DoNATAnalysis()
     setPortForwardType(portForwardingType);
 
     //todo Clean up PCP/PMP open ports
-//    pcp_terminate(ctx, 0);
+    if (ctx)
+    {
+        //In theory I should simply by able to call pcp_terminate with the flag set to 1 and it would
+        //clean up everything and close the forwarded ports but there appears to be a bug in the library
+        //so we'll close the flow seperately.
+        pcp_close_flow(pcpFlow);
+        pcp_delete_flow(pcpFlow);
+        pcp_terminate(ctx, 0);
+    }
 
     //Get the log output and restore the original stream
     QString stunLog = QString::fromStdString(stunLogStream.str());
