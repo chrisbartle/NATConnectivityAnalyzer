@@ -286,9 +286,17 @@ NAT_TYPE CStunClientHelper::GetNatType()
 	if (pResponseMessage->GetMessageType () != BINDING_RESPONSE)
 	{
 		//We got an error response so just return -1
-		clog << endl << "Received an error response:" << pResponseMessage->ToString ();
+        clog << endl << "Received an error response:\n" << pResponseMessage->ToString ();
 		return NAT_TYPE::ERROR_DETECTING_NAT;
 	}
+
+    //csb 5/11/2026 Google STUN servers don't return all of the attributes. Make sure all of
+    //of the attributes are there before proceeding.
+    if (!pResponseMessage->HasAttribute(MAPPED_ADDRESS) || !pResponseMessage->HasAttribute(SOURCE_ADDRESS) || !pResponseMessage->HasAttribute(CHANGED_ADDRESS))
+    {
+        clog << endl << "Received a response that is missing attributes:\n" << pResponseMessage->ToString ();
+        return NAT_TYPE::ERROR_DETECTING_NAT;
+    }
 
     sockaddr_in mappedAddress = {0}, sourceAddress = {0}, changedAddress = {0}, mappedAddress1 = {0};
 	((CStunBindingResponseMessage *)pResponseMessage)->GetMappedAddress (&mappedAddress);
