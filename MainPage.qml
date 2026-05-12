@@ -24,7 +24,7 @@ Page {
     {
         switch (Controller.portForwardType)
         {
-            case "NONE": return "Automatic Port Forwarding is not Supported";
+            case "NONE": return "Not Supported";
             case "DOUBLE_NAT": return "Double NAT Detected";
             case "BIDIRECTIONAL": return "Bi-Directional";
             case "MONODIRECTIONAL": return "One-Directional";
@@ -64,7 +64,7 @@ Page {
                     Item { Layout.preferredHeight: 10 }
 
                     ComboBox {
-                        model: ["stun.12connect.com", "stun.schlund.de", "stun.easyvoip.com", "stun.ekiga.net", "stun.freecall.com", "stun.nextcloud.com:443", "stun.voipbuster.com", "stun.voipstunt.com", "stun.xten.com"]
+                        model: ["stun.12connect.com", "stun.schlund.de", "stun.easyvoip.com", "stun.ekiga.net", "stun.freecall.com", "stun.miwifi.com", "stun.nextcloud.com:443", "stun.voipbuster.com", "stun.voipstunt.com", "stun.xten.com"]
                         editable: true
                         font.pixelSize: 20
                         Layout.alignment: Qt.AlignHCenter

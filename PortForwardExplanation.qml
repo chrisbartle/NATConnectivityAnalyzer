@@ -9,10 +9,31 @@ Page {
     {
         switch (Controller.portForwardType)
         {
-            case "NONE": return qsTr("<P><B>Automatic Port Forwarding is not Supported</B></P>
+            case "NONE": return qsTr("<P><B>Not Supported</B></P>
 <P>The local router did not respond the requests to forward a port using PMP, PCP, or UPnP protocols.</P>");
-            case "DOUBLE_NAT": return qsTr("<P><B>Double NAT Detected</B></P>
-<P>The local router reported a different external IP address than the STUN server detected. This indicates a double NAT.</P>");
+            case "DOUBLE_NAT":
+            {
+                let doubleNAT = String("");
+                doubleNAT += qsTr("<P><B>Double NAT Detected</B></P>
+<P>The local router appears to be double-NAT-ed. This is a situation where two NAT devices are connected sequentially. This is indicated by:</P>
+<ul><li>The local router has been assigned a WAN address of <B>") + Controller.routerReportedExternalIP + "</B></li>";
+                doubleNAT +=
+"<li>The STUN server says that your true external IP address is <B>" + Controller.externalIP + "</B></li></ul>";
+                if (Controller.routerReportedExternalIP.startsWith("192.168"))
+                {
+                    doubleNAT += qsTr("<P>The router was assigned a WAN address that starts with <B>192.168</B>. This indicates that the double NAT is being caused
+by two or more consumer devices installed locally (such as a WIFI access point and an ISP provided modem).</P>");
+                }
+                else
+                {
+                    doubleNAT += qsTr("<P>A double NAT is usually caused by one of the following scenarios:</P>
+<ul><li>A WIFI access point or router is plugged into the ISP's modem and both devices offer NAT.</li>
+<li>Carrier-grade NAT (CGNAT) is being used by your ISP.</li></ul>");
+                }
+                doubleNAT += "<P>A double NAT is not always a problem that needs to be solved; most Internet services work just fine with it. If you are having
+problems with videogames, VPN, or peer-to-peer services then this may be the cause.</P>";
+                return doubleNAT;
+            }
             case "BIDIRECTIONAL": return qsTr("<P><B>Bi-Directional</B></P>
 <P>The local router opened a bi-directional port. Both outgoing and incoming traffic use the same external port number.</P>");
             case "MONODIRECTIONAL": return qsTr("<P><B>One-Directional</B></P>
@@ -44,8 +65,8 @@ the test using a different STUN server.</P>");
             TextEdit {
                 id: textDisplayer
                 width: scrollContainer.width
-                leftPadding: 10
-                rightPadding: 10
+                leftPadding: 20
+                rightPadding: 20
                 wrapMode: Text.WordWrap
                 textFormat: Text.RichText
                 font.pixelSize: 15

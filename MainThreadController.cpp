@@ -15,6 +15,7 @@ MainThreadController::MainThreadController() {
     connect(m_workerController, &WorkerThreadController::setIsProcessingNow, this, &MainThreadController::setIsProcessingNow);
     connect(m_workerController, &WorkerThreadController::setCurrentProcessingStatus, this, &MainThreadController::setCurrentProcessingStatus);
     connect(m_workerController, &WorkerThreadController::setExternalIP, this, &MainThreadController::setExternalIP);
+    connect(m_workerController, &WorkerThreadController::setRouterReportedExternalIP, this, &MainThreadController::setRouterReportedExternalIP);
     connect(m_workerController, &WorkerThreadController::setInternalIP, this, &MainThreadController::setInternalIP);
     connect(m_workerController, &WorkerThreadController::setNatType, this, &MainThreadController::setNatType);
     connect(m_workerController, &WorkerThreadController::setPortForwardType, this, &MainThreadController::setPortForwardType);
@@ -140,4 +141,17 @@ void MainThreadController::setPortForwardType(const QString &newPortForwardType)
         return;
     m_portForwardType = newPortForwardType;
     emit portForwardTypeChanged();
+}
+
+QString MainThreadController::getRouterReportedExternalIP() const
+{
+    return m_routerReportedExternalIP;
+}
+
+void MainThreadController::setRouterReportedExternalIP(const QString &newRouterReportedExternalIP)
+{
+    if (m_routerReportedExternalIP == newRouterReportedExternalIP)
+        return;
+    m_routerReportedExternalIP = newRouterReportedExternalIP;
+    emit routerReportedExternalIPChanged();
 }

@@ -41,6 +41,7 @@ void WorkerThreadController::DoNATAnalysis()
     setNatType("");
     setPortForwardType("");
     setExternalIP("");
+    setRouterReportedExternalIP("");
     setNatTestLog("");
 
     //Stunner outputs debug info into the clog stream. Redirect it into a buffer
@@ -65,9 +66,21 @@ void WorkerThreadController::DoNATAnalysis()
     clog << internalIPString.toStdString() << "\n";
 
     //Get the STUN info
+    UpdateStatus("Requesting external IP");
+    CStunClientHelper clientHelper(m_stunServer.toStdString().c_str());
+    //Extract the external IP
+    sockaddr_in extIP;
+    QString stunExternalIP;
+    if (clientHelper.GetStunMappedAddress(&extIP))
+    {
+        stunExternalIP = inet_ntoa(extIP.sin_addr);
+        setExternalIP(stunExternalIP);
+        UpdateStatus("STUN identified external IP as " + stunExternalIP);
+    }
+
+    //Run the STUN test
     QString natTypeString;
     UpdateStatus("Running STUN test");
-    CStunClientHelper clientHelper(m_stunServer.toStdString().c_str());
     NAT_TYPE natType = clientHelper.GetNatType();
 
     switch (natType)
@@ -105,17 +118,6 @@ void WorkerThreadController::DoNATAnalysis()
         break;
     }
     setNatType(natTypeString);
-
-    //Extract the external IP
-    UpdateStatus("Requesting external IP");
-    sockaddr_in extIP;
-    QString stunExternalIP;
-    if (clientHelper.GetStunMappedAddress(&extIP))
-    {
-        stunExternalIP = inet_ntoa(extIP.sin_addr);
-        setExternalIP(stunExternalIP);
-        UpdateStatus("STUN identified external IP as " + stunExternalIP);
-    }
 
     //Now we'll try to set up port mapping on the NAT device
     //CStunClientHelper has code to run WSAStartup and WSACleanup. As long as it's in scope then internet connectivity should work fine.
@@ -184,6 +186,7 @@ void WorkerThreadController::DoNATAnalysis()
         {
             clog << "The STUN server is reporting IP " << stunExternalIP.toStdString() << " but the router is reporting that its port forwarding from "
                  << mappedExternalIP.toStdString() << ". This indicates the presence of a double NAT!" << std::endl;
+            setRouterReportedExternalIP(mappedExternalIP);
             portForwardingType = "DOUBLE_NAT";
         }
         else
@@ -211,6 +214,8 @@ void WorkerThreadController::DoNATAnalysis()
                     clog << "The STUN server sent a packet to the forwarded port using a different IP and we didn't receive it. Port forwarding is apparently not working for 3rd parties." << std::endl;
                     portForwardingType = "BLOCKED";
                 }
+                else
+                    clog << "The STUN server sent a packet to the forwarding port using a different IP and we received it! This confirms that port forwarding is working as expected!" << std::endl;
             }
             else
             {
@@ -219,11 +224,16 @@ void WorkerThreadController::DoNATAnalysis()
             }
         }
     }
+    else if (!mappedExternalIP.isEmpty())
+    {
+        clog << "Port forwarding works but cant test without a STUN server" << std::endl;
+        portForwardingType = "FAILED";
+    }
     else
         portForwardingType = "NONE";
     setPortForwardType(portForwardingType);
 
-    //todo Clean up PCP/PMP open ports
+    //Clean up PCP/PMP open ports
     if (ctx)
     {
         //In theory I should simply by able to call pcp_terminate with the flag set to 1 and it would

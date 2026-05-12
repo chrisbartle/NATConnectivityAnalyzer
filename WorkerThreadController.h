@@ -20,6 +20,7 @@ signals:
     void setIsProcessingNow(bool newIsProcessingNow);
     void setCurrentProcessingStatus(const QString &newCurrentProcessingStatus);
     void setExternalIP(const QString inIP);
+    void setRouterReportedExternalIP(const QString inIP);
     void setInternalIP(const QString inIP);
     void setNatType(const QString &newNatType);
     void setPortForwardType(const QString &newPortForwardType);

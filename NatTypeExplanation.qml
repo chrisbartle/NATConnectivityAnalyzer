@@ -69,8 +69,8 @@ this computer has initiated communication with.</P>
             TextEdit {
                 id: textDisplayer
                 width: scrollContainer.width
-                leftPadding: 10
-                rightPadding: 10
+                leftPadding: 20
+                rightPadding: 20
                 wrapMode: Text.WordWrap
                 textFormat: Text.RichText
                 font.pixelSize: 15

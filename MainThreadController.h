@@ -14,6 +14,7 @@ class MainThreadController : public QObject
     Q_PROPERTY(QString currentProcessingStatus READ getCurrentProcessingStatus WRITE setCurrentProcessingStatus NOTIFY currentProcessingStatusChanged)
     Q_PROPERTY(QString internalIP READ getInternalIP WRITE setInternalIP NOTIFY internalIPChanged)
     Q_PROPERTY(QString externalIP READ getExternalIP WRITE setExternalIP NOTIFY externalIPChanged)
+    Q_PROPERTY(QString routerReportedExternalIP READ getRouterReportedExternalIP WRITE setRouterReportedExternalIP NOTIFY routerReportedExternalIPChanged)
     Q_PROPERTY(QString natType READ getNatType WRITE setNatType NOTIFY natTypeChanged)
     Q_PROPERTY(QString portForwardType READ getPortForwardType WRITE setPortForwardType NOTIFY portForwardTypeChanged)
     Q_PROPERTY(QString natTestLog READ getNatTestLog WRITE setNatTestLog NOTIFY natTestLogChanged)
@@ -47,6 +48,9 @@ public:
     QString getPortForwardType() const;
     void setPortForwardType(const QString &newPortForwardType);
 
+    QString getRouterReportedExternalIP() const;
+    void setRouterReportedExternalIP(const QString &newRouterReportedExternalIP);
+
 signals:
     void currentStunServerChanged(const QString inStunServer);
     void isProcessingNowStatusChanged(bool inIsProcessing);
@@ -62,6 +66,8 @@ signals:
 
     void portForwardTypeChanged();
 
+    void routerReportedExternalIPChanged();
+
 private:
     QThread *m_workerThread = NULL;
     WorkerThreadController *m_workerController = NULL;
@@ -74,6 +80,7 @@ private:
     QString m_natType;
     QString m_natTestLog;
     QString m_portForwardType;
+    QString m_routerReportedExternalIP;
 };
 
 #endif // MAINTHREADCONTROLLER_H
