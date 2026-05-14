@@ -11,6 +11,9 @@ qt_standard_project_setup(REQUIRES 6.8)
 # Include libpcpnatpmp for NAT hole punching using PMP and PCPs
 add_subdirectory (libpcpnatpmp)
 
+# Include miniupnpc for port routering using UPnP
+add_subdirectory (miniupnpc)
+
 qt_add_executable(natconnectivityanalyzer
     main.cpp
 )
@@ -64,6 +67,7 @@ target_link_libraries(natconnectivityanalyzer PRIVATE
     Qt6::Qml
     Qt6::Quick
     pcpnatpmp
+    libminiupnpc-static
 )
 
 if(WIN32)
