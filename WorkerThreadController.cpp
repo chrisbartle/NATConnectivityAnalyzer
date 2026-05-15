@@ -31,7 +31,7 @@ WorkerThreadController::WorkerThreadController(QObject *parent)
 void WorkerThreadController::UpdateStatus(QString inStatus)
 {
     setCurrentProcessingStatus(inStatus);
-    clog << "*** " << inStatus.toStdString() << "\n";
+    clog << "\n*** " << inStatus.toStdString() << "\n";
 }
 
 void WorkerThreadController::DoNATAnalysis()
@@ -159,22 +159,83 @@ void WorkerThreadController::DoNATAnalysis()
         2,        // ttl
         &upnpError
         );
-    UPNPUrls urls;
-    IGDdatas data;
+    UPNPUrls upnpUrls;
+    IGDdatas upnpData;
     char upnpLanaddr[64];
     char upnpWanaddr[64];
     int igdResult = UPNP_GetValidIGD(
         devlist,
-        &urls,
-        &data,
+        &upnpUrls,
+        &upnpData,
         upnpLanaddr,
         sizeof(upnpLanaddr),
         upnpWanaddr,
         sizeof(upnpWanaddr)
         );
+    if (igdResult == UPNP_CONNECTED_IGD)
+    {
+        //Connected to the router. Copy out the status info
+        QString upnpStatus;
+        char externalIPAddress[40];
+        char connectionType[64];
+        char status[64];
+        char lastconnerr[64];
+        unsigned int uptime = 0;
+        unsigned int brUp, brDown;
+        time_t timenow, timestarted;
+        int r;
+        if(UPNP_GetConnectionTypeInfo(upnpUrls.controlURL,
+                                       upnpData.first.servicetype,
+                                       connectionType) != UPNPCOMMAND_SUCCESS)
+            upnpStatus += QString::asprintf("GetConnectionTypeInfo failed.\n");
+        else
+            upnpStatus += QString::asprintf("Connection Type : %s\n", connectionType);
+        if(UPNP_GetStatusInfo(upnpUrls.controlURL, upnpData.first.servicetype,
+                               status, &uptime, lastconnerr) != UPNPCOMMAND_SUCCESS)
+            upnpStatus += QString::asprintf("GetStatusInfo failed.\n");
+        else
+            upnpStatus += QString::asprintf("Status : %s, uptime=%us, LastConnectionError : %s\n",
+                   status, uptime, lastconnerr);
+        if(uptime > 0) {
+            timenow = time(NULL);
+            timestarted = timenow - uptime;
+            upnpStatus += QString::asprintf("  Time started : %s", ctime(&timestarted));
+        }
+        if(UPNP_GetLinkLayerMaxBitRates(upnpUrls.controlURL_CIF, upnpData.CIF.servicetype,
+                                         &brDown, &brUp) != UPNPCOMMAND_SUCCESS) {
+            upnpStatus += QString::asprintf("GetLinkLayerMaxBitRates failed.\n");
+        } else {
+            upnpStatus += QString::asprintf("MaxBitRateDown : %u bps", brDown);
+            if(brDown >= 1000000) {
+                upnpStatus += QString::asprintf(" (%u.%u Mbps)", brDown / 1000000, (brDown / 100000) % 10);
+            } else if(brDown >= 1000) {
+                upnpStatus += QString::asprintf(" (%u Kbps)", brDown / 1000);
+            }
+            upnpStatus += QString::asprintf("   MaxBitRateUp %u bps", brUp);
+            if(brUp >= 1000000) {
+                upnpStatus += QString::asprintf(" (%u.%u Mbps)", brUp / 1000000, (brUp / 100000) % 10);
+            } else if(brUp >= 1000) {
+                upnpStatus += QString::asprintf(" (%u Kbps)", brUp / 1000);
+            }
+            upnpStatus += QString::asprintf("\n");
+        }
+        r = UPNP_GetExternalIPAddress(upnpUrls.controlURL,
+                                      upnpData.first.servicetype,
+                                      externalIPAddress);
+        if(r != UPNPCOMMAND_SUCCESS) {
+            upnpStatus += QString::asprintf("GetExternalIPAddress failed. (errorcode=%d)\n", r);
+        } else if(!externalIPAddress[0]) {
+            upnpStatus += QString::asprintf("GetExternalIPAddress failed. (empty string)\n");
+        } else {
+            upnpStatus += QString::asprintf("ExternalIPAddress = %s\n", externalIPAddress);
+        }
+        //Add it to the log
+        clog << "UPnP Router Status:\n" << upnpStatus.toStdString() << "\n";
+    }
 
     //Attempt to open the connection
     bool mappedUsingPCP = false;
+    bool mappedUsingUPnP = false;
     UpdateStatus("Attempting to forward a port with PCP/PMP");
     pcp_flow_t *pcpFlow  = pcp_new_flow(ctx, (struct sockaddr*)&hostAddr,
                                     NULL,
@@ -214,8 +275,8 @@ void WorkerThreadController::DoNATAnalysis()
         //We were unable to forward a port using PCP/PMP so we'll fall back to UPnP
         UpdateStatus("Attempting to forward a port with UPnP");
         int portMappingResult = UPNP_AddPortMapping(
-            urls.controlURL,
-            data.first.servicetype,
+            upnpUrls.controlURL,
+            upnpData.first.servicetype,
             mappedExternalPortStr.toStdString().c_str(),
             mappedHostPortStr.toStdString().c_str(),
             upnpLanaddr,
@@ -224,6 +285,12 @@ void WorkerThreadController::DoNATAnalysis()
             nullptr,
             "300"
             );
+        if (portMappingResult == UPNPCOMMAND_SUCCESS)
+        {
+            UpdateStatus("UPnP library identified external IP as " + QString(upnpWanaddr));
+            mappedExternalIP = upnpWanaddr;
+            mappedUsingUPnP = true;
+        }
     }
 
     //Confirm that the external IP that the router reported is the same as the one that STUN found previously.
@@ -296,7 +363,18 @@ void WorkerThreadController::DoNATAnalysis()
         pcp_terminate(ctx, 0);
     }
     //Clean up UPnP
-    FreeUPNPUrls(&urls);
+    if (mappedUsingUPnP)
+    {
+        clog << "Closing UPnP connection for external port " << mappedExternalPortStr.toStdString() << std::endl;
+        UPNP_DeletePortMapping(
+            upnpUrls.controlURL,
+            upnpData.first.servicetype,
+            mappedExternalPortStr.toStdString().c_str(),
+            "UDP",
+            nullptr
+            );
+    }
+    FreeUPNPUrls(&upnpUrls);
     freeUPNPDevlist(devlist);
 
     //Get the log output and restore the original stream
