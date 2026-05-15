@@ -81,6 +81,9 @@ if(MSVC)
     set_target_properties(pcpnatpmp PROPERTIES
         MSVC_RUNTIME_LIBRARY "${app_runtime}"
     )
+    set_target_properties(libminiupnpc-static PROPERTIES
+        MSVC_RUNTIME_LIBRARY "${app_runtime}"
+    )
 endif()
 
 include(GNUInstallDirs)

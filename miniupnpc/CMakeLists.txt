@@ -9,11 +9,11 @@ project (miniupnpc
 set (MINIUPNPC_API_VERSION 21)
 
 option (UPNPC_BUILD_STATIC "Build static library" TRUE)
-option (UPNPC_BUILD_SHARED "Build shared library" TRUE)
-option (UPNPC_BUILD_TESTS "Build test executables" TRUE)
-option (UPNPC_BUILD_SAMPLE "Build sample executables" TRUE)
+option (UPNPC_BUILD_SHARED "Build shared library" FALSE)
+option (UPNPC_BUILD_TESTS "Build test executables" FALSE)
+option (UPNPC_BUILD_SAMPLE "Build sample executables" FALSE)
 option (NO_GETADDRINFO "Define NO_GETADDRINFO" FALSE)
-option (UPNPC_NO_INSTALL "Disable installation" FALSE)
+option (UPNPC_NO_INSTALL "Disable installation" TRUE)
 
 if (NOT UPNPC_BUILD_STATIC AND NOT UPNPC_BUILD_SHARED)
     message (FATAL "Both shared and static libraries are disabled!")

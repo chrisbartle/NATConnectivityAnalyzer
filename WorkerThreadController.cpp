@@ -1,6 +1,8 @@
 #include "WorkerThreadController.h"
 #include <QtNetwork/qnetworkinterface.h>
 #include <pcpnatpmp.h>
+#include <miniupnpc.h>
+#include <upnpcommands.h>
 
 //Logger callback function that is handed to libpcpnatpmp
 void libpcpnatpmplogger(pcp_loglvl_e level, const char *message) {
@@ -122,13 +124,15 @@ void WorkerThreadController::DoNATAnalysis()
     //Now we'll try to set up port mapping on the NAT device
     //CStunClientHelper has code to run WSAStartup and WSACleanup. As long as it's in scope then internet connectivity should work fine.
     //Let's start with pcpnatpmp as it supports both PCP and PMP.
-    UpdateStatus("Attempting to map a port with PCP/PMP");
+    UpdateStatus("Initializing PCP/PMP");
     QString portForwardingType;
     QString mappedExternalIP;
     int mappedHostPort = clientHelper.GetRandomPort();
+    QString mappedHostPortStr = QString::number(mappedHostPort);
     int mappedExternalPort = clientHelper.GetRandomPort();
-    clog << "Picked host port " << std::dec << mappedHostPort << std::endl;
-    clog << "Picked external port " << std::dec << mappedExternalPort << std::endl;
+    QString mappedExternalPortStr = QString::number(mappedExternalPort);
+    clog << "Picked host port " << mappedHostPortStr.toStdString() << std::endl;
+    clog << "Picked external port " << mappedExternalPortStr.toStdString() << std::endl;
     //Setup logging
     pcp_set_loggerfn(libpcpnatpmplogger);
     pcp_log_level = PCP_LOGLVL_DEBUG;
@@ -142,7 +146,36 @@ void WorkerThreadController::DoNATAnalysis()
     externalAddr.sin_addr.s_addr = htonl(INADDR_ANY);
     externalAddr.sin_family = AF_INET;
     externalAddr.sin_port = htons(mappedExternalPort);
+
+    //Set up UPnP. Even if we don't use it, it can give useful information
+    UpdateStatus("Initializing UPnP");
+    int upnpError;
+    UPNPDev* devlist = upnpDiscover(
+        2000,     // delay in ms
+        nullptr,  // multicast interface
+        nullptr,  // minissdpd socket
+        0,        // sameport
+        0,        // ipv6
+        2,        // ttl
+        &upnpError
+        );
+    UPNPUrls urls;
+    IGDdatas data;
+    char upnpLanaddr[64];
+    char upnpWanaddr[64];
+    int igdResult = UPNP_GetValidIGD(
+        devlist,
+        &urls,
+        &data,
+        upnpLanaddr,
+        sizeof(upnpLanaddr),
+        upnpWanaddr,
+        sizeof(upnpWanaddr)
+        );
+
     //Attempt to open the connection
+    bool mappedUsingPCP = false;
+    UpdateStatus("Attempting to forward a port with PCP/PMP");
     pcp_flow_t *pcpFlow  = pcp_new_flow(ctx, (struct sockaddr*)&hostAddr,
                                     NULL,
                                     (struct sockaddr*)&externalAddr,
@@ -167,6 +200,7 @@ void WorkerThreadController::DoNATAnalysis()
             pcpExtIP.remove("::ffff:");
             UpdateStatus("PCP library identified external IP as " + pcpExtIP);
             mappedExternalIP = pcpExtIP;
+            mappedUsingPCP = true;
         }
         else
             clog << "Ignoring IPv6 PCP map for " + pcpExtIP.toStdString();
@@ -174,6 +208,23 @@ void WorkerThreadController::DoNATAnalysis()
     }
     if (pcpExtMap)
         free(pcpExtMap);
+
+    if (!mappedUsingPCP)
+    {
+        //We were unable to forward a port using PCP/PMP so we'll fall back to UPnP
+        UpdateStatus("Attempting to forward a port with UPnP");
+        int portMappingResult = UPNP_AddPortMapping(
+            urls.controlURL,
+            data.first.servicetype,
+            mappedExternalPortStr.toStdString().c_str(),
+            mappedHostPortStr.toStdString().c_str(),
+            upnpLanaddr,
+            "NATConnectivityAnalyzer",
+            "UDP",
+            nullptr,
+            "300"
+            );
+    }
 
     //Confirm that the external IP that the router reported is the same as the one that STUN found previously.
     //We need to have this information in order to proceed further. No point in more diagnostics unless both the router
@@ -233,6 +284,7 @@ void WorkerThreadController::DoNATAnalysis()
         portForwardingType = "NONE";
     setPortForwardType(portForwardingType);
 
+    UpdateStatus("Closing forwarded ports");
     //Clean up PCP/PMP open ports
     if (ctx)
     {
@@ -243,6 +295,9 @@ void WorkerThreadController::DoNATAnalysis()
         pcp_delete_flow(pcpFlow);
         pcp_terminate(ctx, 0);
     }
+    //Clean up UPnP
+    FreeUPNPUrls(&urls);
+    freeUPNPDevlist(devlist);
 
     //Get the log output and restore the original stream
     QString stunLog = QString::fromStdString(stunLogStream.str());
