@@ -223,6 +223,41 @@ Page {
                         }
                     }
 
+                    //UPnP Router Information
+                    ColumnLayout {
+                        Layout.fillWidth: true
+                        property bool showThis: ((Controller.upnpRouterInformation.length > 0) && (showDiagnostics.checked))
+                        opacity: showThis ? 1 : 0
+                        visible: opacity > 0
+                        Layout.preferredHeight: showThis ? implicitHeight : 0
+                        spacing: 5
+                        Label {
+                            text: "UPnP Router Information"
+                            font.bold: true
+                        }
+                        Frame {
+                            Layout.fillWidth: true
+                            TextEdit {
+                                text: Controller.upnpRouterInformation
+                                readOnly: true
+                                selectByMouse: true
+                                wrapMode: TextEdit.Wrap
+                                font.pixelSize: 10
+                                font.family: "monospace"
+                                // optional padding
+                                leftPadding: 10
+                                rightPadding: 10
+                            }
+                        }
+                        Behavior on opacity {
+                            NumberAnimation { duration: 250 }
+                        }
+                        Behavior on Layout.preferredHeight {
+                            NumberAnimation { duration: 250 }
+                        }
+                    }
+
+
                     //Nat Test Log
                     ColumnLayout {
                         Layout.fillWidth: true
