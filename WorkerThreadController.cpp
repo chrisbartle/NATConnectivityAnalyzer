@@ -44,6 +44,7 @@ void WorkerThreadController::DoNATAnalysis()
     setPortForwardType("");
     setExternalIP("");
     setRouterReportedExternalIP("");
+    setUpnpRouterInformation("");
     setNatTestLog("");
 
     //Stunner outputs debug info into the clog stream. Redirect it into a buffer
@@ -229,7 +230,16 @@ void WorkerThreadController::DoNATAnalysis()
         } else {
             upnpStatus += QString::asprintf("ExternalIPAddress = %s\n", externalIPAddress);
         }
+        //Query the connection status
+        unsigned int bytessent, bytesreceived, packetsreceived, packetssent;
+        bytessent = UPNP_GetTotalBytesSent(upnpUrls.controlURL_CIF, upnpData.CIF.servicetype);
+        bytesreceived = UPNP_GetTotalBytesReceived(upnpUrls.controlURL_CIF, upnpData.CIF.servicetype);
+        packetssent = UPNP_GetTotalPacketsSent(upnpUrls.controlURL_CIF, upnpData.CIF.servicetype);
+        packetsreceived = UPNP_GetTotalPacketsReceived(upnpUrls.controlURL_CIF, upnpData.CIF.servicetype);
+        upnpStatus += QString::asprintf("Bytes:   Sent: %8u\tRecv: %8u\n", bytessent, bytesreceived);
+        upnpStatus += QString::asprintf("Packets: Sent: %8u\tRecv: %8u\n", packetssent, packetsreceived);
         //Add it to the log
+        setUpnpRouterInformation(upnpStatus);
         clog << "UPnP Router Status:\n" << upnpStatus.toStdString() << "\n";
     }
 

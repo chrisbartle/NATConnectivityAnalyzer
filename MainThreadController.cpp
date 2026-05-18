@@ -19,6 +19,7 @@ MainThreadController::MainThreadController() {
     connect(m_workerController, &WorkerThreadController::setInternalIP, this, &MainThreadController::setInternalIP);
     connect(m_workerController, &WorkerThreadController::setNatType, this, &MainThreadController::setNatType);
     connect(m_workerController, &WorkerThreadController::setPortForwardType, this, &MainThreadController::setPortForwardType);
+    connect(m_workerController, &WorkerThreadController::setUpnpRouterInformation, this, &MainThreadController::setUpnpRouterInformation);
     connect(m_workerController, &WorkerThreadController::setNatTestLog, this, &MainThreadController::setNatTestLog);
     m_workerThread->start();
 }
@@ -154,4 +155,17 @@ void MainThreadController::setRouterReportedExternalIP(const QString &newRouterR
         return;
     m_routerReportedExternalIP = newRouterReportedExternalIP;
     emit routerReportedExternalIPChanged();
+}
+
+QString MainThreadController::getUpnpRouterInformation() const
+{
+    return m_upnpRouterInformation;
+}
+
+void MainThreadController::setUpnpRouterInformation(const QString &newUpnpRouterInformation)
+{
+    if (m_upnpRouterInformation == newUpnpRouterInformation)
+        return;
+    m_upnpRouterInformation = newUpnpRouterInformation;
+    emit upnpRouterInformationChanged();
 }

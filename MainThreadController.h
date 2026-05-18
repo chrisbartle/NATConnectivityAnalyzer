@@ -17,6 +17,7 @@ class MainThreadController : public QObject
     Q_PROPERTY(QString routerReportedExternalIP READ getRouterReportedExternalIP WRITE setRouterReportedExternalIP NOTIFY routerReportedExternalIPChanged)
     Q_PROPERTY(QString natType READ getNatType WRITE setNatType NOTIFY natTypeChanged)
     Q_PROPERTY(QString portForwardType READ getPortForwardType WRITE setPortForwardType NOTIFY portForwardTypeChanged)
+    Q_PROPERTY(QString upnpRouterInformation READ getUpnpRouterInformation WRITE setUpnpRouterInformation NOTIFY upnpRouterInformationChanged)
     Q_PROPERTY(QString natTestLog READ getNatTestLog WRITE setNatTestLog NOTIFY natTestLogChanged)
 public:
     MainThreadController();
@@ -51,6 +52,9 @@ public:
     QString getRouterReportedExternalIP() const;
     void setRouterReportedExternalIP(const QString &newRouterReportedExternalIP);
 
+    QString getUpnpRouterInformation() const;
+    void setUpnpRouterInformation(const QString &newUpnpRouterInformation);
+
 signals:
     void currentStunServerChanged(const QString inStunServer);
     void isProcessingNowStatusChanged(bool inIsProcessing);
@@ -68,6 +72,8 @@ signals:
 
     void routerReportedExternalIPChanged();
 
+    void upnpRouterInformationChanged();
+
 private:
     QThread *m_workerThread = NULL;
     WorkerThreadController *m_workerController = NULL;
@@ -81,6 +87,7 @@ private:
     QString m_natTestLog;
     QString m_portForwardType;
     QString m_routerReportedExternalIP;
+    QString m_upnpRouterInformation;
 };
 
 #endif // MAINTHREADCONTROLLER_H
