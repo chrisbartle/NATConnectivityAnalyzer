@@ -169,3 +169,8 @@ void MainThreadController::setUpnpRouterInformation(const QString &newUpnpRouter
     m_upnpRouterInformation = newUpnpRouterInformation;
     emit upnpRouterInformationChanged();
 }
+
+QString MainThreadController::getApplicationBuildTimestamp() const
+{
+    return APP_BUILD_TIMESTAMP_STRING;
+}

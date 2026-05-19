@@ -9,6 +9,7 @@ class MainThreadController : public QObject
 {
     Q_OBJECT
     Q_PROPERTY(QString applicationVersion READ getApplicationVersion)
+    Q_PROPERTY(QString applicationBuildTimestamp READ getApplicationBuildTimestamp)
     Q_PROPERTY(QString currentStunServer READ getCurrentStunServer WRITE setCurrentStunServer NOTIFY currentStunServerChanged)
     Q_PROPERTY(bool isProcessingNow READ getIsProcessingNow WRITE setIsProcessingNow NOTIFY isProcessingNowStatusChanged)
     Q_PROPERTY(QString currentProcessingStatus READ getCurrentProcessingStatus WRITE setCurrentProcessingStatus NOTIFY currentProcessingStatusChanged)
@@ -54,6 +55,8 @@ public:
 
     QString getUpnpRouterInformation() const;
     void setUpnpRouterInformation(const QString &newUpnpRouterInformation);
+
+    QString getApplicationBuildTimestamp() const;
 
 signals:
     void currentStunServerChanged(const QString inStunServer);

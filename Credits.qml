@@ -11,10 +11,24 @@ Page {
         anchors.verticalCenter: parent.verticalCenter
         anchors.fill: parent
 
-        Label {
+        ColumnLayout {
             Layout.alignment: Qt.AlignHCenter
-            text: "Version " + Controller.applicationVersion
-            wrapMode: Text.Wrap
+            Label {
+                Layout.alignment: Qt.AlignHCenter
+                text: "NAT Connectivity Analyzer"
+                wrapMode: Text.Wrap
+                font.bold: true
+            }
+            Label {
+                Layout.alignment: Qt.AlignHCenter
+                text: "Version " + Controller.applicationVersion
+                wrapMode: Text.Wrap
+            }
+            Label {
+                Layout.alignment: Qt.AlignHCenter
+                text: "Built " + Controller.applicationBuildTimestamp
+                wrapMode: Text.Wrap
+            }
         }
 
         ColumnLayout {

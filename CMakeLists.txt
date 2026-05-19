@@ -1,6 +1,6 @@
 cmake_minimum_required(VERSION 3.16)
 
-project(NATConnectivityAnalyzer VERSION 0.5.0 LANGUAGES CXX)
+project(NATConnectivityAnalyzer VERSION 1.0.0 LANGUAGES CXX)
 
 set(CMAKE_CXX_STANDARD_REQUIRED ON)
 
@@ -17,6 +17,9 @@ add_subdirectory (miniupnpc)
 qt_add_executable(natconnectivityanalyzer
     main.cpp
 )
+
+# We want to make the build timestamp available
+string(TIMESTAMP BUILD_TIMESTAMP "%m/%d/%Y %H:%M:%S")
 
 # Generate a header file with the version information filled in by cmake
 configure_file(
