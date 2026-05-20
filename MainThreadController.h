@@ -8,8 +8,8 @@
 class MainThreadController : public QObject
 {
     Q_OBJECT
-    Q_PROPERTY(QString applicationVersion READ getApplicationVersion)
-    Q_PROPERTY(QString applicationBuildTimestamp READ getApplicationBuildTimestamp)
+    Q_PROPERTY(QString applicationVersion READ getApplicationVersion NOTIFY applicationVersionChanged)
+    Q_PROPERTY(QString applicationBuildTimestamp READ getApplicationBuildTimestamp NOTIFY applicationBuildTimestampChanged)
     Q_PROPERTY(QString currentStunServer READ getCurrentStunServer WRITE setCurrentStunServer NOTIFY currentStunServerChanged)
     Q_PROPERTY(bool isProcessingNow READ getIsProcessingNow WRITE setIsProcessingNow NOTIFY isProcessingNowStatusChanged)
     Q_PROPERTY(QString currentProcessingStatus READ getCurrentProcessingStatus WRITE setCurrentProcessingStatus NOTIFY currentProcessingStatusChanged)
@@ -76,6 +76,10 @@ signals:
     void routerReportedExternalIPChanged();
 
     void upnpRouterInformationChanged();
+
+    void applicationVersionChanged();
+
+    void applicationBuildTimestampChanged();
 
 private:
     QThread *m_workerThread = NULL;
