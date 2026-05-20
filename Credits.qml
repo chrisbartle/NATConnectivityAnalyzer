@@ -7,8 +7,6 @@ import App.Controller 1.0
 Page {
     ColumnLayout {
         spacing: 20
-        anchors.horizontalCenter: parent.horizontalCenter
-        anchors.verticalCenter: parent.verticalCenter
         anchors.fill: parent
 
         ColumnLayout {
@@ -36,6 +34,7 @@ Page {
             Label {
                 Layout.alignment: Qt.AlignHCenter
                 text: "Written by Chris Bartle"
+                wrapMode: Text.Wrap
             }
             Label {
                 Layout.alignment: Qt.AlignHCenter
@@ -43,6 +42,7 @@ Page {
                 onLinkActivated: {
                     Qt.openUrlExternally(link)
                 }
+                wrapMode: Text.Wrap
             }
         }
 
@@ -50,6 +50,40 @@ Page {
             Layout.alignment: Qt.AlignHCenter
             text: "Stunner library written by Hitesh Sharma"
             wrapMode: Text.Wrap
+        }
+
+        ColumnLayout {
+            Layout.alignment: Qt.AlignHCenter
+            Label {
+                Layout.alignment: Qt.AlignHCenter
+                text: "libpcpnatpmp Copyright (c) 2013 by Cisco Systems, Inc."
+                wrapMode: Text.Wrap
+            }
+            Label {
+                Layout.alignment: Qt.AlignHCenter
+                text: '<html><style type="text/css"></style><a href="https://github.com/libpcpnatpmp/libpcpnatpmp">github.com/libpcpnatpmp/libpcpnatpmp</a></html>'
+                onLinkActivated: {
+                    Qt.openUrlExternally(link)
+                }
+                wrapMode: Text.Wrap
+            }
+        }
+
+        ColumnLayout {
+            Layout.alignment: Qt.AlignHCenter
+            Label {
+                Layout.alignment: Qt.AlignHCenter
+                text: "miniupnp Copyright (c) 2005-2026, Thomas BERNARD"
+                wrapMode: Text.Wrap
+            }
+            Label {
+                Layout.alignment: Qt.AlignHCenter
+                text: '<html><style type="text/css"></style><a href="https://github.com/miniupnp/miniupnp">github.com/miniupnp/miniupnp</a></html>'
+                onLinkActivated: {
+                    Qt.openUrlExternally(link)
+                }
+                wrapMode: Text.Wrap
+            }
         }
 
         Button {
