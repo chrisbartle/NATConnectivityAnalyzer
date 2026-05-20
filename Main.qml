@@ -6,7 +6,7 @@ import App.Controller 1.0
 
 Window {
     width: 300
-    height: 500
+    height: 550
     visible: true
     title: qsTr("NAT Connectivity Analyzer")
 

@@ -63,6 +63,52 @@ Page {
                     // TOP PADDING
                     Item { Layout.preferredHeight: 10 }
 
+                    //Preamble
+                    ColumnLayout {
+                        Layout.fillWidth: true
+                        property bool showThis: !isRunOnce && !Controller.isProcessingNow
+                        opacity: showThis ? 1 : 0
+                        visible: opacity > 0
+                        Layout.preferredHeight: showThis ? implicitHeight : 0
+                        Label {
+                            Layout.fillWidth: true
+                            text: "NAT Connectivity Analyzer"
+                            wrapMode: Text.Wrap
+                            font.bold: true
+                            horizontalAlignment: Text.AlignHCenter
+                        }
+                        Label {
+                            Layout.fillWidth: true
+                            text: "Version " + Controller.applicationVersion
+                            wrapMode: Text.Wrap
+                            horizontalAlignment: Text.AlignHCenter
+                        }
+                        Label {
+                            Layout.fillWidth: true
+                            text: "Network Address Translation (NAT) devices are responsible for sharing a single Internet (IP) address with all of the devices on the local network."
+                            wrapMode: Text.Wrap
+                            //horizontalAlignment: Text.AlignHCenter
+                        }
+                        Label {
+                            Layout.fillWidth: true
+                            text: "In order to determine how the local NAT device works, this software must communicate with a STUN server. A STUN server is located outside of the local network. You may enter the address of a STUN server you wish to use or select one from the list below."
+                            wrapMode: Text.Wrap
+                            //horizontalAlignment: Text.AlignHCenter
+                        }
+                        Label {
+                            Layout.fillWidth: true
+                            text: "It is always a good idea to run multiple tests using different STUN servers."
+                            wrapMode: Text.Wrap
+                            //horizontalAlignment: Text.AlignHCenter
+                        }
+                        Behavior on opacity {
+                            NumberAnimation { duration: 250 }
+                        }
+                        Behavior on Layout.preferredHeight {
+                            NumberAnimation { duration: 250 }
+                        }
+                    }
+
                     ComboBox {
                         model: ["stun.12connect.com", "stun.schlund.de", "stun.easyvoip.com", "stun.ekiga.net", "stun.freecall.com", "stun.miwifi.com", "stun.nextcloud.com:443", "stun.voipbuster.com", "stun.voipstunt.com", "stun.xten.com"]
                         editable: true
