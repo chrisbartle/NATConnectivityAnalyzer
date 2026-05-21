@@ -77,16 +77,14 @@ if(WIN32)
     target_sources(natconnectivityanalyzer PRIVATE ${CMAKE_CURRENT_BINARY_DIR}/generated/NATCA.rc)
 endif()
 
-# pcpnatpmp needs to be compiled with the same libraries as the main application. One was using -MD, the other -MT
+# pcpnatpmp and libminiupnpc need to be compiled with the same libraries as the main application. One was using -MD, the other -MT
 if(MSVC)
-    if(CMAKE_MSVC_RUNTIME_LIBRARY)
-        set_target_properties(pcpnatpmp PROPERTIES
-            MSVC_RUNTIME_LIBRARY "${CMAKE_MSVC_RUNTIME_LIBRARY}"
-        )
-        set_target_properties(libminiupnpc-static PROPERTIES
-            MSVC_RUNTIME_LIBRARY "${CMAKE_MSVC_RUNTIME_LIBRARY}"
-        )
-    endif()
+    set_target_properties(pcpnatpmp PROPERTIES
+        MSVC_RUNTIME_LIBRARY "${CMAKE_MSVC_RUNTIME_LIBRARY}"
+    )
+    set_target_properties(libminiupnpc-static PROPERTIES
+        MSVC_RUNTIME_LIBRARY "${CMAKE_MSVC_RUNTIME_LIBRARY}"
+    )
 endif()
 
 include(GNUInstallDirs)
