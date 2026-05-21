@@ -6,6 +6,11 @@ int main(int argc, char *argv[])
 {
     QGuiApplication app(argc, argv);
 
+    //The Windows style doesn't do padding quite right plus it makes sense to standardize
+    //on a single style. This appears to be well in both Linux (it's the default there)
+    //and Windows
+    qputenv("QT_QUICK_CONTROLS_STYLE", "Fusion");
+
     //Instantiate the main thread controller that we'll be using
     //Singleton names must start with a capital letter
     MainThreadController controller;
