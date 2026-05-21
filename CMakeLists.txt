@@ -79,14 +79,14 @@ endif()
 
 # pcpnatpmp needs to be compiled with the same libraries as the main application. One was using -MD, the other -MT
 if(MSVC)
-    get_target_property(app_runtime natconnectivityanalyzer MSVC_RUNTIME_LIBRARY)
-
-    set_target_properties(pcpnatpmp PROPERTIES
-        MSVC_RUNTIME_LIBRARY "${app_runtime}"
-    )
-    set_target_properties(libminiupnpc-static PROPERTIES
-        MSVC_RUNTIME_LIBRARY "${app_runtime}"
-    )
+    if(CMAKE_MSVC_RUNTIME_LIBRARY)
+        set_target_properties(pcpnatpmp PROPERTIES
+            MSVC_RUNTIME_LIBRARY "${CMAKE_MSVC_RUNTIME_LIBRARY}"
+        )
+        set_target_properties(libminiupnpc-static PROPERTIES
+            MSVC_RUNTIME_LIBRARY "${CMAKE_MSVC_RUNTIME_LIBRARY}"
+        )
+    endif()
 endif()
 
 include(GNUInstallDirs)
