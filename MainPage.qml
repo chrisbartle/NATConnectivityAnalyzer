@@ -284,6 +284,7 @@ Page {
                         Frame {
                             Layout.fillWidth: true
                             TextEdit {
+                                anchors.fill: parent
                                 text: Controller.upnpRouterInformation
                                 readOnly: true
                                 selectByMouse: true
