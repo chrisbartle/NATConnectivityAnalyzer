@@ -36,12 +36,16 @@ problems with videogames, VPN, or peer-to-peer services then this may be the cau
             }
             case "BIDIRECTIONAL": return qsTr("<P><B>Bi-Directional</B></P>
 <P>The local router opened a bi-directional port. Both outgoing and incoming traffic use the same external port number.</P>");
+            case "BIDIRECTIONAL_UNCONFIRMED": return qsTr("<P><B>Bi-Directional (unconfirmed)</B></P>
+<P>The local router opened a bi-directional port. Both outgoing and incoming traffic use the same external port number.</P>
+<P>The STUN server could not confirm that this port is open to 3rd party traffic. Rerun the test using a different STUN server
+but if this error recurs then it indicates that something is blocking 3rd party traffic to this device.");
             case "MONODIRECTIONAL": return qsTr("<P><B>One-Directional</B></P>
 <P>The local router is forwarding incoming traffic from an external port but outgoing traffic uses a different port number.</P>");
-            case "BLOCKED": return qsTr("3rd Party Traffic is Blocked</B></P>
-<P>The router forwarded a port as instructed but the STUN server was unable to send traffic through the forwarded port.
-Rerun the test using a different STUN server but if this error recurs then it indicates that something is blocking 3rd party
-traffic to this device.</P>");
+            case "MONODIRECTIONAL_UNCONFIRMED": return qsTr("<P><B>One-Directional (unconfirmed)</B></P>
+<P>The local router is forwarding incoming traffic from an external port but outgoing traffic uses a different port number.</P>
+<P>The STUN server could not confirm that this port is open to 3rd party traffic. Rerun the test using a different STUN server
+but if this error recurs then it indicates that something is blocking 3rd party traffic to this device.");
             case "FAILED": return qsTr("<P><B>Test Failed</B></P>
 <P>The local router reported that the port has been forwarded but the STUN server is not responding correctly. Rerun
 the test using a different STUN server.</P>");

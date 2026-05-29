@@ -330,20 +330,35 @@ void WorkerThreadController::DoNATAnalysis()
                 {
                     clog << "The forwarded port matches the port that the STUN server sees. That means that this is a bidirectional mapping." << std::endl;
                     portForwardingType = "BIDIRECTIONAL";
+
+                    //Now confirm that the port is open to a 3rd party. Since the mapping is bidirectional, we can use STUN test 2 and it will send
+                    //a packet from a different IP back to this address/port.
+                    if (!clientHelper.TestTwo (*clientHelper.GetServerAddress(), hostAddr, &pResponseMessage))
+                    {
+                        clog << "The STUN server sent a packet to the forwarded port using a different IP and we didn't receive it. Port forwarding is apparently not working for 3rd parties." << std::endl;
+                        portForwardingType += "_UNCONFIRMED";
+                    }
+                    else
+                        clog << "The STUN server sent a packet to the forwarding port using a different IP and we received it! This confirms that port forwarding is working as expected!" << std::endl;
                 }
                 else
                 {
                     clog << "The forwarded port does not match the port that the STUN server sees. That means that this is a monodirectional mapping." << std::endl;
                     portForwardingType = "MONODIRECTIONAL";
+
+                    //Now we want to ask the STUN server to send a packet from a different IP to the forwarded port. This involves using the RESPONSE-ADDRESS STUN attribute
+                    //and not all STUN servers support it (it could be used as an attack vector). We'll try it and let the user know what we found
+                    sockaddr_in returnAddress;
+                    returnAddress.sin_addr = externalAddressSeenBySTUN.sin_addr;
+                    returnAddress.sin_port = mappedExternalPort;    //htons is applied by the Stunner library
+                    if (!clientHelper.TestOtherPort (*clientHelper.GetServerAddress(), hostAddr, returnAddress, &pResponseMessage))
+                    {
+                        clog << "The STUN server sent a packet to the forwarded port using a different IP and we didn't receive it. Port forwarding is apparently not working for 3rd parties." << std::endl;
+                        portForwardingType += "_UNCONFIRMED";
+                    }
+                    else
+                        clog << "The STUN server sent a packet to the forwarding port using a different IP and we received it! This confirms that port forwarding is working as expected!" << std::endl;
                 }
-                //Now run NAT test II to verify that the port forwarding does indeed work
-                if (!clientHelper.TestTwo (*clientHelper.GetServerAddress(), hostAddr, &pResponseMessage))
-                {
-                    clog << "The STUN server sent a packet to the forwarded port using a different IP and we didn't receive it. Port forwarding is apparently not working for 3rd parties." << std::endl;
-                    portForwardingType = "BLOCKED";
-                }
-                else
-                    clog << "The STUN server sent a packet to the forwarding port using a different IP and we received it! This confirms that port forwarding is working as expected!" << std::endl;
             }
             else
             {

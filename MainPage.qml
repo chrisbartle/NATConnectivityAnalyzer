@@ -27,8 +27,9 @@ Page {
             case "NONE": return "Not Supported";
             case "DOUBLE_NAT": return "Double NAT Detected";
             case "BIDIRECTIONAL": return "Bi-Directional";
+            case "BIDIRECTIONAL_UNCONFIRMED": return "Bi-Directional (unconfirmed)";
             case "MONODIRECTIONAL": return "One-Directional";
-            case "BLOCKED": return "3rd Party Traffic is Blocked";
+            case "MONODIRECTIONAL_UNCONFIRMED": return "One-Directional (unconfirmed)";
             case "FAILED": return "Test Failed";
         }
         return ""

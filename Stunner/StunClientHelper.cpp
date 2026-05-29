@@ -235,6 +235,63 @@ bool CStunClientHelper::TestThree(sockaddr_in serverAddr, sockaddr_in sendFromAd
 	return true;
 }
 
+bool CStunClientHelper::TestOtherPort(sockaddr_in serverAddr, sockaddr_in sendFromAddr, sockaddr_in returnAddr, CStunMessage **pResponseMessage)
+{
+    if (m_bInitialize == false)
+    {
+        clog << endl << "There was an error in initialization" << endl;
+        return false;
+    }
+
+    if (m_pClientTransaction)
+    {
+        delete m_pClientTransaction;
+        m_pClientTransaction = NULL;
+    }
+
+    if (m_pBindingRequest)
+    {
+        delete m_pBindingRequest;
+        m_pBindingRequest = NULL;
+    }
+
+    m_pBindingRequest = new CStunBindingRequestMessage ();
+    m_pClientTransaction = new CStunClientTransaction (serverAddr, m_pBindingRequest);
+    m_pClientTransaction->BindTo (sendFromAddr);
+
+    *pResponseMessage = NULL;
+    int nResult = 0;
+
+    //Send a binding request with change IP and change port flag
+    m_pBindingRequest->AddChangeRequestAttribute (CHANGE_PORT | CHANGE_IP);
+    m_pBindingRequest->AddResponseAddressAttribute(returnAddr.sin_port, inet_ntoa(returnAddr.sin_addr));
+
+        //Send the request
+        if (m_pClientTransaction->SendRequest (nResult) == false)
+    {
+        return false;
+    }
+
+    //The message was sent successfully, so we now wait for a response
+    if (m_pClientTransaction->ReceiveResponse (nResult) == false)
+    {
+        return false;
+    }
+
+    //We got a response, so we now check if it was a binding response or an error response
+    if (m_pClientTransaction->GetResponseType () == BINDING_RESPONSE)
+    {
+        *pResponseMessage = m_pClientTransaction->GetBindingResponse();
+    }
+    else if (m_pClientTransaction->GetResponseType () == BINDING_ERROR_RESPONSE ||
+             m_pClientTransaction->GetResponseType () == SHARED_SECRET_ERROR_RESPONSE)
+    {
+        *pResponseMessage = m_pClientTransaction->GetErrorResponse ();
+    }
+
+    return true;
+}
+
 NAT_TYPE CStunClientHelper::GetNatType()
 {
 	clog << endl << "Performing NAT detection" << endl;

@@ -29,6 +29,7 @@ public:
     bool TestOne (sockaddr_in serverAddr, sockaddr_in sendFromAddr, CStunMessage **pMessage);
     bool TestTwo (sockaddr_in serverAddr, sockaddr_in sendFromAddr, CStunMessage **pMessage);
     bool TestThree (sockaddr_in serverAddr, sockaddr_in sendFromAddr, CStunMessage **pMessage);
+    bool TestOtherPort (sockaddr_in serverAddr, sockaddr_in sendFromAddr, sockaddr_in returnAddr, CStunMessage **pMessage);
 
 	NAT_TYPE GetNatType ();
 
