@@ -3,8 +3,8 @@
          xmlns:uap="http://schemas.microsoft.com/appx/manifest/uap/windows10" 
          xmlns:rescap="http://schemas.microsoft.com/appx/manifest/foundation/windows10/restrictedcapabilities"
          IgnorableNamespaces="uap rescap">
-  <Identity Name="NATConnectivityAnalyzer" 
-            Publisher="CN=AppModelSamples, OID.2.25.311729368913984317654407730594956997722=1" 
+  <Identity Name="ChrisBartle.NATConnectivityAnalyzer" 
+            Publisher="CN=9B2FD687-E15B-4E48-9AFC-F1688CDFFE9E" 
             Version="1.0.0.0" 
             ProcessorArchitecture="x64" />
   <Properties>
