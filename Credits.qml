@@ -71,6 +71,15 @@ Page {
                             wrapMode: Text.Wrap
                             horizontalAlignment: Text.AlignHCenter
                         }
+                        Label {
+                            Layout.fillWidth: true
+                            text: '<html><style type="text/css"></style><a href="https://github.com/chrisbartle/NATConnectivityAnalyzer">github.com/chrisbartle/NATConnectivityAnalyzer</a></html>'
+                            onLinkActivated: {
+                                Qt.openUrlExternally(link)
+                            }
+                            wrapMode: Text.Wrap
+                            horizontalAlignment: Text.AlignHCenter
+                        }
                     }
 
                     Label {
