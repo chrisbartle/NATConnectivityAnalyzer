@@ -121,6 +121,7 @@ void WorkerThreadController::DoNATAnalysis()
         break;
     }
     setNatType(natTypeString);
+    clog << "\n*** NAT type identified as " << natTypeString.toStdString() << std::endl;
 
     //Now we'll try to set up port mapping on the NAT device
     //CStunClientHelper has code to run WSAStartup and WSACleanup. As long as it's in scope then internet connectivity should work fine.
@@ -132,8 +133,8 @@ void WorkerThreadController::DoNATAnalysis()
     QString mappedHostPortStr = QString::number(mappedHostPort);
     int mappedExternalPort = clientHelper.GetRandomPort();
     QString mappedExternalPortStr = QString::number(mappedExternalPort);
-    clog << "Picked host port " << mappedHostPortStr.toStdString() << std::endl;
-    clog << "Picked external port " << mappedExternalPortStr.toStdString() << std::endl;
+    clog << "*** Picked host port " << mappedHostPortStr.toStdString() << std::endl;
+    clog << "*** Picked external port " << mappedExternalPortStr.toStdString() << std::endl;
     //Setup logging
     pcp_set_loggerfn(libpcpnatpmplogger);
     pcp_log_level = PCP_LOGLVL_DEBUG;
@@ -240,7 +241,7 @@ void WorkerThreadController::DoNATAnalysis()
         upnpStatus += QString::asprintf("Packets: Sent: %8u\tRecv: %8u\n", packetssent, packetsreceived);
         //Add it to the log
         setUpnpRouterInformation(upnpStatus);
-        clog << "UPnP Router Status:\n" << upnpStatus.toStdString() << "\n";
+        clog << "*** UPnP Router Status:\n" << upnpStatus.toStdString() << "\n";
     }
 
     //Attempt to open the connection
@@ -269,7 +270,7 @@ void WorkerThreadController::DoNATAnalysis()
         {
             //It's IPv4!
             pcpExtIP.remove("::ffff:");
-            UpdateStatus("PCP library identified external IP as " + pcpExtIP);
+            UpdateStatus("PCP library is forwarding port and has identified external IP as " + pcpExtIP);
             mappedExternalIP = pcpExtIP;
             mappedUsingPCP = true;
         }
@@ -297,7 +298,7 @@ void WorkerThreadController::DoNATAnalysis()
             );
         if (portMappingResult == UPNPCOMMAND_SUCCESS)
         {
-            UpdateStatus("UPnP library identified external IP as " + QString(upnpWanaddr));
+            UpdateStatus("UPnP library is forwarding port and identified external IP as " + QString(upnpWanaddr));
             mappedExternalIP = upnpWanaddr;
             mappedUsingUPnP = true;
         }
@@ -312,7 +313,7 @@ void WorkerThreadController::DoNATAnalysis()
         //then a double NAT has been detected
         if (stunExternalIP != mappedExternalIP)
         {
-            clog << "The STUN server is reporting IP " << stunExternalIP.toStdString() << " but the router is reporting that its port forwarding from "
+            clog << "*** The STUN server is reporting IP " << stunExternalIP.toStdString() << " but the router is reporting that its port forwarding from "
                  << mappedExternalIP.toStdString() << ". This indicates the presence of a double NAT!" << std::endl;
             setRouterReportedExternalIP(mappedExternalIP);
             portForwardingType = "DOUBLE_NAT";
@@ -320,30 +321,32 @@ void WorkerThreadController::DoNATAnalysis()
         else
         {
             //Now that the port is forwarded, we'll send out a packet to the STUN server and see what port it sees
+            clog << "*** We are forwarding traffic that is sent to " << stunExternalIP.toStdString() << ":" << mappedExternalPortStr.toStdString() << std::endl;
             CStunMessage *pResponseMessage = NULL;
-            clog << "Running NAT test I" << std::endl;
+            clog << "*** Running NAT test I" << std::endl;
             if (clientHelper.TestOne (*clientHelper.GetServerAddress(), hostAddr, &pResponseMessage))
             {
                 sockaddr_in externalAddressSeenBySTUN;
                 ((CStunBindingResponseMessage *)pResponseMessage)->GetMappedAddress (&externalAddressSeenBySTUN);
+                clog << "\n*** The STUN server reports that traffic originated from " << inet_ntoa(externalAddressSeenBySTUN.sin_addr) << ":" <<  std::to_string(ntohs(externalAddressSeenBySTUN.sin_port)) << std::endl;
                 if (externalAddressSeenBySTUN.sin_port == externalAddr.sin_port)
                 {
-                    clog << "The forwarded port matches the port that the STUN server sees. That means that this is a bidirectional mapping." << std::endl;
+                    clog << "*** The forwarded port matches the port that the STUN server sees. That means that this is a bidirectional mapping." << std::endl;
                     portForwardingType = "BIDIRECTIONAL";
 
                     //Now confirm that the port is open to a 3rd party. Since the mapping is bidirectional, we can use STUN test 2 and it will send
                     //a packet from a different IP back to this address/port.
                     if (!clientHelper.TestTwo (*clientHelper.GetServerAddress(), hostAddr, &pResponseMessage))
                     {
-                        clog << "The STUN server sent a packet to the forwarded port using a different IP and we didn't receive it. Port forwarding is apparently not working for 3rd parties." << std::endl;
+                        clog << "\n*** The STUN server sent a packet to the forwarded port using a different IP and we didn't receive it. Port forwarding is apparently not working for 3rd parties." << std::endl;
                         portForwardingType += "_UNCONFIRMED";
                     }
                     else
-                        clog << "The STUN server sent a packet to the forwarding port using a different IP and we received it! This confirms that port forwarding is working as expected!" << std::endl;
+                        clog << "\n*** The STUN server sent a packet to the forwarding port using a different IP and we received it! This confirms that port forwarding is working as expected!" << std::endl;
                 }
                 else
                 {
-                    clog << "The forwarded port does not match the port that the STUN server sees. That means that this is a monodirectional mapping." << std::endl;
+                    clog << "*** The forwarded port does not match the port that the STUN server sees. That means that this is a monodirectional mapping." << std::endl;
                     portForwardingType = "MONODIRECTIONAL";
 
                     //Now we want to ask the STUN server to send a packet from a different IP to the forwarded port. This involves using the RESPONSE-ADDRESS STUN attribute
@@ -353,23 +356,23 @@ void WorkerThreadController::DoNATAnalysis()
                     returnAddress.sin_port = mappedExternalPort;    //htons is applied by the Stunner library
                     if (!clientHelper.TestOtherPort (*clientHelper.GetServerAddress(), hostAddr, returnAddress, &pResponseMessage))
                     {
-                        clog << "The STUN server sent a packet to the forwarded port using a different IP and we didn't receive it. Port forwarding is apparently not working for 3rd parties." << std::endl;
+                        clog << "\n*** The STUN server sent a packet to the forwarded port using a different IP and we didn't receive it. Port forwarding is apparently not working for 3rd parties." << std::endl;
                         portForwardingType += "_UNCONFIRMED";
                     }
                     else
-                        clog << "The STUN server sent a packet to the forwarding port using a different IP and we received it! This confirms that port forwarding is working as expected!" << std::endl;
+                        clog << "\n*** The STUN server sent a packet to the forwarding port using a different IP and we received it! This confirms that port forwarding is working as expected!" << std::endl;
                 }
             }
             else
             {
-                clog << "NAT test I returned failure" << std::endl;
+                clog << "*** NAT test I returned failure" << std::endl;
                 portForwardingType = "FAILED";
             }
         }
     }
     else if (!mappedExternalIP.isEmpty())
     {
-        clog << "Port forwarding works but cant test without a STUN server" << std::endl;
+        clog << "*** Port forwarding works but cant test without a STUN server" << std::endl;
         portForwardingType = "FAILED";
     }
     else
@@ -390,7 +393,7 @@ void WorkerThreadController::DoNATAnalysis()
     //Clean up UPnP
     if (mappedUsingUPnP)
     {
-        clog << "Closing UPnP connection for external port " << mappedExternalPortStr.toStdString() << std::endl;
+        clog << "*** Closing UPnP connection for external port " << mappedExternalPortStr.toStdString() << std::endl;
         UPNP_DeletePortMapping(
             upnpUrls.controlURL,
             upnpData.first.servicetype,
