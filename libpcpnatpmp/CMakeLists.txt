@@ -1,4 +1,4 @@
-project (pcpnatpmp C)
+project (pcpnatpmp VERSION 1.0.0 LANGUAGES C)
 
 set (LIBPCP_SRC_FILES
     src/net/gateway.c
@@ -18,6 +18,8 @@ if (WIN32)
          src/windows/pcp_gettimeofday.c
     )
 endif ()
+
+include (GNUInstallDirs)
 
 # header files for building PCP/NAT-PMP client library
 set (LIBPCP_INC_FILES
@@ -46,6 +48,11 @@ add_library (pcpnatpmp
     ${LIBPCP_INC_FILES}
 )
 
+set_target_properties (pcpnatpmp PROPERTIES
+    VERSION ${PROJECT_VERSION}
+    SOVERSION 1
+)
+
 if (WIN32)
     target_link_libraries (pcpnatpmp PUBLIC ws2_32.lib Iphlpapi.lib)
 endif ()
@@ -54,8 +61,32 @@ endif ()
 target_include_directories (pcpnatpmp PRIVATE src/ src/net/ .)
 
 # include directories with source and header files
-target_include_directories (pcpnatpmp PUBLIC include)
+target_include_directories (pcpnatpmp PUBLIC
+    $<BUILD_INTERFACE:${CMAKE_CURRENT_SOURCE_DIR}/include>
+    $<INSTALL_INTERFACE:${CMAKE_INSTALL_INCLUDEDIR}>
+)
 
 if (WIN32)
     target_include_directories (pcpnatpmp PRIVATE src/windows ../win_utils)
 endif ()
+
+configure_file (
+    ${CMAKE_CURRENT_SOURCE_DIR}/libpcpnatpmp.pc.cmake.in
+    ${CMAKE_CURRENT_BINARY_DIR}/libpcpnatpmp.pc
+    @ONLY
+)
+
+install (TARGETS pcpnatpmp
+    EXPORT pcpnatpmpTargets
+    LIBRARY DESTINATION ${CMAKE_INSTALL_LIBDIR}
+    ARCHIVE DESTINATION ${CMAKE_INSTALL_LIBDIR}
+    RUNTIME DESTINATION ${CMAKE_INSTALL_BINDIR}
+)
+
+install (FILES ${CMAKE_CURRENT_SOURCE_DIR}/include/pcpnatpmp.h
+    DESTINATION ${CMAKE_INSTALL_INCLUDEDIR}
+)
+
+install (FILES ${CMAKE_CURRENT_BINARY_DIR}/libpcpnatpmp.pc
+    DESTINATION ${CMAKE_INSTALL_LIBDIR}/pkgconfig
+)
