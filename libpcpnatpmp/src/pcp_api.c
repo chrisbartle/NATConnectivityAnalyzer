@@ -35,6 +35,7 @@
 
 #include <assert.h>
 #include <errno.h>
+#include <limits.h>
 #include <stddef.h>
 #include <stdint.h>
 #include <stdio.h>
@@ -223,7 +224,12 @@ pcp_fstate_e pcp_wait(pcp_flow_t *flow, int timeout, int exit_on_partial_res) {
     FD_ZERO(&read_fds);
 
     fd = pcp_get_socket(flow->ctx);
-    fdmax = fd + 1;
+    if (fd > INT_MAX - 1) {
+        PCP_LOG(PCP_LOGLVL_PERR, "%s",
+                "Socket descriptor value is out of range");
+        return pcp_state_failed;
+    }
+    fdmax = (int)fd + 1;
 
     // main loop
     for (;;) {
@@ -494,6 +500,20 @@ pcp_flow_t *pcp_new_flow(pcp_ctx_t *ctx, struct sockaddr *src_addr,
     return data.ffirst;
 }
 
+int pcp_flow_set_nonce(pcp_flow_t *flow, const uint32_t nonce_words_be[3]) {
+    pcp_flow_t *iter;
+
+    if (!flow || !nonce_words_be) {
+        return 1;
+    }
+
+    for (iter = flow; iter != NULL; iter = iter->next_child) {
+        memcpy(iter->kd.nonce.n, nonce_words_be, sizeof(iter->kd.nonce.n));
+    }
+
+    return 0;
+}
+
 void pcp_flow_set_lifetime(pcp_flow_t *f, uint32_t lifetime) {
     pcp_flow_t *fiter;
 
@@ -648,17 +668,25 @@ void pcp_delete_flow(pcp_flow_t *f) {
 }
 
 static int delete_flow_iter(pcp_flow_t *f, void *data) {
-    if (data) {
-        pcp_close_flow_intern(f);
-        pcp_pulse(f->ctx, NULL);
-    }
+    (void)data;
     pcp_delete_flow_intern(f);
 
     return 0;
 }
 
+static int close_flow_iter(pcp_flow_t *f, void *data) {
+    (void)data;
+    pcp_close_flow_intern(f);
+
+    return 0;
+}
+
 void pcp_terminate(pcp_ctx_t *ctx, int close_flows) {
-    pcp_db_foreach_flow(ctx, delete_flow_iter, close_flows ? (void *)1 : NULL);
+    if (close_flows) {
+        pcp_db_foreach_flow(ctx, close_flow_iter, NULL);
+        pcp_pulse(ctx, NULL);
+    }
+    pcp_db_foreach_flow(ctx, delete_flow_iter, NULL);
     pcp_db_free_pcp_servers(ctx);
     pcp_socket_close(ctx);
 }
