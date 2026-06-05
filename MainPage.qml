@@ -152,6 +152,10 @@ Page {
                                 readOnly: true
                                 selectByMouse: true
                                 wrapMode: TextEdit.WrapAnywhere
+                                //Explicitly set text color for when user changes system colors
+                                color: palette.windowText
+                                selectionColor: palette.highlight
+                                selectedTextColor: palette.highlightedText
                             }
                         }
                         Behavior on opacity {
@@ -180,6 +184,10 @@ Page {
                                 text: Controller.externalIP
                                 readOnly: true
                                 selectByMouse: true
+                                //Explicitly set text color for when user changes system colors
+                                color: palette.windowText
+                                selectionColor: palette.highlight
+                                selectedTextColor: palette.highlightedText
                             }
                         }
                         Behavior on opacity {
@@ -212,6 +220,10 @@ Page {
                                     text: describeNatType()
                                     readOnly: true
                                     selectByMouse: true
+                                    //Explicitly set text color for when user changes system colors
+                                    color: palette.windowText
+                                    selectionColor: palette.highlight
+                                    selectedTextColor: palette.highlightedText
                                 }
                                 Button {
                                     Layout.alignment: Qt.AlignRight
@@ -252,6 +264,10 @@ Page {
                                     text: describePortForwardType()
                                     readOnly: true
                                     selectByMouse: true
+                                    //Explicitly set text color for when user changes system colors
+                                    color: palette.windowText
+                                    selectionColor: palette.highlight
+                                    selectedTextColor: palette.highlightedText
                                 }
                                 Button {
                                     Layout.alignment: Qt.AlignRight
@@ -295,6 +311,10 @@ Page {
                                 // optional padding
                                 leftPadding: 10
                                 rightPadding: 10
+                                //Explicitly set text color for when user changes system colors
+                                color: palette.windowText
+                                selectionColor: palette.highlight
+                                selectedTextColor: palette.highlightedText
                             }
                         }
                         Behavior on opacity {

@@ -76,6 +76,10 @@ the test using a different STUN server.</P>");
                 font.pixelSize: 15
                 text: fullDescriptionPortForward()
                 readOnly: true
+                //Explicitly set text color for when user changes system colors
+                color: palette.windowText
+                selectionColor: palette.highlight
+                selectedTextColor: palette.highlightedText
             }
             ScrollBar.vertical: ScrollBar {
                 policy: ScrollBar.AsNeeded
