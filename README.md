@@ -1,5 +1,6 @@
 # NAT Connectivity Analyzer
 <img width="377" height="727" alt="image" src="https://github.com/user-attachments/assets/70425a3d-d14d-40e6-a17d-c885c8abfe23" />
+<img width="377" height="727" alt="image" src="https://github.com/user-attachments/assets/a0f95507-ac88-46c4-8bcb-0720ef14dd63" />
 
 The NAT Connectivity Analyzer is a tool that be used to evaluate, diagnose, and explain your local Network Address Translation (NAT) device. NAT is a common feature on nearly every modern router. It can help diagnose problems related to peer-to-peer applications, such as videogames or videoconferencing.
 
